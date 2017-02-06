@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         loadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, CreateMenu.class)); //change to PlayMenu.class once created
+                startActivity(new Intent(MainActivity.this, PlayMenu.class)); //change to PlayMenu.class once created
             }
         });
 
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         aboutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,CreateMenu.class));
+                startActivity(new Intent(MainActivity.this,AboutPage.class));
             }
         });
     }
