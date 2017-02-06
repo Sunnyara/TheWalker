@@ -13,28 +13,28 @@
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="75dp"
-            android:text="@string/add"
+            android:src="@drawable/ic_add"
             android:id="@+id/add_button"
             android:layout_weight="1" />
 
-        <Button
+        <ImageButton
             android:layout_width="0dp"
             android:layout_height="75dp"
-            android:text="@string/remove"
+            android:src="@drawable/ic_remove"
             android:id="@+id/remove_button"
             android:layout_weight="1" />
 
-        <Button
+        <ImageButton
             android:layout_width="0dp"
             android:layout_height="75dp"
-            android:text="@string/search"
+            android:src="@drawable/ic_search"
             android:id="@+id/search_button"
             android:layout_weight="1" />
 
-        <Button
+        <ImageButton
             android:layout_width="0dp"
             android:layout_height="75dp"
-            android:text="@string/share"
+            android:src="@drawable/ic_share"
             android:id="@+id/share_button"
             android:layout_weight="1" />
     </LinearLayout>

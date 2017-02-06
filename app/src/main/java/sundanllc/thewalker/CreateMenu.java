@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 
 public class CreateMenu extends AppCompatActivity {
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
