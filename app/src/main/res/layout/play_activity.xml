@@ -10,7 +10,7 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true">
 
-        <Button
+        <ImageButton
             android:layout_width="0dp"
             android:layout_height="75dp"
             android:text="@string/add"

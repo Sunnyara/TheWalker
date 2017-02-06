@@ -19,6 +19,10 @@
         <activity android:name=".CreateMenu"
             android:parentActivityName=".MainActivity">
         </activity>
+
+        <activity android:name=".PlayMenu"
+            android:parentActivityName=".PlayMenu">
+        </activity>
     </application>
 
 </manifest>
