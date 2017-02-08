@@ -14,4 +14,7 @@
     <string name="address">Address:</string>
     <string name="y">Y:</string>
     <string name="x">X:</string>
+    <string name="title">Title:</string>
+    <string name="author">Author:</string>
+    <string name="eta">ETA:</string>
 </resources>
