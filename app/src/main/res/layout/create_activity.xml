@@ -30,3 +30,7 @@
             android:drawableTop="@drawable/ic_remove"
             android:id="@+id/create_remove"
             android:layout_weight="1"
+            />
+    </LinearLayout>
+
+</RelativeLayout>
