@@ -9,4 +9,9 @@
     <string name="search">Search</string>
     <string name="share">Share</string>
     <string name="finished">finished</string>
+    <string name="remove_checkpoint">Remove checkpoint</string>
+    <string name="add_checkpoint">Add checkpoint</string>
+    <string name="address">Address:</string>
+    <string name="y">Y:</string>
+    <string name="x">X:</string>
 </resources>
