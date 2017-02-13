@@ -29,9 +29,7 @@ public class CreateAddOption extends AppCompatActivity{
     private ArrayList<Checkpoint> cPArrayList;
 
     public CreateAddOption() {
-        for(int i = 0; i == 100; i++) {
-            cPArrayList.add(new Checkpoint(i,"address", "1923.233", "12392,442"));
-        }
+
     }
 
     @Override
@@ -39,8 +37,17 @@ public class CreateAddOption extends AppCompatActivity{
         super.onCreate(savedInstances);
         setContentView(R.layout.create_screen_add_checkpoint);
 
+        cPArrayList = new ArrayList<Checkpoint>();
+        for(int i = 0; i <= 100; i++) {
+            cPArrayList.add(new Checkpoint(i,"address", "1923.233", "12392,442"));
+        }
+
         mRecyclerView = (RecyclerView) findViewById(R.id.checkpoint_create);
         mRecyclerView.setHasFixedSize(true);
+
+
+
+
 
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -66,54 +73,5 @@ public class CreateAddOption extends AppCompatActivity{
 
 
 
-    public class CheckpointAdapters extends RecyclerView.Adapter<CheckpointAdapters.CheckpointHolder> {
-        private String[] mItemList;
-        private ArrayList<Checkpoint> checkPoints;
 
-        public CheckpointAdapters(ArrayList<Checkpoint> checkPoints) {
-            this.checkPoints = checkPoints;
-        }
-
-        @Override
-        public CheckpointHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.create_checkpoint_list_fragment, parent, false);
-
-            return new CheckpointHolder(v);
-        }
-
-        @Override
-        public void onBindViewHolder(CheckpointHolder holder, int position) {
-            Checkpoint cp = checkPoints.get(position);
-            holder.bindCheckpoint(cp);
-        }
-
-        @Override
-        public int getItemCount() {
-            return checkPoints.size();
-        }
-
-        public class CheckpointHolder extends RecyclerView.ViewHolder {
-            public TextView addString, xString, yString;
-            private Checkpoint mCheckpoint;
-
-                public CheckpointHolder (View v) {
-                    super(v);
-                    addString = (TextView) v.findViewById(R.id.address_info);
-
-                    xString = (TextView) v.findViewById(R.id.c_x);
-
-                    yString = (TextView) v.findViewById(R.id.c_y);
-
-            }
-
-            public void bindCheckpoint(Checkpoint checkpoint) {
-                mCheckpoint = checkpoint;
-
-            }
-
-
-
-        }
-    }
 }
