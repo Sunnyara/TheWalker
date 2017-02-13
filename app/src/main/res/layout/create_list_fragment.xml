@@ -1,48 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="100dp"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
     android:background="@color/colorAccent">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="@string/address"
-        android:textSize="20sp"
-        android:id="@+id/c_address"
-        />
+        android:id="@+id/c_address">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/address"
+            android:textSize="20sp"
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            android:text=""
+            android:id="@+id/address_info"
+            android:background="@color/colorPrimaryDark"
+
+            />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:id="@+id/checkbox_checkpoint"
+            />
+    </LinearLayout>
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
         android:layout_margin="5dp"
-        android:text="@string/x"
-        android:textSize="20sp"
-        android:layout_below="@+id/c_address"
-        android:id="@+id/c_x"/>
-    <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="@string/y"
-        android:layout_toRightOf="@id/c_x"
-        android:layout_below="@+id/c_address"
-        android:textSize="20sp"
-        android:id="@+id/c_y"/>
+        android:layout_below="@+id/c_address">
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="35dp"
-        android:layout_alignParentRight="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/x"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            android:background="@color/colorPrimaryDark"
+            android:id="@+id/c_x"
+            />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/y"
+            android:layout_margin="5dp"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            android:background="@color/colorPrimaryDark"
+            android:id="@+id/c_y"
+            />
+
+    </LinearLayout>
+
+
+
 
 </RelativeLayout>
