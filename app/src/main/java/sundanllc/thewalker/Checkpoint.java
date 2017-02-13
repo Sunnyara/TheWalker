@@ -5,16 +5,28 @@ package sundanllc.thewalker;
  */
 
 public class Checkpoint {
+    private int id;
     private String mAddress;
     private String mX;
     private String mY;
 
+    public Checkpoint(int id, String address, String x, String y) {
+        setId(id);
+        setAddress(address);
+        setX(x);
+        setY(y);
 
-    public String getmX() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getX() {
         return mX;
     }
 
-    public void setmX(String mX) {
+    public void setX(String mX) {
         this.mX = mX;
     }
 
@@ -22,15 +34,20 @@ public class Checkpoint {
         return mAddress;
     }
 
-    public void setmAddress(String mAddress) {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+    public void setAddress(String mAddress) {
         this.mAddress = mAddress;
     }
 
-    public String getmY() {
+    public String getY() {
         return mY;
     }
 
-    public void setmY(String mY) {
+    public void setY(String mY) {
         this.mY = mY;
     }
 

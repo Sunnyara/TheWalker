@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -24,6 +25,14 @@ public class CreateAddOption extends AppCompatActivity{
 
     private Button addCP, removeCP;
     private TextView addString, xString, yString;
+
+    private ArrayList<Checkpoint> cPArrayList;
+
+    public CreateAddOption() {
+        for(int i = 0; i == 100; i++) {
+            cPArrayList.add(new Checkpoint(i,"address", "1923.233", "12392,442"));
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstances) {
@@ -75,7 +84,8 @@ public class CreateAddOption extends AppCompatActivity{
 
         @Override
         public void onBindViewHolder(CheckpointHolder holder, int position) {
-
+            Checkpoint cp = checkPoints.get(position);
+            holder.bindCheckpoint(cp);
         }
 
         @Override
@@ -85,6 +95,7 @@ public class CreateAddOption extends AppCompatActivity{
 
         public class CheckpointHolder extends RecyclerView.ViewHolder {
             public TextView addString, xString, yString;
+            private Checkpoint mCheckpoint;
 
                 public CheckpointHolder (View v) {
                     super(v);
@@ -96,6 +107,10 @@ public class CreateAddOption extends AppCompatActivity{
 
             }
 
+            public void bindCheckpoint(Checkpoint checkpoint) {
+                mCheckpoint = checkpoint;
+
+            }
 
 
 
