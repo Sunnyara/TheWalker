@@ -21,7 +21,7 @@
         </activity>
 
         <activity android:name=".PlayMenu"
-            android:parentActivityName=".PlayMenu">
+            android:parentActivityName=".MainActivity">
         </activity>
     </application>
 

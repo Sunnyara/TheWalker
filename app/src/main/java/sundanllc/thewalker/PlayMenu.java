@@ -3,9 +3,13 @@ package sundanllc.thewalker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 /**
  * Created by Daniel on 2/6/2017.
@@ -15,6 +19,8 @@ public class PlayMenu extends AppCompatActivity {
 
     ImageButton addButton, removeButton, searchButton, shareButton;
     RecyclerView playRecycler;
+    RecyclerView.Adapter playAdapter;
+    RecyclerView.LayoutManager playLM;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +48,6 @@ public class PlayMenu extends AppCompatActivity {
                 //This one will be cool
             }
         });
-
         shareButton = (ImageButton) findViewById(R.id.share_button);
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +57,14 @@ public class PlayMenu extends AppCompatActivity {
         });
 
         playRecycler = (RecyclerView) findViewById(R.id.playRecycler);
-        playRecycler.setHasFixedSize(true);
-        
+        //playRecycler.setHasFixedSize(true);
+
+        playLM = new LinearLayoutManager(this);
+        playRecycler.setLayoutManager(playLM);
+
+        String[][] testCard = {{"Around Boone", "Daniel Nance", "3 hours"}};
+
+        playAdapter = new PlayAdapter(testCard);
+        playRecycler.setAdapter(playAdapter);
     }
 }

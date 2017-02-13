@@ -50,7 +50,7 @@ public class CreateAddOption extends AppCompatActivity{
         });
     }
 
-    public class CheckpointAdapters extends RecyclerView.Adapter<CheckpointAdapters.ViewHolder> {
+    /*public class CheckpointAdapters extends RecyclerView.Adapter<CheckpointAdapters.ViewHolder> {
         private String[] mItemList;
 
         public class ViewHolder extends RecyclerView.ViewHolder {
@@ -62,5 +62,5 @@ public class CreateAddOption extends AppCompatActivity{
 
 
         }
-    }
+    }*/
 }
