@@ -4,13 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
-import java.util.List;
 
 /**
  * Created by Sunnara on 2/8/2017.
@@ -28,7 +24,7 @@ public class CreateAddOption extends AppCompatActivity{
     @Override
     public void onCreate(Bundle savedInstances) {
         super.onCreate(savedInstances);
-        setContentView(R.layout.create_screen_add);
+        setContentView(R.layout.create_screen_add_checkpoint);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.checkpoint_create);
         mRecyclerView.setHasFixedSize(true);
