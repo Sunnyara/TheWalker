@@ -4,9 +4,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * Created by Sunnara on 2/8/2017.
@@ -50,15 +54,49 @@ public class CreateAddOption extends AppCompatActivity{
         });
     }
 
-    public class CheckpointAdapters extends RecyclerView.Adapter<CheckpointAdapters.ViewHolder> {
-        private String[] mItemList;
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
+
+
+    public class CheckpointAdapters extends RecyclerView.Adapter<CheckpointAdapters.CheckpointHolder> {
+        private String[] mItemList;
+        private ArrayList<Checkpoint> checkPoints;
+
+        public CheckpointAdapters(ArrayList<Checkpoint> checkPoints) {
+            this.checkPoints = checkPoints;
+        }
+
+        @Override
+        public CheckpointHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.create_checkpoint_list_fragment, parent, false);
+
+            return new CheckpointHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(CheckpointHolder holder, int position) {
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return checkPoints.size();
+        }
+
+        public class CheckpointHolder extends RecyclerView.ViewHolder {
             public TextView addString, xString, yString;
 
-            public ViewHolder (TextView v) {
-                super(v);
+                public CheckpointHolder (View v) {
+                    super(v);
+                    addString = (TextView) v.findViewById(R.id.address_info);
+
+                    xString = (TextView) v.findViewById(R.id.c_x);
+
+                    yString = (TextView) v.findViewById(R.id.c_y);
+
             }
+
+
 
 
         }
