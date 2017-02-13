@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import static sundanllc.thewalker.R.id.titleView;
 
 /**
@@ -14,9 +16,9 @@ import static sundanllc.thewalker.R.id.titleView;
 
 public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
 
-    private String[][] dataset;
+    private ArrayList<String[]> dataset;
 
-    public PlayAdapter(String[][] data)
+    public PlayAdapter(ArrayList<String[]> data)
     {
         dataset = data;
     }
@@ -31,14 +33,14 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(PlayAdapter.ViewHolder holder, int position)
     {
-        holder.titleView.setText(dataset[position][0]);
-        holder.authorView.setText(dataset[position][1]);
-        holder.etaView.setText(dataset[position][2]);
+        holder.titleView.setText(dataset.get(position)[0]);
+        holder.authorView.setText(dataset.get(position)[1]);
+        holder.etaView.setText(dataset.get(position)[2]);
     }
 
     @Override
     public int getItemCount() {
-        return dataset.length;
+        return dataset.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder

@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 /**
  * Created by Daniel on 2/6/2017.
  */
@@ -61,9 +63,12 @@ public class PlayMenu extends AppCompatActivity {
 
         playLM = new LinearLayoutManager(this);
         playRecycler.setLayoutManager(playLM);
-
-        String[][] testCard = {{"Around Boone", "Daniel Nance", "3 hours"}};
-
+        ArrayList<String[]> testCard = new ArrayList<String[]>();
+        for (int i = 0; i < 100; i++)
+        {
+            String[] s = {"Around Boone", "Daniel Nance", i + " hours"};
+            testCard.add(s);
+        }
         playAdapter = new PlayAdapter(testCard);
         playRecycler.setAdapter(playAdapter);
     }
