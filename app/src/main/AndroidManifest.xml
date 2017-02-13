@@ -8,20 +8,29 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity android:name=".CreateMenu"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:label="Edit New Game"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".CreateAddOption"
+            android:screenOrientation="portrait"
+            android:label="Edit Checkpoints"
+            android:parentActivityName=".CreateMenu">
         </activity>
 
         <activity android:name=".PlayMenu"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".PlayMenu"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
