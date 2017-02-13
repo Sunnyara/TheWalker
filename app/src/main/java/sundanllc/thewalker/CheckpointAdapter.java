@@ -31,6 +31,9 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
     @Override
     public void onBindViewHolder(CheckpointHolder holder, int position) {
         Checkpoint cp = checkPoints.get(position);
+        holder.addString.setText(cp.getmAddress());
+        holder.xString.setText(cp.getX());
+        holder.yString.setText(cp.getY());
         holder.bindCheckpoint(cp);
     }
 
@@ -38,6 +41,13 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
     public int getItemCount() {
         return checkPoints.size();
     }
+
+
+
+
+
+
+
 
     public class CheckpointHolder extends RecyclerView.ViewHolder {
         public TextView addString, xString, yString;
