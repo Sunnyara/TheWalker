@@ -13,7 +13,6 @@ import java.util.ArrayList;
  */
 
 public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.CheckpointHolder> {
-    private String[] mItemList;
     private ArrayList<Checkpoint> checkPoints;
 
     public CheckpointAdapter(ArrayList<Checkpoint> checkPoints) {
@@ -56,9 +55,7 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
         public CheckpointHolder (View v) {
             super(v);
             addString = (TextView) v.findViewById(R.id.address_info);
-
             xString = (TextView) v.findViewById(R.id.c_x);
-
             yString = (TextView) v.findViewById(R.id.c_y);
 
         }

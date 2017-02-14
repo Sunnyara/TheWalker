@@ -2,6 +2,7 @@ package sundanllc.thewalker;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,9 +25,9 @@ public class CreateAddOption extends AppCompatActivity{
     private RecyclerView.LayoutManager mLayoutManager;
 
     private Button addCP, removeCP;
-    private TextView addString, xString, yString;
 
     private ArrayList<Checkpoint> cPArrayList;
+    private CheckpointAdapter checkpointAdapter;
 
     public CreateAddOption() {
 
@@ -39,18 +40,22 @@ public class CreateAddOption extends AppCompatActivity{
 
         cPArrayList = new ArrayList<Checkpoint>();
         for(int i = 0; i <= 100; i++) {
-            cPArrayList.add(new Checkpoint(i,"address", "1923.233", "12392,442"));
+            cPArrayList.add(new Checkpoint(i,"Address v" + i,Integer.toString(i), Integer.toString(i)));
         }
 
+
+
+        checkpointAdapter = new CheckpointAdapter(cPArrayList);
         mRecyclerView = (RecyclerView) findViewById(R.id.checkpoint_create);
         mRecyclerView.setHasFixedSize(true);
 
-
-
-
-
         mLayoutManager = new LinearLayoutManager(this);
+
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(checkpointAdapter);
+
+
+
 
 
         addCP = (Button) findViewById(R.id.create_add_checkpoint);

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:background="@color/colorAccent">
+    android:layout_marginBottom="1dp"
+    android:background="@color/whitebg"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +28,6 @@
             android:layout_weight="1"
             android:text=""
             android:id="@+id/address_info"
-            android:background="@color/colorPrimaryDark"
 
             />
         <CheckBox
@@ -54,10 +55,10 @@
 
         <TextView
             android:layout_width="0dp"
+            android:layout_margin="5dp"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:layout_weight="1"
-            android:background="@color/colorPrimaryDark"
             android:id="@+id/c_x"
             />
 
@@ -72,10 +73,10 @@
 
         <TextView
             android:layout_width="0dp"
+            android:layout_margin="5dp"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:layout_weight="1"
-            android:background="@color/colorPrimaryDark"
             android:id="@+id/c_y"
             />
 
