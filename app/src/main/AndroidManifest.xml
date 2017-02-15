@@ -32,6 +32,11 @@
             android:parentActivityName=".PlayMenu"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity android:name=".AboutPage"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

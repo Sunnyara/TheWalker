@@ -17,4 +17,5 @@
     <string name="title">Title:</string>
     <string name="author">Author:</string>
     <string name="eta">ETA:</string>
+    <string name="about">This app is based on a game played at Appalachian State University. Enjoy.</string>
 </resources>
