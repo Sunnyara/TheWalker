@@ -40,15 +40,16 @@ public class CreateMenu extends AppCompatActivity {
 
         ArrayList<String[]> data = new ArrayList<>();
         for(int i = 1; i <= 20; i++) {
-            String [] s = {"Title" + i ,"SunDan LLC","" + i};
+            String [] s = {"Title " + i ,"SunDan LLC","" + i};
             data.add(s);
         }
-        pa = new PlayAdapter(data);
+        pa = new PlayAdapter(data, 1);
         lm = new LinearLayoutManager(this);
         rv = (RecyclerView) findViewById(R.id.create_list);
         rv.setAdapter(pa);
         rv.setLayoutManager(lm);
         rv.hasFixedSize();
+
 
     }
 }

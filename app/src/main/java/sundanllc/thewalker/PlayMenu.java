@@ -69,7 +69,7 @@ public class PlayMenu extends AppCompatActivity {
             String[] s = {"Around Boone", "Daniel Nance", i + " hours"};
             testCard.add(s);
         }
-        playAdapter = new PlayAdapter(testCard);
+        playAdapter = new PlayAdapter(testCard, 0);
         playRecycler.setAdapter(playAdapter);
     }
 }
