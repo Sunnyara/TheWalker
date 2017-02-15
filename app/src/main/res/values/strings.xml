@@ -19,6 +19,7 @@
     <string name="eta">ETA: </string>
     <string name="about">This app is based on a game played at Appalachian State University. Enjoy.</string>
     <string name="description">Description</string>
-    <string name="checkpoints">Checkpoints</string>
-    <string name="distance">Distance</string>
+    <string name="checkpoints">Checkpoints: </string>
+    <string name="distance">Distance: </string>
+    <string name="play">PLAY</string>
 </resources>
