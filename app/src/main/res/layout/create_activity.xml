@@ -27,12 +27,40 @@ android:background="@color/greybg">
         android:layout_weight="1"
         />
 </LinearLayout>
+    <LinearLayout
+        android:layout_toRightOf="@+id/game_thumbnail"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@color/whitebg"
+        android:id="@+id/linearLayout2"
+        android:layout_alignParentEnd="true">
 
-<android.support.v7.widget.RecyclerView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/create_list"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentStart="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/author"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/description"/>
+
+    </LinearLayout>
+    <ImageView
+        android:src="@mipmap/ic_launcher"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/game_thumbnail"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_list"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/create_toolbar" />
 
 </RelativeLayout>
