@@ -4,6 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import static sundanllc.thewalker.GameDatabase.SQL_CREATE_ENTRIES;
+import static sundanllc.thewalker.GameDatabase.SQL_DELETE_ENTRIES;
+
 /**
  * Created by Daniel on 2/20/2017.
  */
@@ -21,5 +24,10 @@ public class GameHelper extends SQLiteOpenHelper
     public void onCreate(SQLiteDatabase db)
     {
         db.execSQL(SQL_CREATE_ENTRIES);
+    }
+
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+    {
+        db.setVersion(newVersion);
     }
 }
