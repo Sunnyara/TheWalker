@@ -48,9 +48,9 @@ public final class GameDatabase {
 
     public static final String SQL_CREATE_CHECKPOINT =
             "CREATE TABLE" + GameEntry.TABLE2_NAME + "(" +
-                    GameEntry.CP_ID + " INT," +
+                    GameEntry.CP_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     GameEntry.CP_TYPE + " INT, " +
-                    GameEntry.WALKERID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    GameEntry.WALKERID + " INT," +
                     GameEntry.CP_LAT + " FLOAT," +
                     GameEntry.CP_LONG + " FLOAT," +
                     GameEntry.CP_HINT1 + " TEXT," +
