@@ -24,6 +24,7 @@ public final class GameDatabase {
         public static final String WALKERID = "walker_id";
         public static final String CP_LAT = "cp_latitude";
         public static final String CP_LONG = "cp_longitude";
+        public static final String CP_ADD = "cp_address";
         public static final String CP_HINT1 = "cp_hint_1";
         public static final String CP_HINT2 = "cp_hint_2";
         public static final String CP_HINT3 = "cp_hint_3";

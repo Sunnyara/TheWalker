@@ -7,11 +7,11 @@ package sundanllc.thewalker;
 public class Checkpoint {
     private int id;
     private String mAddress;
-    private String mX;
-    private String mY;
+    private float mX;
+    private float mY;
     private String hint1, hint2, hint3, hint4;
 
-    public Checkpoint(int id, String address, String x, String y,
+    public Checkpoint(int id, String address, float x, float y,
                       String hint1, String hint2, String hint3, String hint4) {
         setId(id);
         setAddress(address);
@@ -23,15 +23,17 @@ public class Checkpoint {
         setHint4(hint4);
     }
 
+    public Checkpoint() {}
+
     public int getId() {
         return id;
     }
 
-    public String getX() {
+    public float getX() {
         return mX;
     }
 
-    public void setX(String mX) {
+    public void setX(float mX) {
         this.mX = mX;
     }
 
@@ -47,11 +49,11 @@ public class Checkpoint {
         this.mAddress = mAddress;
     }
 
-    public String getY() {
+    public float getY() {
         return mY;
     }
 
-    public void setY(String mY) {
+    public void setY(float mY) {
         this.mY = mY;
     }
 

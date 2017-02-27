@@ -2,6 +2,7 @@ package sundanllc.thewalker;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.graphics.Bitmap;
 import java.util.ArrayList;
 import java.util.List;
 
+import static sundanllc.thewalker.GameDatabase.GameEntry.CP_ADD;
 import static sundanllc.thewalker.GameDatabase.GameEntry.CP_HINT1;
 import static sundanllc.thewalker.GameDatabase.GameEntry.CP_HINT2;
 import static sundanllc.thewalker.GameDatabase.GameEntry.CP_HINT3;
@@ -69,7 +71,7 @@ public class GameHelper extends SQLiteOpenHelper
         return ret != -1;
     }
 
-    public boolean insertCheckpoint(String walkerid, float lat, float lon,
+    public boolean insertCheckpoint(int walkerid, float lat, float lon, String address,
                                     String hint1, String hint2, String hint3,
                                     String hint4, int type)
     {
@@ -80,6 +82,7 @@ public class GameHelper extends SQLiteOpenHelper
         cv.put(CP_TYPE, type);
         cv.put(CP_LAT, lat);
         cv.put(CP_LONG, lon);
+        cv.put(CP_ADD, address);
         cv.put(CP_HINT1, hint1);
         cv.put(CP_HINT2, hint2);
         cv.put(CP_HINT3, hint3);
@@ -91,5 +94,31 @@ public class GameHelper extends SQLiteOpenHelper
     public List getGames()
     {
         List games = new ArrayList();
+    }
+
+    public List getCheckpoints(int id)
+    {
+        List checkpoints = new ArrayList();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT cp_latitude, cp_longitude, cp_address, cp_hint1, cp_hint2, cp_hint3, cp_hint4, cp_type FROM cp_object WHERE walker_id = " + id + " ORDER BY cp_type ASC";
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                Checkpoint cp = new Checkpoint();
+                cp.setX(cursor.getFloat(0));
+                cp.setY(cursor.getFloat(1));
+                cp.setAddress(cursor.getString(2));
+                cp.setHint1(cursor.getString(3));
+                cp.setHint2(cursor.getString(4));
+                cp.setHint3(cursor.getString(5));
+                cp.setHint4(cursor.getString(6));
+                checkpoints.add(cp);
+            }
+            while(cursor.moveToNext());
+        }
+        db.close();
+        return checkpoints;
     }
 }
