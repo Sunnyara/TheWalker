@@ -35,8 +35,8 @@ public final class GameDatabase {
     }
 
     public static final String SQL_CREATE_GAMES =
-            "CREATE TABLE" + GameEntry.TABLE_NAME + "(" +
-                    GameEntry.GAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "CREATE TABLE " + GameEntry.TABLE_NAME + "(" +
+                    GameEntry.GAME_ID + " INTEGER PRIMARY KEY AUTO_INCREMENT," +
                     GameEntry.GAME_TITLE + " TEXT,"  +
                     GameEntry.GAME_AUTHOR + " TEXT," +
                     GameEntry.GAME_TITLE + " TEXT," +
@@ -47,8 +47,8 @@ public final class GameDatabase {
 
 
     public static final String SQL_CREATE_CHECKPOINT =
-            "CREATE TABLE" + GameEntry.TABLE2_NAME + "(" +
-                    GameEntry.CP_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "CREATE TABLE " + GameEntry.TABLE2_NAME + "(" +
+                    GameEntry.CP_ID + " INTEGER PRIMARY KEY AUTO_INCREMENT," +
                     GameEntry.CP_TYPE + " INT, " +
                     GameEntry.WALKERID + " INT," +
                     GameEntry.CP_LAT + " FLOAT," +
