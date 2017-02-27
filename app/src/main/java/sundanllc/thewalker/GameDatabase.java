@@ -19,16 +19,16 @@ public final class GameDatabase {
         public static final String ETA = "eta";
         public static final String TIME_PLAYED = "time_played";
 
-        public static final String TABLE2_NAME = "checkpoint_object";
-        public static final String CP_ID = "checkpoint_id";
+        public static final String TABLE2_NAME = "cp_object";
+        public static final String CP_ID = "cp_id";
         public static final String WALKERID = "walker_id";
-        public static final String CP_LAT = "checkpoint_latitude";
-        public static final String CP_LONG = "checkpoint_longitude";
-        public static final String CP_HINT1 = "checkpoint_hint_1";
-        public static final String CP_HINT2 = "checkpoint_hint_2";
-        public static final String CP_HINT3 = "checkpoint_hint_3";
-        public static final String CP_HINT4 = "checkpoint_hint_4";
-        public static final String CP_TYPE = "checkpoint_type";
+        public static final String CP_LAT = "cp_latitude";
+        public static final String CP_LONG = "cp_longitude";
+        public static final String CP_HINT1 = "cp_hint_1";
+        public static final String CP_HINT2 = "cp_hint_2";
+        public static final String CP_HINT3 = "cp_hint_3";
+        public static final String CP_HINT4 = "cp_hint_4";
+        public static final String CP_TYPE = "cp_type";
 
 
 
