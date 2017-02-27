@@ -40,7 +40,7 @@ public class CreateAddOption extends AppCompatActivity{
 
         cPArrayList = new ArrayList<Checkpoint>();
         for(int i = 0; i <= 100; i++) {
-            cPArrayList.add(new Checkpoint(i,"Address v" + i,Integer.toString(i), Integer.toString(i), "hi", "how's", "it", "going"));
+            cPArrayList.add(new Checkpoint(i,"Address v" + i, i, i, "hi", "how's", "it", "going"));
         }
 
 

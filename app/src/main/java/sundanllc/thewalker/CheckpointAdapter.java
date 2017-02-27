@@ -31,8 +31,8 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
     public void onBindViewHolder(CheckpointHolder holder, int position) {
         Checkpoint cp = checkPoints.get(position);
         holder.addString.setText(cp.getmAddress());
-        holder.xString.setText(cp.getX());
-        holder.yString.setText(cp.getY());
+        holder.xString.setText(Float.toString(cp.getX()));
+        holder.yString.setText(Float.toString(cp.getY()));
         holder.bindCheckpoint(cp);
     }
 

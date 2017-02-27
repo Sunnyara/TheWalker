@@ -10,23 +10,7 @@ import android.graphics.Bitmap;
 import java.util.ArrayList;
 import java.util.List;
 
-import static sundanllc.thewalker.GameDatabase.GameEntry.CP_ADD;
-import static sundanllc.thewalker.GameDatabase.GameEntry.CP_HINT1;
-import static sundanllc.thewalker.GameDatabase.GameEntry.CP_HINT2;
-import static sundanllc.thewalker.GameDatabase.GameEntry.CP_HINT3;
-import static sundanllc.thewalker.GameDatabase.GameEntry.CP_HINT4;
-import static sundanllc.thewalker.GameDatabase.GameEntry.CP_LAT;
-import static sundanllc.thewalker.GameDatabase.GameEntry.CP_LONG;
-import static sundanllc.thewalker.GameDatabase.GameEntry.CP_TYPE;
-import static sundanllc.thewalker.GameDatabase.GameEntry.DESCRIPTION;
-import static sundanllc.thewalker.GameDatabase.GameEntry.ETA;
-import static sundanllc.thewalker.GameDatabase.GameEntry.GAME_AUTHOR;
-import static sundanllc.thewalker.GameDatabase.GameEntry.GAME_TITLE;
-import static sundanllc.thewalker.GameDatabase.GameEntry.TABLE2_NAME;
-import static sundanllc.thewalker.GameDatabase.GameEntry.TABLE_NAME;
-import static sundanllc.thewalker.GameDatabase.GameEntry.THUMBNAIL;
-import static sundanllc.thewalker.GameDatabase.GameEntry.TIME_PLAYED;
-import static sundanllc.thewalker.GameDatabase.GameEntry.WALKERID;
+import static sundanllc.thewalker.GameDatabase.GameEntry.*;
 import static sundanllc.thewalker.GameDatabase.SQL_CREATE_CHECKPOINT;
 import static sundanllc.thewalker.GameDatabase.SQL_CREATE_GAMES;
 
@@ -94,6 +78,29 @@ public class GameHelper extends SQLiteOpenHelper
     public List getGames()
     {
         List games = new ArrayList();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT id, title, author, description, thumbnail, eta, time_played FROM game_object";
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                WalkerGame wg = new WalkerGame();
+                wg.setId(cursor.getInt(0));
+                wg.setTitle(cursor.getString(1));
+                wg.setAuthor(cursor.getString(2));
+                wg.setDescription(cursor.getString(3));
+                byte[] thumbnail = cursor.getBlob(4);
+                wg.setPicture(BlobFactory.getImage(thumbnail));
+                wg.setEta(cursor.getInt(5));
+                wg.setTime_played(cursor.getInt(6));
+                games.add(wg);
+            }
+            while(cursor.moveToNext());
+        }
+        db.close();
+        cursor.close();
+        return games;
     }
 
     public List getCheckpoints(int id)
@@ -119,6 +126,7 @@ public class GameHelper extends SQLiteOpenHelper
             while(cursor.moveToNext());
         }
         db.close();
+        cursor.close();
         return checkpoints;
     }
 }
