@@ -1,15 +1,18 @@
 package sundanllc.thewalker;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Sunnara on 2/27/2017.
  */
 
 public class WalkerGame {
     private int id;
-    private String title, author, description, picture;
+    private String title, author, description;
+    private Bitmap picture;
     private int eta, time_played;
 
-    public WalkerGame(String title, String author, String description, String picture, int eta,
+    public WalkerGame(String title, String author, String description, Bitmap picture, int eta,
                       int time_played) {
         this.title = title;
         this.author = author;
@@ -18,6 +21,8 @@ public class WalkerGame {
         this.eta = eta;
         this.time_played = time_played;
     }
+
+    public WalkerGame() {}
 
     public String getTitle() {
         return title;
@@ -51,11 +56,11 @@ public class WalkerGame {
         this.description = description;
     }
 
-    public String getPicture() {
+    public Bitmap getPicture() {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(Bitmap picture) {
         this.picture = picture;
     }
 
