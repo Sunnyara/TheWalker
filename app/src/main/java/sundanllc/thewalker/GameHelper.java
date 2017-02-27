@@ -6,6 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static sundanllc.thewalker.GameDatabase.GameEntry.CP_HINT1;
 import static sundanllc.thewalker.GameDatabase.GameEntry.CP_HINT2;
 import static sundanllc.thewalker.GameDatabase.GameEntry.CP_HINT3;
@@ -83,5 +86,10 @@ public class GameHelper extends SQLiteOpenHelper
         cv.put(CP_HINT4, hint4);
         long ret = db.insert(TABLE2_NAME, null, cv);
         return ret != -1;
+    }
+
+    public List getGames()
+    {
+        List games = new ArrayList();
     }
 }
