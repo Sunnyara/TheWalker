@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Daniel on 2/6/2017.
@@ -23,6 +24,7 @@ public class PlayMenu extends AppCompatActivity {
     RecyclerView playRecycler;
     RecyclerView.Adapter playAdapter;
     RecyclerView.LayoutManager playLM;
+    GameHelper dbHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,13 +65,25 @@ public class PlayMenu extends AppCompatActivity {
 
         playLM = new LinearLayoutManager(this);
         playRecycler.setLayoutManager(playLM);
-        ArrayList<String[]> testCard = new ArrayList<String[]>();
+
+        dbHelper = new GameHelper(this);
+        dbHelper.insertGame("Around Boone", "Daniel Nance", "A placeholder game", null, 4, 2);
+        ArrayList<WalkerGame> game = dbHelper.getGames();
+
+        /*ArrayList<String[]> testCard = new ArrayList<String[]>();
         for (int i = 0; i < 100; i++)
         {
             String[] s = {"Around Boone", "Daniel Nance", i + " hours"};
             testCard.add(s);
-        }
-        playAdapter = new PlayAdapter(testCard, 0);
+        }*/
+        playAdapter = new PlayAdapter(game, 0);
         playRecycler.setAdapter(playAdapter);
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        dbHelper.close();
+        super.onDestroy();
     }
 }

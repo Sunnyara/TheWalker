@@ -40,10 +40,9 @@ public final class GameDatabase {
                     GameEntry.GAME_ID + " INTEGER PRIMARY KEY AUTO_INCREMENT," +
                     GameEntry.GAME_TITLE + " TEXT,"  +
                     GameEntry.GAME_AUTHOR + " TEXT," +
-                    GameEntry.GAME_TITLE + " TEXT," +
                     GameEntry.DESCRIPTION + " TEXT," +
                     GameEntry.THUMBNAIL + " BLOB," +
-                    GameEntry.ETA + " INT" +
+                    GameEntry.ETA + " INT," +
                     GameEntry.TIME_PLAYED + " INT)";
 
 

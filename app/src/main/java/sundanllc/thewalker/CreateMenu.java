@@ -38,10 +38,14 @@ public class CreateMenu extends AppCompatActivity {
             }
         });
 
-        ArrayList<String[]> data = new ArrayList<>();
+        ArrayList<WalkerGame> data = new ArrayList<>();
         for(int i = 1; i <= 20; i++) {
-            String [] s = {"Title " + i ,"SunDan LLC","" + i};
-            data.add(s);
+            //String [] s = {"Title " + i ,"SunDan LLC","" + i};
+            WalkerGame w = new WalkerGame();
+            w.setTitle("Title " + i);
+            w.setAuthor("SunDan LLC");
+            w.setEta(i);
+            data.add(w);
         }
         pa = new PlayAdapter(data, 1);
         lm = new LinearLayoutManager(this);

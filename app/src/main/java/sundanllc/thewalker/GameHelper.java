@@ -75,9 +75,9 @@ public class GameHelper extends SQLiteOpenHelper
         return ret != -1;
     }
 
-    public List getGames()
+    public ArrayList<WalkerGame> getGames()
     {
-        List games = new ArrayList();
+        ArrayList<WalkerGame> games = new ArrayList<WalkerGame>();
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT id, title, author, description, thumbnail, eta, time_played FROM game_object";
         Cursor cursor = db.rawQuery(query, null);
@@ -98,14 +98,13 @@ public class GameHelper extends SQLiteOpenHelper
             }
             while(cursor.moveToNext());
         }
-        db.close();
         cursor.close();
         return games;
     }
 
-    public List getCheckpoints(int id)
+    public ArrayList<Checkpoint> getCheckpoints(int id)
     {
-        List checkpoints = new ArrayList();
+        ArrayList<Checkpoint> checkpoints = new ArrayList<Checkpoint>();
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT cp_latitude, cp_longitude, cp_address, cp_hint1, cp_hint2, cp_hint3, cp_hint4, cp_type FROM cp_object WHERE walker_id = " + id + " ORDER BY cp_type ASC";
         Cursor cursor = db.rawQuery(query, null);
@@ -125,7 +124,6 @@ public class GameHelper extends SQLiteOpenHelper
             }
             while(cursor.moveToNext());
         }
-        db.close();
         cursor.close();
         return checkpoints;
     }

@@ -18,11 +18,11 @@ import static sundanllc.thewalker.R.id.titleView;
 
 public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
 
-    private ArrayList<String[]> dataset;
+    private ArrayList<WalkerGame> dataset;
     private int area;
     private Context c;
 
-    public PlayAdapter(ArrayList<String[]> data, int area)
+    public PlayAdapter(ArrayList<WalkerGame> data, int area)
     {
         dataset = data;
         this.area = area;
@@ -47,9 +47,9 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(PlayAdapter.ViewHolder holder, int position)
     {
-        holder.titleView.setText(dataset.get(position)[0]);
-        holder.authorView.setText(dataset.get(position)[1]);
-        holder.etaView.setText(dataset.get(position)[2]);
+        holder.titleView.setText(dataset.get(position).getTitle());
+        holder.authorView.setText(dataset.get(position).getAuthor());
+        holder.etaView.setText(dataset.get(position).getEta());
     }
 
 
