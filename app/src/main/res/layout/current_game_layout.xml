@@ -20,8 +20,8 @@
         android:layout_below="@+id/timer"
         android:layout_width="match_parent"
         android:layout_height="100sp"
-        android:name="android.support.v7.app.AppCompatDialogFragment"
-        tools:layout="@layout/create_checkpoint_list_fragment" />
+        android:name="sundanllc.thewalker.CurrentGame"
+        tools:layout="@layout/clue_fragment" />
 
 
 
