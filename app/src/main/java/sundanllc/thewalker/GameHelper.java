@@ -127,4 +127,9 @@ public class GameHelper extends SQLiteOpenHelper
         cursor.close();
         return checkpoints;
     }
+
+    public boolean deleteAll()
+    {
+        return false;
+    }
 }

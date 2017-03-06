@@ -1,6 +1,8 @@
 package sundanllc.thewalker;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -67,7 +69,8 @@ public class PlayMenu extends AppCompatActivity {
         playRecycler.setLayoutManager(playLM);
 
         dbHelper = new GameHelper(this);
-        dbHelper.insertGame("Around Boone", "Daniel Nance", "A placeholder game", null, 4, 2);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        dbHelper.insertGame("Around Boone", "Daniel Nance", "A placeholder game", bm, 4, 2);
         ArrayList<WalkerGame> game = dbHelper.getGames();
 
         /*ArrayList<String[]> testCard = new ArrayList<String[]>();

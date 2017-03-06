@@ -49,7 +49,7 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
     {
         holder.titleView.setText(dataset.get(position).getTitle());
         holder.authorView.setText(dataset.get(position).getAuthor());
-        holder.etaView.setText(dataset.get(position).getEta());
+        holder.etaView.setText(Integer.toString(dataset.get(position).getEta()));
     }
 
 
