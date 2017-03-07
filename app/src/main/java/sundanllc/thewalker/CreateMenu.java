@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class CreateMenu extends AppCompatActivity {
 
-    private Button cAdd;
+    private Button cAdd, cRemove;
     private RecyclerView rv;
     private RecyclerView.LayoutManager lm;
     private PlayAdapter pa;
@@ -47,6 +47,14 @@ public class CreateMenu extends AppCompatActivity {
             w.setEta(i);
             data.add(w);
         }
+
+        cRemove = (Button) findViewById(R.id.create_remove);
+        cRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CreateMenu.this,CurrentGame.class));
+            }
+        });
         pa = new PlayAdapter(data, 1);
         lm = new LinearLayoutManager(this);
         rv = (RecyclerView) findViewById(R.id.create_list);
