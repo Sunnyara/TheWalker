@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cluescroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whitebg"
+    android:clickable="true"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
     <TextView style="?android:textAppearanceMedium"
+        android:id="@+id/cluenum"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Clue 1"
+        android:text=""
         android:textSize="25sp"
         android:textAlignment="center"
         />
 
 
     <TextView style="?android:textAppearanceMedium"
+        android:id="@+id/cluedesc"
         android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textStyle="bold"
-        android:text="This place contains lots of books."
+        android:text=""
         />
 
     </LinearLayout>
