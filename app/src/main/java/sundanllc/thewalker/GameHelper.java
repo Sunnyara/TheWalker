@@ -7,9 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.sql.Types.INTEGER;
 import static sundanllc.thewalker.GameDatabase.GameEntry.*;
 import static sundanllc.thewalker.GameDatabase.SQL_CREATE_CHECKPOINT;
 import static sundanllc.thewalker.GameDatabase.SQL_CREATE_GAMES;
@@ -53,6 +55,14 @@ public class GameHelper extends SQLiteOpenHelper
         cv.put(TIME_PLAYED, time_played);
         long ret = db.insert(TABLE_NAME, null, cv);
         return ret != -1;
+    }
+
+    public boolean deleteGame(int gameID)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] id = {Integer.toString(gameID)};
+        db.delete("cp_object", "walker_id = ?", id);
+        return db.delete("game_object", "id = ?", id) == 0;
     }
 
     public boolean insertCheckpoint(int walkerid, float lat, float lon, String address,
@@ -130,6 +140,8 @@ public class GameHelper extends SQLiteOpenHelper
 
     public boolean deleteAll()
     {
-        return false;
+        SQLiteDatabase db = this.getWritableDatabase();
+        File path =new File(db.getPath());
+        return SQLiteDatabase.deleteDatabase(path);
     }
 }
