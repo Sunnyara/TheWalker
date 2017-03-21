@@ -1,15 +1,18 @@
 package sundanllc.thewalker;
 
 
-//import android.support.v4.app.Fragment;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.os.Handler;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -45,10 +48,16 @@ public class CurrentGame extends FragmentActivity {
     private static final int CLUE_AMT = 4;
     private ViewPager pager;
     private PagerAdapter pagerAdapter;
-    private TextView clueNum, clueDesc;
+    private Button here;
+    private TextView clueNum, clueDesc, timer;
     private ArrayList<Clue> clues;
     private Clue clue;
-
+    private Handler timehandle = new Handler();
+    private boolean onoff = false;
+    private SystemClock sc;
+    private long milli = 0L;
+    private long start = 0L;
+    private long pause = 0L;
 
     public CurrentGame() {
         /**
@@ -73,10 +82,57 @@ public class CurrentGame extends FragmentActivity {
         clueNum.setText("Clue " + clues.get(0).getNumber() + "");
         clueDesc.setText(clues.get(0).getDescription());
         **/
+
+        timer = (TextView) findViewById(R.id.timer);
+
+        here = (Button) findViewById(R.id.cg_button);
+        here.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                here.setText("I'm here");
+                if(!onoff) {
+                    start = sc.uptimeMillis();
+                    startTimer();
+                    onoff = true;
+                } else {
+                    pause += milli;
+                    timehandle.removeCallbacks(updateTime);
+                    onoff = false;
+                }
+            }
+        });
+
     }
 
 
+    private int secs = 0, mins = 0, hours = 0;
+    private long update;
+    private Runnable updateTime = new Runnable() {
+        @Override
+        public void run() {
+            milli = sc.uptimeMillis() - start;
+            update =  pause + milli;
 
+            secs = (int) update/1000;
+            mins = secs/60;
+            hours = mins/60;
+            mins = mins%60;
+            secs = secs%60;
+            String time = String.format("%02d:%02d:%02d",hours,mins,secs);
+            timer.setText(time);
+            if(hours == 24) {
+                Toast.makeText(CurrentGame.this, "Day 1 Over, game stopped", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            timehandle.postDelayed(this,0);
+        }
+    };
+
+    public void startTimer() {
+        long hour, minute, seconds;
+        timehandle.postDelayed(updateTime,0);
+        //timer.setText("started");
+    }
 
     private class ClueSlideAdapter extends FragmentStatePagerAdapter {
 

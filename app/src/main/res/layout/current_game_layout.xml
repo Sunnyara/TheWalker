@@ -58,7 +58,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="I'm Here!"
+            android:id="@+id/cg_button"
+            android:text="Start"
             />
     </LinearLayout>
 
