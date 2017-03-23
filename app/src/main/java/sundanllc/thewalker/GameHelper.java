@@ -41,18 +41,17 @@ public class GameHelper extends SQLiteOpenHelper
         db.setVersion(newVersion);
     }
 
-    public boolean insertGame(String game_title, String game_author, String description,
-                              Bitmap thumbnail, int eta, int time_played)
+    public boolean insertGame(WalkerGame game)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(GAME_TITLE, game_title);
-        cv.put(GAME_AUTHOR, game_author);
-        cv.put(DESCRIPTION, description);
-        byte[] image = BlobFactory.getBytes(thumbnail);
+        byte[] image = BlobFactory.getBytes(game.getPicture());
+        cv.put(GAME_TITLE, game.getTitle());
+        cv.put(GAME_AUTHOR, game.getAuthor());
+        cv.put(DESCRIPTION, game.getDescription());
         cv.put(THUMBNAIL, image);
-        cv.put(ETA, eta);
-        cv.put(TIME_PLAYED, time_played);
+        cv.put(ETA, game.getEta());
+        cv.put(TIME_PLAYED, game.getTime_played());
         long ret = db.insert(TABLE_NAME, null, cv);
         return ret != -1;
     }
@@ -65,22 +64,20 @@ public class GameHelper extends SQLiteOpenHelper
         return db.delete("game_object", "id = ?", id) == 0;
     }
 
-    public boolean insertCheckpoint(int walkerid, float lat, float lon, String address,
-                                    String hint1, String hint2, String hint3,
-                                    String hint4, int type)
+    public boolean insertCheckpoint(Checkpoint cp)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(WALKERID, walkerid);
-        if(type > 2 || type < 0) type = 0;
-        cv.put(CP_TYPE, type);
-        cv.put(CP_LAT, lat);
-        cv.put(CP_LONG, lon);
-        cv.put(CP_ADD, address);
-        cv.put(CP_HINT1, hint1);
-        cv.put(CP_HINT2, hint2);
-        cv.put(CP_HINT3, hint3);
-        cv.put(CP_HINT4, hint4);
+        cv.put(WALKERID, cp.getId());
+        if(cp.getType() > 2 || cp.getType() < 0) cp.setType(0);
+        cv.put(CP_TYPE, cp.getType());
+        cv.put(CP_LAT, cp.getX());
+        cv.put(CP_LONG, cp.getY());
+        cv.put(CP_ADD, cp.getmAddress());
+        cv.put(CP_HINT1, cp.getHint1());
+        cv.put(CP_HINT2, cp.getHint2());
+        cv.put(CP_HINT3, cp.getHint3());
+        cv.put(CP_HINT4, cp.getHint4());
         long ret = db.insert(TABLE2_NAME, null, cv);
         return ret != -1;
     }

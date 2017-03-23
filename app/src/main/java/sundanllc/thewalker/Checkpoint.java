@@ -10,6 +10,7 @@ public class Checkpoint {
     private float mX;
     private float mY;
     private String hint1, hint2, hint3, hint4;
+    private int type;
 
     public Checkpoint(int id, String address, float x, float y,
                       String hint1, String hint2, String hint3, String hint4) {
@@ -21,6 +22,14 @@ public class Checkpoint {
         setHint2(hint2);
         setHint3(hint3);
         setHint4(hint4);
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public Checkpoint() {}

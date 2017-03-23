@@ -11,6 +11,7 @@ public class WalkerGame {
     private String title, author, description;
     private Bitmap picture;
     private int eta, time_played;
+    private boolean isSelected;
 
     public WalkerGame(String title, String author, String description, Bitmap picture, int eta,
                       int time_played) {
@@ -20,9 +21,18 @@ public class WalkerGame {
         this.picture = picture;
         this.eta = eta;
         this.time_played = time_played;
+        this.isSelected = false;
     }
 
     public WalkerGame() {}
+
+    public boolean getIsSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public String getTitle() {
         return title;

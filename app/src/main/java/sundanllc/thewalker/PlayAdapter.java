@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -51,19 +52,26 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(PlayAdapter.ViewHolder holder, int position)
     {
-        if (!delete) {
-            holder.titleView.setText(dataset.get(position).getTitle());
-            holder.authorView.setText(dataset.get(position).getAuthor());
-            holder.etaView.setText(Integer.toString(dataset.get(position).getEta()));
+        final WalkerGame wg = dataset.get(position);
+        holder.titleView.setText(dataset.get(position).getTitle());
+        holder.authorView.setText(dataset.get(position).getAuthor());
+        holder.etaView.setText(Integer.toString(dataset.get(position).getEta()));
+        if (!delete)
+        {
             holder.delBox.setVisibility(View.INVISIBLE);
         }
         else
         {
-            holder.titleView.setText(dataset.get(position).getTitle());
-            holder.authorView.setText(dataset.get(position).getAuthor());
-            holder.etaView.setText(Integer.toString(dataset.get(position).getEta()));
             holder.delBox.setVisibility(View.VISIBLE);
         }
+        holder.delBox.setOnCheckedChangeListener(null);
+        holder.delBox.setChecked(wg.getIsSelected());
+        holder.delBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                wg.setSelected(b);
+            }
+        });
     }
 
 
@@ -75,6 +83,19 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
     public void delete(boolean toDelete)
     {
         this.delete = toDelete;
+    }
+
+    public ArrayList<Integer> getSelectedIds()
+    {
+        ArrayList<Integer> ids = new ArrayList<Integer>();
+        for (WalkerGame a : dataset)
+        {
+            if (a.getIsSelected())
+            {
+                ids.add(a.getId());
+            }
+        }
+        return ids;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder
