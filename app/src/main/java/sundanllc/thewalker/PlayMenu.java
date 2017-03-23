@@ -44,12 +44,6 @@ public class PlayMenu extends AppCompatActivity {
         dbHelper.insertGame("Around Boone", "Daniel Nance", "A placeholder game", bm, 4, 2);
         ArrayList<WalkerGame> game = dbHelper.getGames();
 
-        /*ArrayList<String[]> testCard = new ArrayList<String[]>();
-        for (int i = 0; i < 100; i++)
-        {
-            String[] s = {"Around Boone", "Daniel Nance", i + " hours"};
-            testCard.add(s);
-        }*/
         playAdapter = new PlayAdapter(game, 0);
         playRecycler.setAdapter(playAdapter);
 
@@ -65,7 +59,14 @@ public class PlayMenu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!deleting) {
+                    deleting = true;
                     playAdapter.delete(true);
+                    playAdapter.notifyDataSetChanged();
+                }
+                else
+                {
+                    deleting = false;
+                    playAdapter.delete(false);
                     playAdapter.notifyDataSetChanged();
                 }
 
@@ -90,7 +91,7 @@ public class PlayMenu extends AppCompatActivity {
     @Override
     protected void onDestroy()
     {
-        dbHelper.deleteAll();
+        //dbHelper.deleteAll();
         dbHelper.close();
         super.onDestroy();
     }
