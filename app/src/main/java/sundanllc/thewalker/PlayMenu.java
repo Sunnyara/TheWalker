@@ -99,7 +99,7 @@ public class PlayMenu extends AppCompatActivity {
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
             }
         });
     }
@@ -107,7 +107,7 @@ public class PlayMenu extends AppCompatActivity {
     @Override
     protected void onDestroy()
     {
-        dbHelper.deleteAll();
+        //dbHelper.deleteAll();
         dbHelper.close();
         super.onDestroy();
     }

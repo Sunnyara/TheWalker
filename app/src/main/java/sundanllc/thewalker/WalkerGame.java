@@ -12,15 +12,6 @@ public class WalkerGame {
     private Bitmap picture;
     private int eta, time_played;
     private boolean isSelected;
-
-    public boolean isCreator() {
-        return isCreator;
-    }
-
-    public void setCreator(boolean creator) {
-        isCreator = creator;
-    }
-
     private boolean isCreator;
 
     public WalkerGame(String title, String author, String description, Bitmap picture, int eta,
@@ -47,7 +38,15 @@ public class WalkerGame {
         this.isCreator = false;
     }
 
-    public WalkerGame() {this.isSelected = false}
+    public WalkerGame() {this.isSelected = false;}
+
+    public boolean isCreator() {
+        return isCreator;
+    }
+
+    public void setCreator(boolean creator) {
+        isCreator = creator;
+    }
 
     public boolean getIsSelected() {
         return isSelected;
