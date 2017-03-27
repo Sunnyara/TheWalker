@@ -25,6 +25,18 @@ public class WalkerGame {
         this.isCreator = creator;
     }
 
+    public WalkerGame(String title, String author, String description, Bitmap picture, int eta,
+                      int time_played) {
+        this.title = title;
+        this.author = author;
+        this.description = description;
+        this.picture = picture;
+        this.eta = eta;
+        this.time_played = time_played;
+        this.isSelected = false;
+        this.isCreator = false;
+    }
+
     public WalkerGame() {}
 
     public boolean getIsSelected() {
