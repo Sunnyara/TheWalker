@@ -52,7 +52,10 @@ public class GameHelper extends SQLiteOpenHelper
         cv.put(THUMBNAIL, image);
         cv.put(ETA, game.getEta());
         cv.put(TIME_PLAYED, game.getTime_played());
-        cv.put(CREATOR, game.isCreator());
+        int creator;
+        if (game.isCreator()) creator = 1;
+        else creator = 0;
+        cv.put(CREATOR, creator);
         long ret = db.insert(TABLE_NAME, null, cv);
         return ret;
     }
