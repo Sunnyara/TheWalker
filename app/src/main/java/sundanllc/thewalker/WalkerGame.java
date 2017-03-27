@@ -11,7 +11,17 @@ public class WalkerGame {
     private String title, author, description;
     private Bitmap picture;
     private int eta, time_played;
-    private boolean isSelected, isCreator;
+    private boolean isSelected;
+
+    public boolean isCreator() {
+        return isCreator;
+    }
+
+    public void setCreator(boolean creator) {
+        isCreator = creator;
+    }
+
+    private boolean isCreator;
 
     public WalkerGame(String title, String author, String description, Bitmap picture, int eta,
                       int time_played, boolean creator) {
