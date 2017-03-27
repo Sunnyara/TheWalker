@@ -6,4 +6,5 @@
     <color name="greybg">#939393</color>
     <color name="whitebg">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="black_80">#93000000</color>
 </resources>

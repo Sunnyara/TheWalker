@@ -1,5 +1,6 @@
 package sundanllc.thewalker;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,19 +35,25 @@ public class CreateMenu extends AppCompatActivity {
         cAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CreateMenu.this,CreateAddOption.class));
+
+                Dialog d = new CreateDialog(v.getContext());
+                d.setTitle("Input Data");
+                d.show();
+
             }
         });
 
+
         ArrayList<WalkerGame> data = new ArrayList<>();
         for(int i = 1; i <= 20; i++) {
-            //String [] s = {"Title " + i ,"SunDan LLC","" + i};
+            String [] s = {"Title " + i ,"SunDan LLC","" + i};
             WalkerGame w = new WalkerGame();
             w.setTitle("Title " + i);
             w.setAuthor("SunDan LLC");
             w.setEta(i);
             data.add(w);
         }
+
 
         cRemove = (Button) findViewById(R.id.create_remove);
         cRemove.setOnClickListener(new View.OnClickListener() {

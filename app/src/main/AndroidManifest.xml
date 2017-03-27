@@ -50,6 +50,10 @@
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"></activity>
 
+        <activity android:name=".TempActivity"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"></activity>
+
         <activity android:name=".GameInfo"
             android:parentActivityName=".PlayMenu"
             android:screenOrientation="portrait"></activity>
