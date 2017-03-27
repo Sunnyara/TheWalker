@@ -18,6 +18,7 @@ public final class GameDatabase {
         public static final String THUMBNAIL = "thumbnail";
         public static final String ETA = "eta";
         public static final String TIME_PLAYED = "time_played";
+        public static final String CREATOR = "is_creator";
 
         public static final String TABLE2_NAME = "cp_object";
         public static final String CP_ID = "cp_id";

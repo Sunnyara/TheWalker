@@ -47,7 +47,7 @@
             android:screenOrientation="portrait"></activity>
 
         <activity android:name=".CurrentGame"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".GameInfo"
             android:screenOrientation="portrait"></activity>
 
         <activity android:name=".TempActivity"

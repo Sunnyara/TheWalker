@@ -102,6 +102,41 @@ public class GameHelper extends SQLiteOpenHelper
         return wg;
     }
 
+    public ArrayList<WalkerGame> getGamesAsCreator()
+    {
+        ArrayList<WalkerGame> games = new ArrayList<WalkerGame>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT id, title, author, description, thumbnail, eta, time_played FROM game_object WHERE is_creator = 1";
+        Cursor cursor;
+        try
+        {
+            cursor = db.rawQuery(query, null);
+        }
+        catch (Exception e)
+        {
+            return games;
+        }
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                WalkerGame wg = new WalkerGame();
+                wg.setId(cursor.getInt(0));
+                wg.setTitle(cursor.getString(1));
+                wg.setAuthor(cursor.getString(2));
+                wg.setDescription(cursor.getString(3));
+                byte[] thumbnail = cursor.getBlob(4);
+                wg.setPicture(BlobFactory.getImage(thumbnail));
+                wg.setEta(cursor.getInt(5));
+                wg.setTime_played(cursor.getInt(6));
+                games.add(wg);
+            }
+            while(cursor.moveToNext());
+        }
+        cursor.close();
+        return games;
+    }
+
     public ArrayList<WalkerGame> getGames()
     {
         ArrayList<WalkerGame> games = new ArrayList<WalkerGame>();

@@ -11,10 +11,10 @@ public class WalkerGame {
     private String title, author, description;
     private Bitmap picture;
     private int eta, time_played;
-    private boolean isSelected;
+    private boolean isSelected, isCreator;
 
     public WalkerGame(String title, String author, String description, Bitmap picture, int eta,
-                      int time_played) {
+                      int time_played, boolean creator) {
         this.title = title;
         this.author = author;
         this.description = description;
@@ -22,6 +22,7 @@ public class WalkerGame {
         this.eta = eta;
         this.time_played = time_played;
         this.isSelected = false;
+        this.isCreator = creator;
     }
 
     public WalkerGame() {}
