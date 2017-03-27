@@ -47,7 +47,7 @@ public class WalkerGame {
         this.isCreator = false;
     }
 
-    public WalkerGame() {}
+    public WalkerGame() {this.isSelected = false}
 
     public boolean getIsSelected() {
         return isSelected;
