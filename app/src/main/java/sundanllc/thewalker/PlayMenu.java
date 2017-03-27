@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -92,14 +93,18 @@ public class PlayMenu extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                dbHelper.deleteAll();
             }
         });
         shareButton = (ImageButton) findViewById(R.id.share_button);
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String state = Environment.getExternalStorageState();
+                if (Environment.MEDIA_MOUNTED.equals(state))
+                {
 
+                }
             }
         });
     }
@@ -107,7 +112,7 @@ public class PlayMenu extends AppCompatActivity {
     @Override
     protected void onDestroy()
     {
-        //dbHelper.deleteAll();
+        dbHelper.deleteAll();
         dbHelper.close();
         super.onDestroy();
     }

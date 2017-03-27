@@ -44,7 +44,7 @@ public final class GameDatabase {
                     GameEntry.DESCRIPTION + " TEXT, " +
                     GameEntry.THUMBNAIL + " BLOB, " +
                     GameEntry.ETA + " INT, " +
-                    GameEntry.TIME_PLAYED + " INT" +
+                    GameEntry.TIME_PLAYED + " INT, " +
                     GameEntry.CREATOR + " INT)";
 
 
