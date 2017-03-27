@@ -29,15 +29,18 @@
             android:label="Edit New Game"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"></activity>
+
         <activity
             android:name=".CreateAddOption"
             android:label="Edit Checkpoints"
             android:parentActivityName=".CreateMenu"
             android:screenOrientation="portrait"></activity>
+
         <activity
             android:name=".PlayMenu"
             android:parentActivityName=".PlayMenu"
             android:screenOrientation="portrait"></activity>
+
         <activity
             android:name=".AboutPage"
             android:parentActivityName=".MainActivity"
@@ -45,6 +48,10 @@
 
         <activity android:name=".CurrentGame"
             android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"></activity>
+
+        <activity android:name=".GameInfo"
+            android:parentActivityName=".PlayMenu"
             android:screenOrientation="portrait"></activity>
     </application>
 

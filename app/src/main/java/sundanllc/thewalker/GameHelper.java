@@ -41,7 +41,7 @@ public class GameHelper extends SQLiteOpenHelper
         db.setVersion(newVersion);
     }
 
-    public boolean insertGame(WalkerGame game)
+    public long insertGame(WalkerGame game)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -53,7 +53,7 @@ public class GameHelper extends SQLiteOpenHelper
         cv.put(ETA, game.getEta());
         cv.put(TIME_PLAYED, game.getTime_played());
         long ret = db.insert(TABLE_NAME, null, cv);
-        return ret != -1;
+        return ret;
     }
 
     public boolean deleteGame(int gameID)
@@ -78,8 +78,28 @@ public class GameHelper extends SQLiteOpenHelper
         cv.put(CP_HINT2, cp.getHint2());
         cv.put(CP_HINT3, cp.getHint3());
         cv.put(CP_HINT4, cp.getHint4());
-        long ret = db.insert(TABLE2_NAME, null, cv);
+        long ret = db.insertOrThrow(TABLE2_NAME, null, cv);
         return ret != -1;
+    }
+
+    public WalkerGame getGame(int id)
+    {
+        WalkerGame wg = new WalkerGame();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String  query = "SELECT id, title, author, description, thumbnail, eta, time_played FROM game_object WHERE id = " + id;
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst())
+        {
+            wg.setId(cursor.getInt(0));
+            wg.setTitle(cursor.getString(1));
+            wg.setAuthor(cursor.getString(2));
+            wg.setDescription(cursor.getString(3));
+            byte[] thumbnail = cursor.getBlob(4);
+            wg.setPicture(BlobFactory.getImage(thumbnail));
+            wg.setEta(cursor.getInt(5));
+            wg.setTime_played(cursor.getInt(6));
+        }
+        return wg;
     }
 
     public ArrayList<WalkerGame> getGames()
@@ -87,7 +107,15 @@ public class GameHelper extends SQLiteOpenHelper
         ArrayList<WalkerGame> games = new ArrayList<WalkerGame>();
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT id, title, author, description, thumbnail, eta, time_played FROM game_object";
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor;
+        try
+        {
+            cursor = db.rawQuery(query, null);
+        }
+        catch (Exception e)
+        {
+            return games;
+        }
         if (cursor.moveToFirst())
         {
             do
@@ -113,8 +141,16 @@ public class GameHelper extends SQLiteOpenHelper
     {
         ArrayList<Checkpoint> checkpoints = new ArrayList<Checkpoint>();
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT cp_latitude, cp_longitude, cp_address, cp_hint1, cp_hint2, cp_hint3, cp_hint4, cp_type FROM cp_object WHERE walker_id = " + id + " ORDER BY cp_type ASC";
-        Cursor cursor = db.rawQuery(query, null);
+        String query = "SELECT * FROM cp_object";//"SELECT cp_latitude, cp_longitude, cp_address, cp_hint_1, cp_hint_2, cp_hint_3, cp_hint_4, cp_type FROM cp_object WHERE walker_id = " + id + " ORDER BY cp_type ASC";
+        Cursor cursor;
+        try
+        {
+            cursor = db.rawQuery(query, null);
+        }
+        catch (Exception a)
+        {
+            return checkpoints;
+        }
         if (cursor.moveToFirst())
         {
             do
@@ -138,7 +174,7 @@ public class GameHelper extends SQLiteOpenHelper
     public boolean deleteAll()
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        File path =new File(db.getPath());
+        File path = new File(db.getPath());
         return SQLiteDatabase.deleteDatabase(path);
     }
 }

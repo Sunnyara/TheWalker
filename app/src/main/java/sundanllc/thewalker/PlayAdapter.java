@@ -10,6 +10,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import static sundanllc.thewalker.R.id.checkbox;
@@ -43,6 +45,13 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
                 if (area == 1) {
                     v.getContext().startActivity(new Intent(v.getContext(), CreateAddOption.class));
                 }
+                else
+                {
+                    Intent gameinfo = new Intent(v.getContext(), GameInfo.class);
+                    TextView tv = (TextView) v.findViewById(R.id.posid);
+                    gameinfo.putExtra("id", Integer.parseInt(String.valueOf(tv.getText())));
+                    v.getContext().startActivity(gameinfo);
+                }
             }
         });
         c = parent.getContext();
@@ -56,6 +65,7 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
         holder.titleView.setText(dataset.get(position).getTitle());
         holder.authorView.setText(dataset.get(position).getAuthor());
         holder.etaView.setText(Integer.toString(dataset.get(position).getEta()));
+        holder.id.setText(Integer.toString(dataset.get(position).getId()));
         if (!delete)
         {
             holder.delBox.setVisibility(View.INVISIBLE);
@@ -98,9 +108,15 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
         return ids;
     }
 
+    public void updateDataset(ArrayList<WalkerGame> games)
+    {
+        this.dataset = games;
+        notifyDataSetChanged();
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
-        private TextView titleView, authorView, etaView;
+        private TextView titleView, authorView, etaView, id;
         private CheckBox delBox;
 
 
@@ -111,6 +127,7 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
             authorView = (TextView) v.findViewById(R.id.authorView);
             etaView = (TextView) v.findViewById(R.id.etaView);
             delBox = (CheckBox) v.findViewById(R.id.delBox);
+            id = (TextView) v.findViewById(R.id.posid);
         }
     }
 }

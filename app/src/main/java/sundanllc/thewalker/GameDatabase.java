@@ -56,6 +56,7 @@ public final class GameDatabase {
                     GameEntry.CP_HINT1 + " TEXT," +
                     GameEntry.CP_HINT2 + " TEXT," +
                     GameEntry.CP_HINT3 + " TEXT," +
+                    GameEntry.CP_ADD + " TEXT," +
                     GameEntry.CP_HINT4 + " TEXT)";
 
     public static final String SQL_DELETE_ENTRIES =

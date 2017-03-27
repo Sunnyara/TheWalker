@@ -28,6 +28,7 @@ public class PlayMenu extends AppCompatActivity {
     RecyclerView.LayoutManager playLM;
     GameHelper dbHelper;
     private boolean deleting;
+    ArrayList<WalkerGame> game;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,10 +41,10 @@ public class PlayMenu extends AppCompatActivity {
         playRecycler.setLayoutManager(playLM);
 
         dbHelper = new GameHelper(this);
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        /*Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
         WalkerGame fakeGame = new WalkerGame("Around Boone", "Daniel Nance", "A placeholder game", bm, 4, 2);
-        dbHelper.insertGame(fakeGame);
-        ArrayList<WalkerGame> game = dbHelper.getGames();
+        dbHelper.insertGame(fakeGame);*/
+        game = dbHelper.getGames();
 
         playAdapter = new PlayAdapter(game, 0);
         playRecycler.setAdapter(playAdapter);
@@ -52,7 +53,13 @@ public class PlayMenu extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //we'll do stuff eventually
+                Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+                WalkerGame fakeGame = new WalkerGame("Around Boone", "Daniel Nance", "This isn't a real game, it is just here to take up space while we finish the part of the app that actually does this part.", bm, 4, 2);
+                long id = dbHelper.insertGame(fakeGame);
+                Checkpoint a = new Checkpoint(id, "1555 w King st E Boone nc 28607", (float) 81.6746, (float) 32.2168, "it's my house", "also known as the sketchy grey apartments beside high country condos", "Sunny went there once", "doesn't even remember it how inconsiderate");
+                dbHelper.insertCheckpoint(a);
+                game = dbHelper.getGames();
+                playAdapter.updateDataset(game);
             }
         });
         removeButton = (ImageButton) findViewById(R.id.remove_button);
@@ -63,6 +70,7 @@ public class PlayMenu extends AppCompatActivity {
                     deleting = true;
                     playAdapter.delete(true);
                     playAdapter.notifyDataSetChanged();
+                    removeButton.setImageResource(R.drawable.ic_delete);
                 }
                 else
                 {
@@ -70,10 +78,12 @@ public class PlayMenu extends AppCompatActivity {
                     ArrayList<Integer> ids = playAdapter.getSelectedIds();
                     for (Integer a : ids)
                     {
-
+                        dbHelper.deleteGame(a);
                     }
+                    playAdapter.updateDataset(dbHelper.getGames());
                     playAdapter.delete(false);
                     playAdapter.notifyDataSetChanged();
+                    removeButton.setImageResource(R.drawable.ic_remove);
                 }
 
             }
@@ -82,7 +92,7 @@ public class PlayMenu extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //This one will be cool
+
             }
         });
         shareButton = (ImageButton) findViewById(R.id.share_button);
@@ -97,7 +107,7 @@ public class PlayMenu extends AppCompatActivity {
     @Override
     protected void onDestroy()
     {
-        //dbHelper.deleteAll();
+        dbHelper.deleteAll();
         dbHelper.close();
         super.onDestroy();
     }

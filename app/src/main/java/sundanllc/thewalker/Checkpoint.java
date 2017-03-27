@@ -5,14 +5,14 @@ package sundanllc.thewalker;
  */
 
 public class Checkpoint {
-    private int id;
+    private long id;
     private String mAddress;
     private float mX;
     private float mY;
     private String hint1, hint2, hint3, hint4;
     private int type;
 
-    public Checkpoint(int id, String address, float x, float y,
+    public Checkpoint(long id, String address, float x, float y,
                       String hint1, String hint2, String hint3, String hint4) {
         setId(id);
         setAddress(address);
@@ -34,7 +34,7 @@ public class Checkpoint {
 
     public Checkpoint() {}
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -50,7 +50,7 @@ public class Checkpoint {
         return mAddress;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
