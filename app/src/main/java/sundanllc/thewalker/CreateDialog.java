@@ -2,6 +2,8 @@ package sundanllc.thewalker;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
@@ -19,10 +21,24 @@ public class CreateDialog extends Dialog {
 
     private Button create, cancel;
     private EditText title, author, description;
+    private GameHelper gh;
+    private WalkerGame addGame;
+    private PlayAdapter pa;
 
-    public CreateDialog(@NonNull final Context context) {
+
+    public PlayAdapter getPa() {
+        return pa;
+    }
+
+    public void setPa(PlayAdapter pa) {
+        this.pa = pa;
+    }
+
+    public CreateDialog(@NonNull final Context context, final PlayAdapter pa) {
         super(context);
         setContentView(R.layout.create_dialog);
+
+        gh = new GameHelper(context);
 
         title = (EditText) findViewById(R.id.create_title);
         author = (EditText) findViewById(R.id.create_author);
@@ -32,8 +48,28 @@ public class CreateDialog extends Dialog {
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast = Toast.makeText(context,"it worked!", Toast.LENGTH_SHORT);
-                toast.show();
+                boolean empty = title.getText().toString().trim().isEmpty() ||
+                        author.getText().toString().trim().isEmpty();
+                if(empty) {
+                    Toast t = Toast.makeText(context,"Author or Title required.",Toast.LENGTH_SHORT);
+                    t.show();
+                    return;
+                }
+                addGame = new WalkerGame();
+                addGame.setPicture(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher));
+                addGame.setCreator(true);
+                addGame.setAuthor(author.getText().toString());
+                addGame.setTitle(title.getText().toString());
+                addGame.setDescription(description.getText().toString());
+                addGame.setEta(0);
+                addGame.setTime_played(0);
+                gh.insertGame(addGame);
+                pa.updateDataset(gh.getGamesAsCreator());
+                pa.notifyDataSetChanged();
+                Intent i = new Intent(v.getContext(),CreateAddOption.class);
+                i.putExtra("id", addGame.getId());
+                v.getContext().startActivity(i);
+                cancel();
             }
         });
 

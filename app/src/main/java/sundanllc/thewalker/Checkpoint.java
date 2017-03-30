@@ -24,6 +24,7 @@ public class Checkpoint {
         setHint4(hint4);
     }
 
+
     public int getType() {
         return type;
     }
