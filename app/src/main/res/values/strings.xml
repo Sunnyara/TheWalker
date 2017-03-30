@@ -32,4 +32,9 @@
     <string name="hint_2">Hint 2:</string>
     <string name="hint_3">Hint 3:</string>
     <string name="hint_4">Hint 4:</string>
+    <string name="SearchFor">Search For:</string>
+    <string name="stitle">Title</string>
+    <string name="sauthor">Author</string>
+    <string name="sdescription">Description</string>
+    <string name="searchby">Search By:</string>
 </resources>

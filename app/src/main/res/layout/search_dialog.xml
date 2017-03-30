@@ -18,7 +18,7 @@
             android:text="@string/SearchFor" />
 
         <EditText
-            android:id="@+id/create_title"
+            android:id="@+id/search_text"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_width="303dp"

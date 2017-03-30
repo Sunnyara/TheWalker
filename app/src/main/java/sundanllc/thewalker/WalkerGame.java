@@ -2,6 +2,8 @@ package sundanllc.thewalker;
 
 import android.graphics.Bitmap;
 
+import java.util.ArrayList;
+
 /**
  * Created by Sunnara on 2/27/2017.
  */
@@ -13,6 +15,7 @@ public class WalkerGame {
     private int eta, time_played;
     private boolean isSelected;
     private boolean isCreator;
+    private ArrayList<Checkpoint> checkpoints;
 
     public WalkerGame(String title, String author, String description, Bitmap picture, int eta,
                       int time_played, boolean creator) {
@@ -110,5 +113,13 @@ public class WalkerGame {
 
     public void setTime_played(int time_played) {
         this.time_played = time_played;
+    }
+
+    public ArrayList<Checkpoint> getCheckpoints() {
+        return checkpoints;
+    }
+
+    public void setCheckpoints(ArrayList<Checkpoint> checkpoints) {
+        this.checkpoints = checkpoints;
     }
 }

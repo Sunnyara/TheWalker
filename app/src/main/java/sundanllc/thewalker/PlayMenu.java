@@ -3,17 +3,27 @@ package sundanllc.thewalker;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.JsonWriter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +93,6 @@ public class PlayMenu extends AppCompatActivity {
                     }
                     playAdapter.updateDataset(dbHelper.getGames());
                     playAdapter.delete(false);
-                    playAdapter.notifyDataSetChanged();
                     removeButton.setImageResource(R.drawable.ic_remove);
                 }
 
@@ -93,21 +102,34 @@ public class PlayMenu extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbHelper.deleteAll();
+
             }
         });
         shareButton = (ImageButton) findViewById(R.id.share_button);
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String state = Environment.getExternalStorageState();
-                if (Environment.MEDIA_MOUNTED.equals(state))
-                {
-
-                }
+                nfc(dbHelper.getGames());
             }
         });
     }
+
+    private void nfc(ArrayList<WalkerGame> games)
+    {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state))
+        {
+            NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(PlayMenu.this);
+            File transFile = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "nfc");
+            transFile.deleteOnExit();
+            if (transFile.mkdir())
+            {
+
+            }
+        }
+    }
+
+
 
     @Override
     protected void onDestroy()
