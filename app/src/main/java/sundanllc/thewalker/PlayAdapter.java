@@ -43,7 +43,10 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 if (area == 1) {
-                    v.getContext().startActivity(new Intent(v.getContext(), CreateAddOption.class));
+                    Intent gameinfo = (new Intent(v.getContext(), CreateAddOption.class));
+                    TextView tv = (TextView) v.findViewById(R.id.posid);
+                    gameinfo.putExtra("id", Integer.parseInt(String.valueOf(tv.getText())));
+                    v.getContext().startActivity(gameinfo);
                 }
                 else
                 {

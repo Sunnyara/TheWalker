@@ -1,5 +1,6 @@
 package sundanllc.thewalker;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -23,6 +24,8 @@ public class CreateAddOption extends AppCompatActivity{
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapater;
     private RecyclerView.LayoutManager mLayoutManager;
+    private GameHelper gh;
+    private Checkpoint cp;
 
     private Button addCP, removeCP;
 
@@ -38,11 +41,19 @@ public class CreateAddOption extends AppCompatActivity{
         super.onCreate(savedInstances);
         setContentView(R.layout.create_screen_add_checkpoint);
 
+        Bundle extras = getIntent().getExtras();
+        final int id = extras.getInt("id");
+
         cPArrayList = new ArrayList<Checkpoint>();
+        cp = new Checkpoint();
+        gh = new GameHelper(this);
+        cPArrayList = gh.getCheckpoints(id);
+
+
+        /**
         for(int i = 0; i <= 100; i++) {
             cPArrayList.add(new Checkpoint(i,"Address v" + i, i, i, "hi", "how's", "it", "going"));
-        }
-
+        }**/
 
 
         checkpointAdapter = new CheckpointAdapter(cPArrayList);
@@ -62,7 +73,9 @@ public class CreateAddOption extends AppCompatActivity{
         addCP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Dialog d = new CheckpointDialog(v.getContext(), checkpointAdapter, id);
+                d.setTitle("Input here");
+                d.show();
             }
         });
 

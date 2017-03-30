@@ -1,5 +1,6 @@
 package sundanllc.thewalker;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,6 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
     public CheckpointHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.create_checkpoint_list_fragment, parent, false);
-
         return new CheckpointHolder(v);
     }
 

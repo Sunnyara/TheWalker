@@ -22,6 +22,7 @@ public class CreateMenu extends AppCompatActivity {
     private Button cAdd, cRemove;
     private RecyclerView rv;
     private RecyclerView.LayoutManager lm;
+    private GameHelper gh;
     private PlayAdapter pa;
 
     @Override
@@ -35,24 +36,18 @@ public class CreateMenu extends AppCompatActivity {
         cAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Dialog d = new CreateDialog(v.getContext());
+                Dialog d = new CreateDialog(v.getContext(), pa);
                 d.setTitle("Input Data");
                 d.show();
-
             }
         });
 
 
         ArrayList<WalkerGame> data = new ArrayList<>();
-        for(int i = 1; i <= 20; i++) {
-            String [] s = {"Title " + i ,"SunDan LLC","" + i};
-            WalkerGame w = new WalkerGame();
-            w.setTitle("Title " + i);
-            w.setAuthor("SunDan LLC");
-            w.setEta(i);
-            data.add(w);
-        }
+
+        gh = new GameHelper(this);
+        data = gh.getGamesAsCreator();
+
 
 
         cRemove = (Button) findViewById(R.id.create_remove);
@@ -71,4 +66,5 @@ public class CreateMenu extends AppCompatActivity {
 
 
     }
+
 }
