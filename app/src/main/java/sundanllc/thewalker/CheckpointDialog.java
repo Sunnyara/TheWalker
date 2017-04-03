@@ -73,6 +73,7 @@ public class CheckpointDialog extends Dialog {
                 cp.setHint2(h2.getText().toString());
                 cp.setHint3(h3.getText().toString());
                 cp.setHint4(h4.getText().toString());
+                //cp.setAddress(" ");
                 gh.insertCheckpoint(cp);
                 cancel();
 

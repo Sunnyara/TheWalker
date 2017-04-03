@@ -77,7 +77,7 @@ public class GameHelper extends SQLiteOpenHelper
         cv.put(CP_TYPE, cp.getType());
         cv.put(CP_LAT, cp.getX());
         cv.put(CP_LONG, cp.getY());
-        cv.put(CP_ADD, cp.getmAddress());
+        //cv.put(CP_ADD, cp.getmAddress());
         cv.put(CP_HINT1, cp.getHint1());
         cv.put(CP_HINT2, cp.getHint2());
         cv.put(CP_HINT3, cp.getHint3());
@@ -195,15 +195,16 @@ public class GameHelper extends SQLiteOpenHelper
             do
             {
                 Checkpoint cp = new Checkpoint();
+                cp.setType(cursor.getInt(1));
+                cp.setId(cursor.getInt(2));
                 cp.setX(cursor.getFloat(3));
                 cp.setY(cursor.getFloat(4));
-                cp.setAddress(cursor.getString(8));
                 cp.setHint1(cursor.getString(5));
                 cp.setHint2(cursor.getString(6));
                 cp.setHint3(cursor.getString(7));
+                //cp.setAddress(cursor.getString(8));
                 cp.setHint4(cursor.getString(9));
-                cp.setType(cursor.getInt(1));
-                cp.setId(cursor.getInt(2));
+
                 checkpoints.add(cp);
             }
             while(cursor.moveToNext());
