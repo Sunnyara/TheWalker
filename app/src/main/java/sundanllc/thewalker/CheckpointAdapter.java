@@ -41,6 +41,11 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
         return checkPoints.size();
     }
 
+    public void updateDataset(ArrayList<Checkpoint> cp) {
+        this.checkPoints = cp;
+        notifyDataSetChanged();
+    }
+
 
 
 

@@ -61,7 +61,6 @@ public class CreateAddOption extends AppCompatActivity{
         mRecyclerView.setHasFixedSize(true);
 
         mLayoutManager = new LinearLayoutManager(this);
-
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(checkpointAdapter);
 

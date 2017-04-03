@@ -75,6 +75,9 @@ public class CheckpointDialog extends Dialog {
                 cp.setHint4(h4.getText().toString());
                 //cp.setAddress(" ");
                 gh.insertCheckpoint(cp);
+
+                cpa.updateDataset(gh.getCheckpoints((int) id));
+                cpa.notifyDataSetChanged();
                 cancel();
 
             }

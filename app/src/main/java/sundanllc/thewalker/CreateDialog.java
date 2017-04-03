@@ -63,11 +63,16 @@ public class CreateDialog extends Dialog {
                 addGame.setDescription(description.getText().toString());
                 addGame.setEta(0);
                 addGame.setTime_played(0);
-                gh.insertGame(addGame);
+                long id = gh.insertGame(addGame);
+
                 pa.updateDataset(gh.getGamesAsCreator());
                 pa.notifyDataSetChanged();
+
+
                 Intent i = new Intent(v.getContext(),CreateAddOption.class);
-                i.putExtra("id", addGame.getId());
+                i.putExtra("id", (int) id);
+
+
                 v.getContext().startActivity(i);
                 cancel();
             }
