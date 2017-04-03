@@ -1,19 +1,23 @@
 package sundanllc.thewalker;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.JsonWriter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -102,7 +106,9 @@ public class PlayMenu extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Dialog d = new SearchDialog(v.getContext());
+                d.setTitle("Input Data");
+                d.show();
             }
         });
         shareButton = (ImageButton) findViewById(R.id.share_button);
@@ -134,7 +140,7 @@ public class PlayMenu extends AppCompatActivity {
     @Override
     protected void onDestroy()
     {
-        dbHelper.deleteAll();
+        //dbHelper.deleteAll();
         dbHelper.close();
         super.onDestroy();
     }

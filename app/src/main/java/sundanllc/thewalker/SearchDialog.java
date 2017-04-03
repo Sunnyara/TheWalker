@@ -26,7 +26,6 @@ public class SearchDialog extends Dialog
         description = (CheckBox) findViewById(R.id.desccheck);
         text = (EditText) findViewById(R.id.search_text);
         search = (Button) findViewById(R.id.searchbutton);
-
-
+        
     }
 }
