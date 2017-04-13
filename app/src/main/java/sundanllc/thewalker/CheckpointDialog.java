@@ -1,13 +1,25 @@
 package sundanllc.thewalker;
 
+import android.*;
+import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.location.LocationServices;
+
+import java.util.Map;
 
 /**
  * @author Sunnara
@@ -18,6 +30,7 @@ import android.widget.Toast;
 
 public class CheckpointDialog extends Dialog {
 
+    private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 11;
     private GameHelper gh;
     private Checkpoint cp;
     private Button cancel, add;
@@ -44,9 +57,40 @@ public class CheckpointDialog extends Dialog {
         h4 = (EditText) findViewById(R.id.hint4_input);
 
 
-
         gpshere = (TextView) findViewById(R.id.currloc);
+        gpshere.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+
+                    ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+                    return;
+
+                }
+                Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                String newX = "" + location.getLatitude();
+                x.setText(newX);
+                String newY = "" + location.getLongitude();
+                y.setText(newY);
+            }
+        });
         mapopen = (TextView) findViewById(R.id.open_map);
+        mapopen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, MapFragment.class);
+                context.startActivity(i);
+            }
+        });
 
         gh = new GameHelper(context);
 
@@ -62,6 +106,13 @@ public class CheckpointDialog extends Dialog {
                         h4.getText().toString().trim().isEmpty();
                 if(empty) {
                     Toast t = Toast.makeText(context,"Missing inputs.", Toast.LENGTH_SHORT);
+                    t.show();
+                    return;
+                }
+                Float xl = Float.parseFloat(x.getText().toString());
+                Float yl = Float.parseFloat(y.getText().toString());
+                if((xl > 180 || xl < -180) || (yl > 180 || yl < -180)) {
+                    Toast t = Toast.makeText(context, "X and Y must be in a range of -180 to 180", Toast.LENGTH_SHORT);
                     t.show();
                     return;
                 }
