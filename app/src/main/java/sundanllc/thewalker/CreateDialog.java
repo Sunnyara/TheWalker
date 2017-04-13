@@ -68,10 +68,8 @@ public class CreateDialog extends Dialog {
                 pa.updateDataset(gh.getGamesAsCreator());
                 pa.notifyDataSetChanged();
 
-
                 Intent i = new Intent(v.getContext(),CreateAddOption.class);
                 i.putExtra("id", (int) id);
-
 
                 v.getContext().startActivity(i);
                 cancel();

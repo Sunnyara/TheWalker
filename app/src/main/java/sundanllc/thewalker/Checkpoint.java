@@ -1,10 +1,12 @@
 package sundanllc.thewalker;
 
+import java.io.Serializable;
+
 /**
  * Created by Sunnara on 2/8/2017.
  */
 
-public class Checkpoint {
+public class Checkpoint implements Serializable {
     private long id;
     //private String mAddress;
     private float mX;

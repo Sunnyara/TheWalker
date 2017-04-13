@@ -1,17 +1,19 @@
 package sundanllc.thewalker;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Sunnara on 2/27/2017.
  */
 
-public class WalkerGame {
+public class WalkerGame implements Serializable {
     private int id;
     private String title, author, description;
-    private Bitmap picture;
+    private byte[] picture;
     private int eta, time_played;
     private boolean isSelected;
     private boolean isCreator;
@@ -22,7 +24,7 @@ public class WalkerGame {
         this.title = title;
         this.author = author;
         this.description = description;
-        this.picture = picture;
+        this.picture = BlobFactory.getBytes(picture);
         this.eta = eta;
         this.time_played = time_played;
         this.isSelected = false;
@@ -34,7 +36,7 @@ public class WalkerGame {
         this.title = title;
         this.author = author;
         this.description = description;
-        this.picture = picture;
+        this.picture = BlobFactory.getBytes(picture);
         this.eta = eta;
         this.time_played = time_played;
         this.isSelected = false;
@@ -92,11 +94,11 @@ public class WalkerGame {
     }
 
     public Bitmap getPicture() {
-        return picture;
+        return BlobFactory.getImage(picture);
     }
 
     public void setPicture(Bitmap picture) {
-        this.picture = picture;
+        this.picture = BlobFactory.getBytes(picture);
     }
 
     public int getEta() {

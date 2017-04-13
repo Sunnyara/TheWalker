@@ -73,7 +73,7 @@ public class GameHelper extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(WALKERID, cp.getId());
-        if(cp.getType() > 2 || cp.getType() < 0) cp.setType(0);
+        if(cp.getType() > 2 || cp.getType() < 0) cp.setType(1);
         cv.put(CP_TYPE, cp.getType());
         cv.put(CP_LAT, cp.getX());
         cv.put(CP_LONG, cp.getY());
@@ -155,6 +155,56 @@ public class GameHelper extends SQLiteOpenHelper
         {
             return games;
         }
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                WalkerGame wg = new WalkerGame();
+                wg.setId(cursor.getInt(0));
+                wg.setTitle(cursor.getString(1));
+                wg.setAuthor(cursor.getString(2));
+                wg.setDescription(cursor.getString(3));
+                byte[] thumbnail = cursor.getBlob(4);
+                wg.setPicture(BlobFactory.getImage(thumbnail));
+                wg.setEta(cursor.getInt(5));
+                wg.setTime_played(cursor.getInt(6));
+                games.add(wg);
+            }
+            while(cursor.moveToNext());
+        }
+        cursor.close();
+        return games;
+    }
+
+    public ArrayList<WalkerGame> searchGames(boolean title, boolean author, boolean desc, String search)
+    {
+        ArrayList<WalkerGame> games = new ArrayList<WalkerGame>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT id, title, author, description, thumbnail, eta, time_played FROM game_object";
+        if (title || author || desc) query += " WHERE";
+        if (title)
+        {
+            query += " title LIKE " + "'%" + search + "%'";
+        }
+        if (author)
+        {
+            if (title) query += " OR";
+            query += " author LIKE " + "'%" + search + "%'";
+        }
+        if (desc)
+        {
+            if (title || author) query += " OR";
+            query += " description LIKE " + "'%" + search + "%'";
+        }
+        Cursor cursor = db.rawQuery(query, null);
+        /*try
+        {
+            cursor = db.rawQuery(query, null);
+        }
+        catch (Exception e)
+        {
+            return games;
+        }*/
         if (cursor.moveToFirst())
         {
             do

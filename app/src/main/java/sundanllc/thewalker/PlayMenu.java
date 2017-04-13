@@ -1,6 +1,7 @@
 package sundanllc.thewalker;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,8 +29,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.os.Environment.getExternalStoragePublicDirectory;
 
 /**
  * Created by Daniel on 2/6/2017.
@@ -37,13 +42,13 @@ import java.util.List;
 
 public class PlayMenu extends AppCompatActivity {
 
-    ImageButton addButton, removeButton, searchButton, shareButton;
-    RecyclerView playRecycler;
-    PlayAdapter playAdapter;
-    RecyclerView.LayoutManager playLM;
-    GameHelper dbHelper;
+    private ImageButton addButton, removeButton, searchButton, shareButton;
+    private RecyclerView playRecycler;
+    private PlayAdapter playAdapter;
+    private RecyclerView.LayoutManager playLM;
+    private GameHelper dbHelper;
     private boolean deleting;
-    ArrayList<WalkerGame> game;
+    private ArrayList<WalkerGame> game;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -106,8 +111,14 @@ public class PlayMenu extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog d = new SearchDialog(v.getContext());
+                SearchDialog d = new SearchDialog(v.getContext());
                 d.setTitle("Input Data");
+                d.setDialogListener(new SearchDialog.DialogListener() {
+                    @Override
+                    public void Search(boolean title, boolean author, boolean desc, String search) {
+                        playAdapter.updateDataset(dbHelper.searchGames(title, author, desc, search));
+                    }
+                });
                 d.show();
             }
         });
@@ -115,32 +126,57 @@ public class PlayMenu extends AppCompatActivity {
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nfc(dbHelper.getGames());
+                if (!deleting) {
+                    deleting = true;
+                    playAdapter.delete(true);
+                    playAdapter.notifyDataSetChanged();
+                }
+                else
+                {
+                    try {
+                        deleting = false;
+                        ArrayList<Integer> ids = playAdapter.getSelectedIds();
+                        String root = Environment.getRootDirectory().toString();
+                        File docs, gameFile;
+                        FileOutputStream fos;
+                        ObjectOutputStream oos;
+                        WalkerGame sGame;
+
+                        for (Integer a : ids) {
+                            sGame = dbHelper.getGame(a);
+                            sGame.setCheckpoints(dbHelper.getCheckpoints(a));
+                            /*docs = new File(getFilesDir() + "/theWalker/", sGame.getTitle() + ".wg");
+                            docs.mkdirs();
+                            docs.createNewFile();*/
+                            docs = new File(Environment.getExternalStorageDirectory() + "/theWalker/");
+                            if (!docs.exists()) {
+                                docs.mkdirs();
+                            }
+                            gameFile = new File(Environment.getExternalStorageDirectory() + "/theWalker/" + sGame.getTitle() + ".wg");
+                            fos = new FileOutputStream(gameFile);
+                            oos = new ObjectOutputStream(fos);
+
+                            oos.writeObject(sGame);
+                            oos.close();
+                            fos.close();
+                        }
+
+                        playAdapter.delete(false);
+                        playAdapter.notifyDataSetChanged();
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
     }
 
-    private void nfc(ArrayList<WalkerGame> games)
-    {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state))
-        {
-            NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(PlayMenu.this);
-            File transFile = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "nfc");
-            transFile.deleteOnExit();
-            if (transFile.mkdir())
-            {
-
-            }
-        }
-    }
-
-
-
     @Override
     protected void onDestroy()
     {
-        //dbHelper.deleteAll();
+        dbHelper.deleteAll();
         dbHelper.close();
         super.onDestroy();
     }
