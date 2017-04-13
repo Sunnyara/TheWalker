@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "982728123175",
+    "firebase_url": "https://the-walker.firebaseio.com",
+    "project_id": "the-walker",
+    "storage_bucket": "the-walker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:982728123175:android:a9717621ca4c7134",
+        "android_client_info": {
+          "package_name": "sundanllc.thewalker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "982728123175-u4s43p85kjnnrv7cc12ie1jjnr0spr8h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sundanllc.thewalker",
+            "certificate_hash": "7427bee571870f28056e1766b4cc737d68625359"
+          }
+        },
+        {
+          "client_id": "982728123175-t0he3f772pohumhhojq7pn00pqk4u15s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQROURP-cLiOKMyUfI6FaANiI1wYQHgYs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "982728123175-t0he3f772pohumhhojq7pn00pqk4u15s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
