@@ -58,6 +58,8 @@ public class CurrentGame extends FragmentActivity {
     private long milli = 0L;
     private long start = 0L;
     private long pause = 0L;
+    private int id;
+    private ArrayList<Checkpoint> cp;
 
     public CurrentGame() {
         /**
@@ -72,8 +74,13 @@ public class CurrentGame extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.current_game_layout);
+        Bundle extras = getIntent().getExtras();
+        id = extras.getInt("id");
+        GameHelper gh = new GameHelper(this);
+        WalkerGame game = gh.getGame(id);
+        cp = gh.getCheckpoints(id);
         pager = (ViewPager) findViewById(R.id.cluepager);
-        pagerAdapter = new ClueSlideAdapter(getSupportFragmentManager());
+        pagerAdapter = new ClueSlideAdapter(getSupportFragmentManager(), cp.get(0).getHints());
         pager.setAdapter(pagerAdapter);
 
         /**
@@ -136,16 +143,17 @@ public class CurrentGame extends FragmentActivity {
 
     private class ClueSlideAdapter extends FragmentStatePagerAdapter {
 
-        public ClueSlideAdapter(FragmentManager fm) {
+        private String[] checkpoints;
+
+        public ClueSlideAdapter(FragmentManager fm, String[] cps) {
             super(fm);
+            checkpoints = cps;
         }
 
         @Override
         public android.support.v4.app.Fragment getItem(int position) {
-            return new ClueFragment();
+            return new ClueFragment(checkpoints[position], position);
         }
-
-
 
         @Override
         public int getCount() {

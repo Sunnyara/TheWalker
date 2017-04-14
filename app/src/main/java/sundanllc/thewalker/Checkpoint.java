@@ -102,4 +102,10 @@ public class Checkpoint implements Serializable {
     public void setHint1(String hint1) {
         this.hint1 = hint1;
     }
+
+    public String[] getHints()
+    {
+        String[] hints = {hint1, hint2, hint3, hint4};
+        return hints;
+    }
 }
