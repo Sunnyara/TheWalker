@@ -1,5 +1,6 @@
 package sundanllc.thewalker;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -25,10 +26,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapFragment extends AppCompatActivity implements OnMapReadyCallback {
 
+    Location l;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_fragment);
+
+        Bundle extras = getIntent().getExtras();
+        l = extras.getParcelable("location");
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
@@ -36,9 +42,10 @@ public class MapFragment extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng sydney = new LatLng(-33.852, 151.211);
-        googleMap.addMarker(new MarkerOptions().position(sydney)
-                .title("Marker in Sydney"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng current = new LatLng(l.getLatitude(), l.getLongitude());
+        googleMap.addMarker(new MarkerOptions().position(current)
+                .title("Your location"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(current));
+        googleMap.getMaxZoomLevel();
     }
 }

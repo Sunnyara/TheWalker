@@ -176,7 +176,7 @@ public class PlayMenu extends AppCompatActivity {
     @Override
     protected void onDestroy()
     {
-        dbHelper.deleteAll();
+        //dbHelper.deleteAll();
         dbHelper.close();
         super.onDestroy();
     }

@@ -49,6 +49,7 @@ public class CreateAddOption extends AppCompatActivity{
         Bundle extras = getIntent().getExtras();
         final int id = extras.getInt("id");
 
+
         cPArrayList = new ArrayList<Checkpoint>();
         cp = new Checkpoint();
         gh = new GameHelper(this);

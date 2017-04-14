@@ -139,6 +139,7 @@ public class CheckpointDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, MapFragment.class);
+                i.putExtra("location",location);
                 context.startActivity(i);
             }
         });
