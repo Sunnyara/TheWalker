@@ -38,7 +38,7 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
         } else if (cp.getType() == 2) {
             holder.flag.setImageResource(R.drawable.checker);
         }
-        //holder.addString.setText(cp.getmAddress());
+        holder.addString.setText(cp.getAddress());
         holder.xString.setText(Float.toString(cp.getX()));
         holder.yString.setText(Float.toString(cp.getY()));
         holder.bindCheckpoint(cp);

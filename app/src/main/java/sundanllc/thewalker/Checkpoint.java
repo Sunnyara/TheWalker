@@ -8,16 +8,16 @@ import java.io.Serializable;
 
 public class Checkpoint implements Serializable {
     private long id;
-    //private String mAddress;
+    private String mAddress;
     private float mX;
     private float mY;
     private String hint1, hint2, hint3, hint4;
     private int type;
 
-    public Checkpoint(long id, float x, float y,
+    public Checkpoint(long id, float x, float y, String address,
                       String hint1, String hint2, String hint3, String hint4) {
         setId(id);
-        //setAddress(address);
+        setAddress(address);
         setX(x);
         setY(y);
         setHint1(hint1);
@@ -49,19 +49,19 @@ public class Checkpoint implements Serializable {
         this.mX = mX;
     }
 
-    /**
-    public String getmAddress() {
+
+    public String getAddress() {
         return mAddress;
-    }*/
+    }
 
     public void setId(long id) {
         this.id = id;
     }
 
-    /**
+
     public void setAddress(String mAddress) {
         this.mAddress = mAddress;
-    }*/
+    }
 
     public float getY() {
         return mY;

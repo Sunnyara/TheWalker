@@ -77,7 +77,7 @@ public class GameHelper extends SQLiteOpenHelper
         cv.put(CP_TYPE, cp.getType());
         cv.put(CP_LAT, cp.getX());
         cv.put(CP_LONG, cp.getY());
-        //cv.put(CP_ADD, cp.getmAddress());
+        cv.put(CP_ADD, cp.getAddress());
         cv.put(CP_HINT1, cp.getHint1());
         cv.put(CP_HINT2, cp.getHint2());
         cv.put(CP_HINT3, cp.getHint3());
@@ -230,7 +230,7 @@ public class GameHelper extends SQLiteOpenHelper
     {
         ArrayList<Checkpoint> checkpoints = new ArrayList<Checkpoint>();
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT cp_latitude, cp_longitude, cp_hint_1, cp_hint_2, cp_hint_3, cp_hint_4, cp_type FROM cp_object WHERE walker_id = " + id + " ORDER BY cp_type ASC";
+        String query = "SELECT cp_latitude, cp_longitude, cp_hint_1, cp_hint_2, cp_hint_3, cp_hint_4, cp_type, cp_address FROM cp_object WHERE walker_id = " + id + " ORDER BY cp_type ASC";
         Cursor cursor;
         try
         {
@@ -252,7 +252,7 @@ public class GameHelper extends SQLiteOpenHelper
                 cp.setHint1(cursor.getString(2));
                 cp.setHint2(cursor.getString(3));
                 cp.setHint3(cursor.getString(4));
-                //cp.setAddress(cursor.getString(8));
+                cp.setAddress(cursor.getString(7));
                 cp.setHint4(cursor.getString(5));
 
                 checkpoints.add(cp);
