@@ -37,4 +37,5 @@
     <string name="sauthor">Author</string>
     <string name="sdescription">Description</string>
     <string name="searchby">Search By:</string>
+    <string name="pin_it">Pin it!</string>
 </resources>

@@ -22,9 +22,9 @@
         android:layout_height="0dp">
     <Button
         android:textAlignment="center"
-
+        android:id="@+id/pin"
         android:layout_width="wrap_content"
-        android:text="Pin it!"
+        android:text="@string/pin_it"
         android:layout_height="wrap_content" />
     </LinearLayout>
 </LinearLayout>

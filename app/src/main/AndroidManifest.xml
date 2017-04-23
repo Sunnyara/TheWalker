@@ -82,6 +82,10 @@
 
         <activity android:name=".MapFragment"
             android:screenOrientation="portrait"></activity>
+
+        <activity android:name=".CheckpointDialog"
+            android:theme="@style/ActivityDialog"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

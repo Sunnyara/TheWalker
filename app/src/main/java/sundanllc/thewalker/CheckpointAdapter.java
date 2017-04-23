@@ -1,6 +1,8 @@
 package sundanllc.thewalker;
 
 import android.content.Intent;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +16,27 @@ import java.util.ArrayList;
  * Created by Sunnara on 2/13/2017.
  */
 
-public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.CheckpointHolder> {
+public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.CheckpointHolder> implements Parcelable{
     private ArrayList<Checkpoint> checkPoints;
 
     public CheckpointAdapter(ArrayList<Checkpoint> checkPoints) {
         this.checkPoints = checkPoints;
     }
+
+    protected CheckpointAdapter(Parcel in) {
+    }
+
+    public static final Creator<CheckpointAdapter> CREATOR = new Creator<CheckpointAdapter>() {
+        @Override
+        public CheckpointAdapter createFromParcel(Parcel in) {
+            return new CheckpointAdapter(in);
+        }
+
+        @Override
+        public CheckpointAdapter[] newArray(int size) {
+            return new CheckpointAdapter[size];
+        }
+    };
 
     @Override
     public CheckpointHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -54,11 +71,14 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
         notifyDataSetChanged();
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-
-
-
-
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+    }
 
 
     public class CheckpointHolder extends RecyclerView.ViewHolder {

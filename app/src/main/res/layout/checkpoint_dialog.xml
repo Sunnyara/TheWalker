@@ -3,12 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/whitebg"
+    android:orientation="vertical"
+    >
 
     <ScrollView
+        android:layout_weight="8"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="0dp"> <!-- Used to be 400 -->
         >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -17,125 +21,160 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"
-                android:textSize="14sp"
-                android:text="@string/x" />
+                android:layout_marginTop="5dp"
+                android:text="@string/x"
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/x_input"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="numberSigned|numberDecimal"/>
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:imeOptions="actionNext"
+                android:inputType="numberSigned|numberDecimal" >
+                <requestFocus/>
+            </EditText>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"
-                android:text="@string/y" />
+                android:layout_marginTop="5dp"
+                android:text="@string/y"
+                android:textSize="14sp" />
+
             <EditText
                 android:id="@+id/y_input"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="numberSigned|numberDecimal"/>
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:imeOptions="actionNext"
+                android:inputType="numberSigned|numberDecimal" >
+                <requestFocus/>
+            </EditText>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@color/greybg">
+                android:background="@color/greybg"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/currloc"
-                    android:layout_marginTop="1dp"
-                    android:layout_marginBottom="1dp"
-                    android:background="@drawable/list_click"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@drawable/list_click"
+                    android:clickable="true"
                     android:gravity="center"
-                    android:text="@string/use_current_location"
-                    android:clickable="true"/>
+                    android:text="@string/use_current_location" />
 
                 <TextView
                     android:id="@+id/open_map"
-                    android:layout_marginBottom="1dp"
-                    android:background="@drawable/list_click"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
+                    android:layout_marginBottom="1dp"
+                    android:background="@drawable/list_click"
+                    android:clickable="true"
                     android:gravity="center"
-                    android:text="@string/open_map"
-                    android:clickable="true"/>
+                    android:text="@string/open_map" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"
-                android:text="@string/hint_1" />
+                android:layout_marginTop="5dp"
+                android:text="@string/hint_1"
+                android:textSize="14sp" />
+
             <EditText
                 android:id="@+id/hint1_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:inputType="text"
+                >
+                <requestFocus/>
+            </EditText>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"
-                android:text="@string/hint_2" />
+                android:layout_marginTop="5dp"
+                android:text="@string/hint_2"
+                android:textSize="14sp" />
+
             <EditText
                 android:id="@+id/hint2_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:inputType="text"
+                >
+                <requestFocus/>
+            </EditText>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"
-                android:text="@string/hint_3" />
+                android:layout_marginTop="5dp"
+                android:text="@string/hint_3"
+                android:textSize="14sp"
+                />
+
             <EditText
                 android:id="@+id/hint3_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:inputType="text"
+                >
+                <requestFocus/>
+            </EditText>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"
-                android:text="@string/hint_4" />
+                android:layout_marginTop="5dp"
+                android:text="@string/hint_4"
+                android:textSize="14sp" />
+
             <EditText
                 android:id="@+id/hint4_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLines="1"
+                >
+            </EditText>
 
 
         </LinearLayout>
     </ScrollView>
+
     <LinearLayout
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:orientation="horizontal"

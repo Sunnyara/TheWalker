@@ -13,8 +13,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.os.Handler;
 import android.widget.Toast;
-
 import java.util.ArrayList;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * Created by Sunnara on 2/27/2017.
@@ -43,7 +49,7 @@ public class CurrentGame extends Fragment {
 
  */
 
-public class CurrentGame extends FragmentActivity {
+public class CurrentGame extends FragmentActivity implements OnMapReadyCallback{
 
     private static final int CLUE_AMT = 4;
     private ViewPager pager;
@@ -59,6 +65,7 @@ public class CurrentGame extends FragmentActivity {
     private long start = 0L;
     private long pause = 0L;
     private int id;
+    private double x,y;
     private ArrayList<Checkpoint> cp;
 
     public CurrentGame() {
@@ -76,9 +83,16 @@ public class CurrentGame extends FragmentActivity {
         setContentView(R.layout.current_game_layout);
         Bundle extras = getIntent().getExtras();
         id = extras.getInt("id");
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapArea);
+        mapFragment.getMapAsync(this);
+
+
         GameHelper gh = new GameHelper(this);
         WalkerGame game = gh.getGame(id);
         cp = gh.getCheckpoints(id);
+        x = cp.get(0).getX();
+        y = cp.get(0).getY();
         pager = (ViewPager) findViewById(R.id.cluepager);
         pagerAdapter = new ClueSlideAdapter(getSupportFragmentManager(), cp.get(0).getHints());
         pager.setAdapter(pagerAdapter);
@@ -139,6 +153,13 @@ public class CurrentGame extends FragmentActivity {
         long hour, minute, seconds;
         timehandle.postDelayed(updateTime,0);
         //timer.setText("started");
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        LatLng ll = new LatLng(x,y);
+        googleMap.addMarker(new MarkerOptions().position(ll).title("Starting location"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ll,18.0f));
     }
 
     private class ClueSlideAdapter extends FragmentStatePagerAdapter {

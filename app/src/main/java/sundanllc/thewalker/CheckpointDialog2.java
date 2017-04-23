@@ -1,39 +1,28 @@
 package sundanllc.thewalker;
 
-import android.*;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.location.LocationListener;
-import android.location.Address;
-
-import com.google.android.gms.cast.Cast;
-import com.google.android.gms.location.LocationServices;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-
-import static java.security.AccessController.getContext;
 
 /**
  * @author Sunnara
@@ -42,7 +31,7 @@ import static java.security.AccessController.getContext;
  *          Description -
  */
 
-public class CheckpointDialog extends AppCompatActivity {
+public class CheckpointDialog2 extends Dialog {
 
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 11;
     private GameHelper gh;
@@ -51,28 +40,28 @@ public class CheckpointDialog extends AppCompatActivity {
     private TextView gpshere, mapopen, h1, h2, h3, h4;
     private String newX, newY;
     private EditText x, y;
-    private int id;
+
+
+    Location location;
+    List<Address> addresses;
+    LocationManager lm;
+    LocationListener ll;
     private Criteria c;
-    private CheckpointAdapter cpa;
-    private Location location;
-    private List<Address> addresses;
-    private LocationManager lm;
-    private LocationListener ll;
 
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+
+    public Checkpoint getCp() {
+        return cp;
+    }
+
+    public void setCp(Checkpoint cp) {
+        this.cp = cp;
+    }
+
+    public CheckpointDialog2(@NonNull final Context context, final CheckpointAdapter cpa, final long id) {
+        super(context);
         setContentView(R.layout.checkpoint_dialog);
-
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        int width = (int) (metrics.widthPixels * 0.80);
-        int height = (int) (metrics.heightPixels * 0.80);
-        getWindow().setLayout(width, height);
-
-        Bundle extra = getIntent().getExtras();
-        id = extra.getInt("id");
-        cpa = extra.getParcelable("cpa");
 
         x = (EditText) findViewById(R.id.x_input);
         y = (EditText) findViewById(R.id.y_input);
@@ -81,11 +70,11 @@ public class CheckpointDialog extends AppCompatActivity {
         h3 = (EditText) findViewById(R.id.hint3_input);
         h4 = (EditText) findViewById(R.id.hint4_input);
 
-        lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this,
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+        lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) context,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_FINE_LOCATION);
             return;
 
@@ -120,7 +109,7 @@ public class CheckpointDialog extends AppCompatActivity {
         lm.requestLocationUpdates(provider,1000,0, ll);
         location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-        Geocoder g = new Geocoder(this);
+        Geocoder g = new Geocoder(context);
         try {
             addresses = g.getFromLocation(location.getLatitude(),location.getLongitude(),1);
         } catch (IOException e) {
@@ -144,14 +133,14 @@ public class CheckpointDialog extends AppCompatActivity {
         mapopen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CheckpointDialog.this, MapFragment.class);
+                Intent i = new Intent(context, MapFragment.class);
                 i.putExtra("location",location);
-                startActivityForResult(i,0);
-
+                ((Activity)getContext()).startActivityForResult(i,0);
+                
             }
         });
 
-        gh = new GameHelper(this);
+        gh = new GameHelper(context);
 
         add = (Button) findViewById(R.id.add_cp);
         add.setOnClickListener(new View.OnClickListener() {
@@ -164,14 +153,14 @@ public class CheckpointDialog extends AppCompatActivity {
                         h3.getText().toString().trim().isEmpty() ||
                         h4.getText().toString().trim().isEmpty();
                 if(empty) {
-                    Toast t = Toast.makeText(getApplicationContext(),"Missing inputs.", Toast.LENGTH_SHORT);
+                    Toast t = Toast.makeText(context,"Missing inputs.", Toast.LENGTH_SHORT);
                     t.show();
                     return;
                 }
                 Float xl = Float.parseFloat(x.getText().toString());
                 Float yl = Float.parseFloat(y.getText().toString());
                 if((xl > 180 || xl < -180) || (yl > 180 || yl < -180)) {
-                    Toast t = Toast.makeText(getApplicationContext(), "X and Y must be in a range of -180 to 180", Toast.LENGTH_SHORT);
+                    Toast t = Toast.makeText(context, "X and Y must be in a range of -180 to 180", Toast.LENGTH_SHORT);
                     t.show();
                     return;
                 }
@@ -188,7 +177,7 @@ public class CheckpointDialog extends AppCompatActivity {
 
                 cpa.updateDataset(gh.getCheckpoints((int) id));
                 cpa.notifyDataSetChanged();
-                finish();
+                cancel();
 
             }
         });
@@ -197,38 +186,13 @@ public class CheckpointDialog extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(RESULT_CANCELED);
-                finish();
+                cancel();
             }
         });
 
-        gh = new GameHelper(this);
+        gh = new GameHelper(context);
 
     }
 
 
-
-
-    public Checkpoint getCp() {
-        return cp;
-    }
-
-    public void setCp(Checkpoint cp) {
-        this.cp = cp;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK);
-        Location l = data.getParcelableExtra("location");
-        x.setText("" + l.getLatitude());
-        y.setText("" + l.getLongitude());
-        Geocoder g = new Geocoder(this);
-        try {
-            addresses = g.getFromLocation(l.getLatitude(),l.getLongitude(),1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

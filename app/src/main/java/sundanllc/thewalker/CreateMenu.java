@@ -60,7 +60,9 @@ public class CreateMenu extends AppCompatActivity {
         cRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CreateMenu.this,CurrentGame.class));
+                Intent i = new Intent(CreateMenu.this,CurrentGame.class);
+
+                startActivity(i);
             }
         });
         pa = new PlayAdapter(data, 1);

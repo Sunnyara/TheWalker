@@ -6,6 +6,16 @@
     android:background="@color/greybg">
 
 
+    <fragment
+        android:fragmentAllowEnterTransitionOverlap="@drawable/map"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/mapArea"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        tools:context="sundanllc.thewalker.MapFragment" />
+
+    <!--
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -14,6 +24,8 @@
         android:id="@+id/mapArea"
         android:src="@drawable/map"
         android:background="@color/black"/>
+        -->
+
     <TextView
         android:layout_below="@id/mapArea"
         android:id="@+id/timer"
