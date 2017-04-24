@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Environment;
@@ -58,6 +59,7 @@ public class PlayMenu extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 42;
     private ImageButton addButton, removeButton, searchButton, shareButton;
     private Button nfcButton, saveButton;
+    private NfcAdapter nfcAdapter;
     private RecyclerView playRecycler;
     private PlayAdapter playAdapter;
     private RecyclerView.LayoutManager playLM;
@@ -67,20 +69,24 @@ public class PlayMenu extends AppCompatActivity {
     private List<String> fileList = new ArrayList<String>();
     private ListView dirView;
     private File[] files;
-    protected Button upButton;
-    protected TextView folderView;
-    protected File root;
-    protected File currFolder;
+    private Button upButton;
+    private TextView folderView;
+    private File root;
+    private File currFolder;
+    private Context context;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.play_activity);
+        context = this;
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.NFC) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions((Activity) this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.NFC}, MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
         }
 
         playRecycler = (RecyclerView) findViewById(R.id.playRecycler);
@@ -227,11 +233,11 @@ public class PlayMenu extends AppCompatActivity {
                                 for (Integer a : ids) {
                                     sGame = dbHelper.getGame(a);
                                     sGame.setCheckpoints(dbHelper.getCheckpoints(a));
-                                    docs = new File(Environment.getExternalStorageDirectory() + "/theWalker/");
+                                    docs = new File(Environment.getExternalStorageDirectory() + "/thewalker/");
                                     if (!docs.exists()) {
                                         docs.mkdirs();
                                     }
-                                    gameFile = new File(Environment.getExternalStorageDirectory() + "/theWalker/" + sGame.getTitle() + ".wg");
+                                    gameFile = new File(Environment.getExternalStorageDirectory() + "/thewalker/" + sGame.getTitle() + ".wg");
                                     fos = new FileOutputStream(gameFile);
                                     oos = new ObjectOutputStream(fos);
 
@@ -253,7 +259,44 @@ public class PlayMenu extends AppCompatActivity {
                     nfcButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            try {
+                                deleting = false;
+                                nfcAdapter = NfcAdapter.getDefaultAdapter(context);
+                                ArrayList<Integer> ids = playAdapter.getSelectedIds();
+                                String root = Environment.getRootDirectory().toString();
+                                File docs, gameFile;
+                                FileOutputStream fos;
+                                ObjectOutputStream oos;
+                                WalkerGame sGame;
 
+                                for (Integer a : ids) {
+                                    sGame = dbHelper.getGame(a);
+                                    sGame.setCheckpoints(dbHelper.getCheckpoints(a));
+                                    docs = new File(Environment.getExternalStorageDirectory() + "/thewalker/nfc");
+                                    if (!docs.exists()) {
+                                        docs.mkdirs();
+                                    }
+                                    gameFile = new File(Environment.getExternalStorageDirectory() + "/thewalker/nfc/" + sGame.getTitle() + ".wg");
+                                    fos = new FileOutputStream(gameFile);
+                                    oos = new ObjectOutputStream(fos);
+
+                                    oos.writeObject(sGame);
+
+                                    gameFile.setReadable(true, false);
+                                    Uri uri = Uri.fromFile(gameFile);
+                                    nfcAdapter.setBeamPushUris(new Uri[]{uri}, (Activity) context);
+
+                                    oos.close();
+                                    fos.close();
+                                }
+
+                                playAdapter.delete(false);
+                                playAdapter.notifyDataSetChanged();
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
                         }
                     });
                     share.show();
