@@ -19,8 +19,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
 
 /**
  * Created by Sunnara on 2/27/2017.
@@ -67,6 +72,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback{
     private int id;
     private double x,y;
     private ArrayList<Checkpoint> cp;
+    private GoogleMap gm;
 
     public CurrentGame() {
         /**
@@ -158,8 +164,13 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback{
     @Override
     public void onMapReady(GoogleMap googleMap) {
         LatLng ll = new LatLng(x,y);
-        googleMap.addMarker(new MarkerOptions().position(ll).title("Starting location"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ll,18.0f));
+
+        Marker marker = googleMap.addMarker(new MarkerOptions()
+                .position(ll).title("Starting location")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.start_arrow_b)));
+        marker.showInfoWindow();
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ll,15.0f));
+        gm = googleMap;
     }
 
     private class ClueSlideAdapter extends FragmentStatePagerAdapter {
