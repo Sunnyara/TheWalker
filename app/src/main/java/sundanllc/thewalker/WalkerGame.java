@@ -11,6 +11,7 @@ import java.util.ArrayList;
  */
 
 public class WalkerGame implements Serializable {
+    private static final long serialVersionUID = -456731549846313L;
     private int id;
     private String title, author, description;
     private byte[] picture;

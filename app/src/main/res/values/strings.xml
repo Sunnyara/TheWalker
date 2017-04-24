@@ -38,4 +38,7 @@
     <string name="sdescription">Description</string>
     <string name="searchby">Search By:</string>
     <string name="pin_it">Pin it!</string>
+    <string name="save">Save</string>
+    <string name="nfc">NFC</string>
+    <string name="shareChoose">Choose how to share your game:</string>
 </resources>
