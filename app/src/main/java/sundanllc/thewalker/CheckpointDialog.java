@@ -120,12 +120,13 @@ public class CheckpointDialog extends AppCompatActivity {
         lm.requestLocationUpdates(provider,1000,0, ll);
         location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+        /**
         Geocoder g = new Geocoder(this);
         try {
             addresses = g.getFromLocation(location.getLatitude(),location.getLongitude(),1);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
 
@@ -138,6 +139,14 @@ public class CheckpointDialog extends AppCompatActivity {
                 x.setText(newX);
                 newY = "" + location.getLongitude();
                 y.setText(newY);
+
+                Geocoder g = new Geocoder(CheckpointDialog.this);
+                try {
+                    addresses = g.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
         mapopen = (TextView) findViewById(R.id.open_map);
@@ -157,6 +166,26 @@ public class CheckpointDialog extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                double xLat = Double.parseDouble(x.getText().toString());
+                double yLong = Double.parseDouble(y.getText().toString());
+                Geocoder g = new Geocoder(CheckpointDialog.this);
+                try {
+                    //addresses = g.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+                    addresses = g.getFromLocation(xLat,yLong,1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast t = Toast.makeText(CheckpointDialog.this,"Not a valid location",Toast.LENGTH_SHORT);
+                    t.show();
+                    return;
+
+                }
+
+                if(addresses.size() == 0 ) {
+                    Toast t = Toast.makeText(CheckpointDialog.this,"Not a valid location",Toast.LENGTH_SHORT);
+                    t.show();
+                    return;
+                }
+
                 boolean empty = x.getText().toString().trim().isEmpty() ||
                         y.getText().toString().trim().isEmpty() ||
                         h1.getText().toString().trim().isEmpty() ||
@@ -208,27 +237,19 @@ public class CheckpointDialog extends AppCompatActivity {
 
 
 
-
-    public Checkpoint getCp() {
-        return cp;
-    }
-
-    public void setCp(Checkpoint cp) {
-        this.cp = cp;
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK);
-        Location l = data.getParcelableExtra("location");
-        x.setText("" + l.getLatitude());
-        y.setText("" + l.getLongitude());
-        Geocoder g = new Geocoder(this);
-        try {
-            addresses = g.getFromLocation(l.getLatitude(),l.getLongitude(),1);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(resultCode == RESULT_OK) {
+            Location l = data.getParcelableExtra("location");
+            x.setText("" + l.getLatitude());
+            y.setText("" + l.getLongitude());
+            Geocoder g = new Geocoder(this);
+            try {
+                addresses = g.getFromLocation(l.getLatitude(), l.getLongitude(), 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

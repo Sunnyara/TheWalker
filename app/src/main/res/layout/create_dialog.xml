@@ -18,7 +18,10 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:imeOptions="actionNext"
+        android:maxLines="1"
+        android:inputType="text"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -32,7 +35,10 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:imeOptions="actionNext"
+        android:maxLines="1"
+        android:inputType="text"/>
 
 
     <TextView
@@ -52,7 +58,9 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:id="@+id/create_desc"/>
+            android:id="@+id/create_desc"
+            android:imeOptions="actionDone"
+            android:inputType="text"/>
     </ScrollView>
 
     <LinearLayout
