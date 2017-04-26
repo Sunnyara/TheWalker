@@ -41,4 +41,7 @@
     <string name="save">Save</string>
     <string name="nfc">NFC</string>
     <string name="shareChoose">Choose how to share your game:</string>
+    <string name="nfcAdd">Would you like to save this game?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

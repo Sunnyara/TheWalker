@@ -61,7 +61,14 @@
         <activity
             android:name=".PlayMenu"
             android:parentActivityName=".PlayMenu"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+
+        </activity>
 
         <activity
             android:name=".AboutPage"
@@ -86,6 +93,17 @@
         <activity android:name=".CheckpointDialog"
             android:theme="@style/ActivityDialog"
             android:screenOrientation="portrait"></activity>
+
+        <activity android:name=".nfcAdd"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
+            android:label="Add Via NFC">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

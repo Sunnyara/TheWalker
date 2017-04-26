@@ -7,10 +7,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
@@ -18,6 +20,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.JsonWriter;
 import android.view.LayoutInflater;
@@ -30,6 +33,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,9 +75,9 @@ public class PlayMenu extends AppCompatActivity {
     private File[] files;
     private Button upButton;
     private TextView folderView;
-    private File root;
-    private File currFolder;
+    private File root, currFolder, parentPath;
     private Context context;
+    private Intent recIntent;
 
 
     @Override
@@ -110,56 +114,104 @@ public class PlayMenu extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog add = new Dialog(v.getContext());
-                add.setContentView(R.layout.picker_dialog);
-                add.setTitle("Pick a File");
-                add.setCancelable(true);
-                add.setCanceledOnTouchOutside(true);
-
-                folderView = (TextView) add.findViewById(R.id.folder);
-                upButton = (Button) add.findViewById(R.id.up);
-                upButton.setOnClickListener(new View.OnClickListener() {
+                Dialog share = new Dialog((v.getContext()));
+                share.setContentView(R.layout.nfc_dialog);
+                share.setCancelable(true);
+                share.setCanceledOnTouchOutside(true);
+                TextView shareView = (TextView) share.findViewById(R.id.shareView);
+                shareView.setText("Choose how to recieve your game");
+                saveButton = (Button) share.findViewById(R.id.save);
+                saveButton.setText("File Explorer");
+                saveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        makeList(currFolder.getParentFile());
-                    }
-                });
+                        Dialog add = new Dialog(v.getContext());
+                        add.setContentView(R.layout.picker_dialog);
+                        add.setTitle("Pick a File");
+                        add.setCancelable(true);
+                        add.setCanceledOnTouchOutside(true);
 
-                dirView = (ListView) add.findViewById(R.id.dialogList);
-                dirView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        File selected = files[position];
-                        if(selected.isDirectory())
-                        {
-                            makeList(selected);
-                        }
-                        else
-                        {
-                            ObjectInputStream ois;
-                            try {
-                                ois = new ObjectInputStream(new FileInputStream(selected));
-                                WalkerGame gameObject = (WalkerGame) ois.readObject();
-                                long wid = dbHelper.insertGame(gameObject);
-                                for (Checkpoint a : gameObject.getCheckpoints())
-                                {
-                                    a.setId(wid);
-                                    dbHelper.insertCheckpoint(a);
-                                }
-                                game = dbHelper.getGames();
-                                playAdapter.updateDataset(game);
-                                ois.close();
+                        folderView = (TextView) add.findViewById(R.id.folder);
+                        upButton = (Button) add.findViewById(R.id.up);
+                        upButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                makeList(currFolder.getParentFile());
                             }
-                            catch (Exception e)
+                        });
+
+                        dirView = (ListView) add.findViewById(R.id.dialogList);
+                        dirView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                File selected = files[position];
+                                if(selected.isDirectory())
+                                {
+                                    makeList(selected);
+                                }
+                                else
+                                {
+                                    ObjectInputStream ois;
+                                    try {
+                                        ois = new ObjectInputStream(new FileInputStream(selected));
+                                        WalkerGame gameObject = (WalkerGame) ois.readObject();
+                                        long wid = dbHelper.insertGame(gameObject);
+                                        for (Checkpoint a : gameObject.getCheckpoints())
+                                        {
+                                            a.setId(wid);
+                                            dbHelper.insertCheckpoint(a);
+                                        }
+                                        game = dbHelper.getGames();
+                                        playAdapter.updateDataset(game);
+                                        ois.close();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        String mess = e.getMessage();
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        });
+                        makeList(root);
+                        add.show();
+                    }
+                });
+                nfcButton = (Button) share.findViewById(R.id.nfc);
+                nfcButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        File downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                        File[] nfcFiles = downloads.listFiles();
+                        for (File a : nfcFiles)
+                        {
+                            if (a.getName().contains(".wg"))
                             {
-                                String mess = e.getMessage();
-                                e.printStackTrace();
+                                ObjectInputStream ois;
+                                try {
+                                    ois = new ObjectInputStream(new FileInputStream(a));
+                                    WalkerGame gameObject = (WalkerGame) ois.readObject();
+                                    long wid = dbHelper.insertGame(gameObject);
+                                    for (Checkpoint b : gameObject.getCheckpoints())
+                                    {
+                                        b.setId(wid);
+                                        dbHelper.insertCheckpoint(b);
+                                    }
+                                    game = dbHelper.getGames();
+                                    playAdapter.updateDataset(game);
+                                    ois.close();
+                                }
+                                catch (Exception e)
+                                {
+                                    String mess = e.getMessage();
+                                    e.printStackTrace();
+                                }
+                                a.delete();
                             }
                         }
                     }
                 });
-                makeList(root);
-                add.show();
+                share.show();
             }
         });
         removeButton = (ImageButton) findViewById(R.id.remove_button);
@@ -261,7 +313,26 @@ public class PlayMenu extends AppCompatActivity {
                         public void onClick(View v) {
                             try {
                                 deleting = false;
+                                PackageManager pm = context.getPackageManager();
+                                // Check whether NFC is available on device
+                                if (!pm.hasSystemFeature(PackageManager.FEATURE_NFC)) {
+                                    // NFC is not available on the device.
+                                    Toast.makeText(context, "The device does not has NFC hardware.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                                // Check whether device is running Android 4.1 or higher
+                                else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                                    // Android Beam feature is not supported.
+                                    Toast.makeText(context, "Android Beam is not supported.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    // NFC and Android Beam file transfer is supported.
+                                    Toast.makeText(context, "Android Beam is supported on your device.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
                                 nfcAdapter = NfcAdapter.getDefaultAdapter(context);
+                                if(!nfcAdapter.isNdefPushEnabled()) Toast.makeText(context, "Android Beam is not enabled.", Toast.LENGTH_SHORT).show();
                                 ArrayList<Integer> ids = playAdapter.getSelectedIds();
                                 String root = Environment.getRootDirectory().toString();
                                 File docs, gameFile;
@@ -281,13 +352,13 @@ public class PlayMenu extends AppCompatActivity {
                                     oos = new ObjectOutputStream(fos);
 
                                     oos.writeObject(sGame);
+                                    oos.close();
+                                    fos.close();
 
                                     gameFile.setReadable(true, false);
                                     Uri uri = Uri.fromFile(gameFile);
                                     nfcAdapter.setBeamPushUris(new Uri[]{uri}, (Activity) context);
-
-                                    oos.close();
-                                    fos.close();
+                                    nfcAdapter.invokeBeam((Activity) context);
                                 }
 
                                 playAdapter.delete(false);
@@ -329,6 +400,42 @@ public class PlayMenu extends AppCompatActivity {
 
         ArrayAdapter<String> dirList = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fileList);
         dirView.setAdapter(dirList);
+    }
+
+    private void onHandleViewIntent()
+    {
+        recIntent = getIntent();
+        String action = recIntent.getAction();
+        if (TextUtils.equals(action, Intent.ACTION_VIEW))
+        {
+            Uri beamUri = recIntent.getData();
+            if (TextUtils.equals(beamUri.getScheme(), "file"))
+            {
+                try {
+                    ObjectInputStream ois;
+                    String filename = beamUri.getPath();
+                    parentPath = new File(filename);
+                    ois = new ObjectInputStream(new FileInputStream(parentPath));
+                    WalkerGame gameObject = (WalkerGame) ois.readObject();
+                    long wid = dbHelper.insertGame(gameObject);
+                    for (Checkpoint a : gameObject.getCheckpoints()) {
+                        a.setId(wid);
+                        dbHelper.insertCheckpoint(a);
+                    }
+                    game = dbHelper.getGames();
+                    playAdapter.updateDataset(game);
+                    ois.close();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            else if (TextUtils.equals(beamUri.getScheme(), "content"))
+            {
+            }
+
+        }
     }
 
     @Override
