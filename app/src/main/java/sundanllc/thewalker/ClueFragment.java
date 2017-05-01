@@ -32,13 +32,15 @@ public class ClueFragment extends android.support.v4.app.Fragment{
     private ImageView lockView;
     private int index, pos;
     private String hint;
+    private int hintNum;
 
     //private ArrayList<Checkpoint> clues = new ArrayList<Checkpoint>();
 
 
-    public ClueFragment(String hint, int pos) {
+    public ClueFragment(String hint, int pos, int hintNum) {
         this.hint = hint;
         this.pos = pos;
+        this.hintNum = hintNum;
     }
 
     public ClueFragment()
@@ -56,20 +58,16 @@ public class ClueFragment extends android.support.v4.app.Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.clue_fragment,container, false);
         clueNum = (TextView) view.findViewById(R.id.cluenum);
-        //clueNum.setText(clues.get(index).getNumber());
         clueNum.setText(Integer.toString(pos + 1));
         clueDesc = (TextView) view.findViewById(R.id.cluedesc);
-        //clueDesc.setText(clues.get(index).getDescription());
         clueDesc.setText(hint);
-        //return super.onCreateView(inflater, container, savedInstanceState);
-        if (pos==3) {
+        if (pos<hintNum) {
             view.setAlpha((float) .25);
             clueDesc.setVisibility(View.GONE);
             lockView = (ImageView) view.findViewById(R.id.lockView);

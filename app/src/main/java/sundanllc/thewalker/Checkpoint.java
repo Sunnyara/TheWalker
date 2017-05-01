@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 public class Checkpoint implements Serializable {
     private long id;
+    private long checkId;
     private String mAddress;
     private float mX;
     private float mY;
@@ -107,5 +108,13 @@ public class Checkpoint implements Serializable {
     {
         String[] hints = {hint1, hint2, hint3, hint4};
         return hints;
+    }
+
+    public long getCheckId() {
+        return checkId;
+    }
+
+    public void setCheckId(long checkId) {
+        this.checkId = checkId;
     }
 }

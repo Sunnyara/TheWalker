@@ -68,6 +68,13 @@ public class GameHelper extends SQLiteOpenHelper
         return db.delete("game_object", "id = ?", id) == 0;
     }
 
+    public boolean deleteCheckpoint(int checkID)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] id = {Integer.toString(checkID)};
+        return db.delete("cp_object", "id = ?", id) != 0;
+    }
+
     public boolean insertCheckpoint(Checkpoint cp)
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -230,7 +237,7 @@ public class GameHelper extends SQLiteOpenHelper
     {
         ArrayList<Checkpoint> checkpoints = new ArrayList<Checkpoint>();
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT cp_latitude, cp_longitude, cp_hint_1, cp_hint_2, cp_hint_3, cp_hint_4, cp_type, cp_address FROM cp_object WHERE walker_id = " + id + " ORDER BY cp_type ASC";
+        String query = "SELECT cp_latitude, cp_longitude, cp_hint_1, cp_hint_2, cp_hint_3, cp_hint_4, cp_type, cp_address, id FROM cp_object WHERE walker_id = " + id + " ORDER BY cp_type ASC";
         Cursor cursor;
         try
         {
@@ -254,6 +261,7 @@ public class GameHelper extends SQLiteOpenHelper
                 cp.setHint3(cursor.getString(4));
                 cp.setAddress(cursor.getString(7));
                 cp.setHint4(cursor.getString(5));
+                cp.setCheckId(cursor.getInt(8));
 
                 checkpoints.add(cp);
             }

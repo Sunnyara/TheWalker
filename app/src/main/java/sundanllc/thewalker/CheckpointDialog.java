@@ -30,6 +30,7 @@ import com.google.android.gms.cast.Cast;
 import com.google.android.gms.location.LocationServices;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -214,6 +215,13 @@ public class CheckpointDialog extends AppCompatActivity {
                 cp.setHint4(h4.getText().toString());
                 cp.setAddress(addresses.get(0).getAddressLine(0));
                 gh.insertCheckpoint(cp);
+                ArrayList<Checkpoint> checks = gh.getCheckpoints((int)cp.getId());
+                ArrayList<Location> locs = new ArrayList<Location>();
+                for (Checkpoint a : checks)
+                {
+
+                }
+
 
                 cpa.updateDataset(gh.getCheckpoints((int) id));
                 cpa.notifyDataSetChanged();

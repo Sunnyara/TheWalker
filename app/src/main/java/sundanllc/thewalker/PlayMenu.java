@@ -94,14 +94,10 @@ public class PlayMenu extends AppCompatActivity {
         }
 
         playRecycler = (RecyclerView) findViewById(R.id.playRecycler);
-        //playRecycler.setHasFixedSize(true);
         playLM = new LinearLayoutManager(this);
         playRecycler.setLayoutManager(playLM);
 
         dbHelper = new GameHelper(this);
-        /*Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        WalkerGame fakeGame = new WalkerGame("Around Boone", "Daniel Nance", "A placeholder game", bm, 4, 2);
-        dbHelper.insertGame(fakeGame);*/
         game = dbHelper.getGames();
 
         playAdapter = new PlayAdapter(game, 0);

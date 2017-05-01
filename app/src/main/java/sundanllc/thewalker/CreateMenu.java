@@ -60,8 +60,6 @@ public class CreateMenu extends AppCompatActivity {
         gh = new GameHelper(this);
         data = gh.getGamesAsCreator();
 
-
-
         cRemove = (Button) findViewById(R.id.create_remove);
         cRemove.setOnClickListener(new View.OnClickListener() {
             @Override

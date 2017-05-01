@@ -50,7 +50,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     private static final int CLUE_AMT = 4;
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 11;
     private ViewPager pager;
-    private PagerAdapter pagerAdapter;
+    private ClueSlideAdapter pagerAdapter;
     private Button here;
     private TextView clueNum, clueDesc, timer;
     private Handler timehandle = new Handler();
@@ -59,7 +59,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     private long milli = 0L;
     private long start = 0L;
     private long pause = 0L;
-    private int id;
+    private int id, onCheck;
     private double x, y;
     private ArrayList<Checkpoint> cp;
     private GoogleMap gm;
@@ -77,6 +77,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         setContentView(R.layout.current_game_layout);
         Bundle extras = getIntent().getExtras();
         id = extras.getInt("id");
+        onCheck = 0;
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapArea);
@@ -86,13 +87,14 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         GameHelper gh = new GameHelper(this);
         WalkerGame game = gh.getGame(id);
         cp = gh.getCheckpoints(id);
-        x = cp.get(0).getX();
-        y = cp.get(0).getY();
+        x = cp.get(onCheck).getX();
+        y = cp.get(onCheck).getY();
         startLoc = new Location("");
         startLoc.setLatitude(x);
         startLoc.setLongitude(y);
         pager = (ViewPager) findViewById(R.id.cluepager);
         pagerAdapter = new ClueSlideAdapter(getSupportFragmentManager(), cp.get(0).getHints());
+        pagerAdapter.hintNum(0);
         pager.setAdapter(pagerAdapter);
 
 
@@ -147,6 +149,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
 
 
     private int secs = 0, mins = 0, hours = 0;
+    private float dis;
     private long update;
     private Runnable updateTime = new Runnable() {
         @Override
@@ -164,6 +167,11 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
             if (hours == 24) {
                 Toast.makeText(CurrentGame.this, "Day 1 Over, game stopped", Toast.LENGTH_SHORT).show();
                 return;
+            }
+            if (secs == 0 && onCheck > 0)
+            {
+                dis = location.distanceTo(startLoc);
+                if ()
             }
             timehandle.postDelayed(this, 0);
         }
@@ -247,15 +255,21 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     private class ClueSlideAdapter extends FragmentStatePagerAdapter {
 
         private String[] checkpoints;
+        private int hints;
 
         public ClueSlideAdapter(FragmentManager fm, String[] cps) {
             super(fm);
             checkpoints = cps;
         }
 
+        public void hintNum(int num)
+        {
+            hints = num;
+        }
+
         @Override
         public android.support.v4.app.Fragment getItem(int position) {
-            return new ClueFragment(checkpoints[position], position);
+            return new ClueFragment(checkpoints[position], position, hints);
         }
 
         @Override
