@@ -55,12 +55,6 @@ public class CreateAddOption extends AppCompatActivity{
         cPArrayList = gh.getCheckpoints(id);
 
 
-        /**
-        for(int i = 0; i <= 100; i++) {
-            cPArrayList.add(new Checkpoint(i,"Address v" + i, i, i, "hi", "how's", "it", "going"));
-        }**/
-
-
         checkpointAdapter = new CheckpointAdapter(cPArrayList);
         mRecyclerView = (RecyclerView) findViewById(R.id.checkpoint_create);
         mRecyclerView.setHasFixedSize(true);
@@ -68,9 +62,6 @@ public class CreateAddOption extends AppCompatActivity{
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(checkpointAdapter);
-
-
-
 
 
         addCP = (Button) findViewById(R.id.create_add_checkpoint);
@@ -81,15 +72,7 @@ public class CreateAddOption extends AppCompatActivity{
                 i.putExtra("id",id);
                 i.putExtra("cpa", (Parcelable) checkpointAdapter);
                 startActivity(i);
-                /**
-                Dialog d = new CheckpointDialog(v.getContext(), checkpointAdapter, id);
-                d.setTitle("Input here");
-                DisplayMetrics metrics = getResources().getDisplayMetrics();
-                int width = metrics.widthPixels;
-                int height = metrics.heightPixels;
-                d.getWindow().setLayout((6 * width)/7, LinearLayout.LayoutParams.WRAP_CONTENT);
-                d.show();
-                 **/
+
             }
         });
 

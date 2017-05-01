@@ -44,24 +44,6 @@ import com.google.android.gms.maps.model.PolygonOptions;
  */
 
 
-/**
- public class CurrentGame extends Fragment {
-
-@Override public void onCreate(Bundle savedInstanceState) {
-super.onCreate(savedInstanceState);
-}
-
-@Nullable
-@Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-return super.onCreateView(inflater, container, savedInstanceState);
-}5
-
-@Override public void onPause() {
-super.onPause();
-}
-}
-
- */
 
 public class CurrentGame extends FragmentActivity implements OnMapReadyCallback {
 
@@ -87,13 +69,6 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     private Location location, startLoc;
 
     public CurrentGame() {
-        /**
-         clues = new ArrayList<>();
-         clues.add(new Clue(0,"blank"));
-         clues.add(new Clue(1,"blank"));
-         clues.add(new Clue(2,"blank"));
-         clues.add(new Clue(3,"blank"));
-         **/
     }
 
     @Override
@@ -120,12 +95,6 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         pagerAdapter = new ClueSlideAdapter(getSupportFragmentManager(), cp.get(0).getHints());
         pager.setAdapter(pagerAdapter);
 
-        /**
-         clueNum = (TextView) findViewById(R.id.cluenum);
-         clueDesc = (TextView) findViewById(R.id.cluedesc);
-         clueNum.setText("Clue " + clues.get(0).getNumber() + "");
-         clueDesc.setText(clues.get(0).getDescription());
-         **/
 
         timer = (TextView) findViewById(R.id.timer);
 

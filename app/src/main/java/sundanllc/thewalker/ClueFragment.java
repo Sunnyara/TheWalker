@@ -56,12 +56,7 @@ public class ClueFragment extends android.support.v4.app.Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*clues = new ArrayList<>();
-        clues.add(new Clue(0,"blank"));
-        clues.add(new Clue(1,"blank"));
-        clues.add(new Clue(2,"blank"));
-        clues.add(new Clue(3,"blank"));*/
-        //Retreive Clue from db;
+
     }
 
     @Override
