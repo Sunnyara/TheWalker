@@ -261,7 +261,7 @@ public class GameHelper extends SQLiteOpenHelper
                 cp.setHint3(cursor.getString(4));
                 cp.setAddress(cursor.getString(7));
                 cp.setHint4(cursor.getString(5));
-                cp.setCheckId(cursor.getInt(8));
+                cp.setCheckId(cursor.getLong(8));
 
                 checkpoints.add(cp);
             }
