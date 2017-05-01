@@ -171,7 +171,6 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
             if (secs == 0 && onCheck > 0)
             {
                 dis = location.distanceTo(startLoc);
-                if ()
             }
             timehandle.postDelayed(this, 0);
         }
