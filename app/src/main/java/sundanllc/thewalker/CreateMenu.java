@@ -2,6 +2,7 @@ package sundanllc.thewalker;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,12 +27,15 @@ public class CreateMenu extends AppCompatActivity {
     private RecyclerView.LayoutManager lm;
     private GameHelper gh;
     private PlayAdapter pa;
+    boolean delete;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_activity);
 
+
+        delete = false;
 
 
         cAdd = (Button) findViewById(R.id.create_add);
@@ -49,6 +53,8 @@ public class CreateMenu extends AppCompatActivity {
         });
 
 
+
+
         ArrayList<WalkerGame> data = new ArrayList<>();
 
         gh = new GameHelper(this);
@@ -60,9 +66,26 @@ public class CreateMenu extends AppCompatActivity {
         cRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CreateMenu.this,CurrentGame.class);
-
-                startActivity(i);
+                if(!delete) {
+                    delete = true;
+                    pa.delete(true);
+                    pa.notifyDataSetChanged();
+                    Drawable d = v.getResources().getDrawable(R.drawable.ic_delete);
+                    cRemove.setCompoundDrawablesWithIntrinsicBounds(null,d,null,null);
+                }
+                else
+                {
+                    delete = false;
+                    ArrayList<Integer> ids = pa.getSelectedIds();
+                    for(Integer a : ids)
+                    {
+                        gh.deleteGame(a);
+                    }
+                    pa.updateDataset(gh.getGamesAsCreator());
+                    pa.delete(false);
+                    Drawable d = v.getResources().getDrawable(R.drawable.ic_remove);
+                    cRemove.setCompoundDrawablesWithIntrinsicBounds(null,d,null,null);
+                }
             }
         });
         pa = new PlayAdapter(data, 1);
