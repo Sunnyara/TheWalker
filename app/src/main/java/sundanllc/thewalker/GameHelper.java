@@ -93,6 +93,15 @@ public class GameHelper extends SQLiteOpenHelper
         return ret != -1;
     }
 
+    public boolean updateETA(int eta, int walkerID)
+    {
+        WalkerGame wg = new WalkerGame();
+        SQLiteDatabase db = this.getWritableDatabase();
+        String  query = "UPDATE game_object SET eta = " + eta + " WHERE id = " + walkerID;
+        Cursor cursor = db.rawQuery(query, null);
+        return true;
+    }
+
     public WalkerGame getGame(int id)
     {
         WalkerGame wg = new WalkerGame();

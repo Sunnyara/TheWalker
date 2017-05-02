@@ -216,12 +216,23 @@ public class CheckpointDialog extends AppCompatActivity {
                 cp.setAddress(addresses.get(0).getAddressLine(0));
                 gh.insertCheckpoint(cp);
                 ArrayList<Checkpoint> checks = gh.getCheckpoints((int)cp.getId());
-                ArrayList<Location> locs = new ArrayList<Location>();
+                int dis = 0;
+                Location start = new Location("");
+                Location end = new Location("");
+                Location tmp;
+                start.setLatitude(checks.get(0).getX());
+                start.setLongitude(checks.get(0).getY());
                 for (Checkpoint a : checks)
                 {
-
+                    end.setLatitude(a.getX());
+                    end.setLongitude(a.getY());
+                    dis = dis + (int) start.distanceTo(end);
+                    tmp = start;
+                    start = end;
+                    end = tmp;
                 }
-
+                dis = dis / 2500;
+                gh.updateETA(dis * 2, id);
 
                 cpa.updateDataset(gh.getCheckpoints((int) id));
                 cpa.notifyDataSetChanged();

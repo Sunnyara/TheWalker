@@ -52,6 +52,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     private ViewPager pager;
     private ClueSlideAdapter pagerAdapter;
     private Button here;
+    private boolean hereBool;
     private TextView clueNum, clueDesc, timer;
     private Handler timehandle = new Handler();
     private boolean onoff = false;
@@ -136,6 +137,11 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
 
     }
 
+    public void playGame()
+    {
+
+    }
+
     public void callPermissions() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this,
@@ -167,10 +173,6 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
             if (hours == 24) {
                 Toast.makeText(CurrentGame.this, "Day 1 Over, game stopped", Toast.LENGTH_SHORT).show();
                 return;
-            }
-            if (secs == 0 && onCheck > 0)
-            {
-                dis = location.distanceTo(startLoc);
             }
             timehandle.postDelayed(this, 0);
         }

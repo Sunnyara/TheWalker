@@ -1,6 +1,7 @@
 package sundanllc.thewalker;
 
 import android.content.Intent;
+import android.location.Location;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * Created by Daniel on 2/15/2017.
@@ -31,9 +34,25 @@ public class GameInfo extends AppCompatActivity
         setupViews();
         titleView.setText(game.getTitle());
         authorView.setText(game.getAuthor());
-        etaView.setText(Integer.toString(game.getEta()));
         checkpointsView.setText(Integer.toString(infoHelper.getCheckpoints(id).size()));
-        distanceView.setText("4");
+        ArrayList<Checkpoint> checks = infoHelper.getCheckpoints(id);
+        float dis = 0;
+        Location start = new Location("");
+        Location end = new Location("");
+        Location tmp;
+        start.setLatitude(checks.get(0).getX());
+        start.setLongitude(checks.get(0).getY());
+        for (Checkpoint a : checks)
+        {
+            end.setLatitude(a.getX());
+            end.setLongitude(a.getY());
+            dis = dis + start.distanceTo(end);
+            tmp = start;
+            start = end;
+            end = tmp;
+        }
+        distanceView.setText(Integer.toString(Math.round((dis/100)) * 100) + " meters");
+        etaView.setText(Float.toString(dis / 2500).substring(0,3) + " hours");
         descView.setText(game.getDescription());
         picView.setImageBitmap(game.getPicture());
         playButton.setOnClickListener(new View.OnClickListener() {
