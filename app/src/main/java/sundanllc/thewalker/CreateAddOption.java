@@ -42,7 +42,6 @@ public class CreateAddOption extends AppCompatActivity{
     private ArrayList<Checkpoint> cPArrayList;
     private CheckpointAdapter checkpointAdapter;
 
-
     @Override
     public void onCreate(Bundle savedInstances) {
         super.onCreate(savedInstances);
@@ -51,8 +50,6 @@ public class CreateAddOption extends AppCompatActivity{
         Bundle extras = getIntent().getExtras();
         final int id = extras.getInt("id");
         walkerid = id;
-
-        //wg = gh.getGame(id);
 
         cPArrayList = new ArrayList<Checkpoint>();
         cp = new Checkpoint();

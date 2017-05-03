@@ -213,6 +213,7 @@ public class CheckpointDialog extends AppCompatActivity {
                 cp.setHint2(h2.getText().toString());
                 cp.setHint3(h3.getText().toString());
                 cp.setHint4(h4.getText().toString());
+                cp.setType(1);
                 cp.setAddress(addresses.get(0).getAddressLine(0));
                 gh.insertCheckpoint(cp);
                 ArrayList<Checkpoint> checks = gh.getCheckpoints((int)cp.getId());
