@@ -1,5 +1,6 @@
 package sundanllc.thewalker;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -22,9 +23,22 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
     private Checkpoint cp;
     private boolean deleting;
     private View orig;
+    private boolean start, finish;
+    private Context con;
+    private GameHelper checkHelper;
 
     public CheckpointAdapter(ArrayList<Checkpoint> checkPoints) {
+        start = false;
+        finish = false;
         this.checkPoints = checkPoints;
+    }
+
+    public CheckpointAdapter(ArrayList<Checkpoint> checkPoints, Context up) {
+        start = false;
+        finish = false;
+        this.checkPoints = checkPoints;
+        this.con = up;
+        checkHelper = new GameHelper(con);
     }
 
     protected CheckpointAdapter(Parcel in) {
@@ -143,21 +157,11 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
             xString = (TextView) v.findViewById(R.id.c_x);
             yString = (TextView) v.findViewById(R.id.c_y);
             object = (RelativeLayout) v.findViewById(R.id.checkpoint_object);
-
             flag = (ImageView) v.findViewById(R.id.flag);
             flag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(i == 0) {
-                        flag.setImageResource(R.drawable.green);
-                        i = 2;
-                    } else if (i == 1) {
-                        flag.setImageResource(R.drawable.white);
-                        i = 0;
-                    } else if (i == 2) {
-                        flag.setImageResource(R.drawable.checker);
-                        i = 1;
-                    }
+                    setCheck();
                 }
             });
 
@@ -165,7 +169,52 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
 
         public void bindCheckpoint(Checkpoint checkpoint) {
             mCheckpoint = checkpoint;
+            i = mCheckpoint.getType();
+            setCheck();
+        }
 
+        public void setCheck()
+        {
+            if (i == 0)
+            {
+                i = 1;
+                start = false;
+                flag.setImageResource(R.drawable.white);
+                checkHelper.setType(i, (int) mCheckpoint.getCheckId());
+            }
+            else if (i == 1 && !finish)
+            {
+                i = 2;
+                finish = true;
+                flag.setImageResource(R.drawable.checker);
+                checkHelper.setType(i, (int) mCheckpoint.getCheckId());
+            }
+            else if (i == 1 && finish && !start)
+            {
+                i = 0;
+                start = true;
+                flag.setImageResource(R.drawable.green);
+                checkHelper.setType(i, (int) mCheckpoint.getCheckId());
+            }
+            else if (i == 1 && finish && start)
+            {
+
+            }
+            else if (i == 2 && !start)
+            {
+                i = 0;
+                finish = false;
+                start = true;
+                flag.setImageResource(R.drawable.green);
+                checkHelper.setType(i, (int) mCheckpoint.getCheckId());
+            }
+            else if (i == 2 && start)
+            {
+                i = 1;
+                finish = false;
+                flag.setImageResource(R.drawable.white);
+                checkHelper.setType(i, (int) mCheckpoint.getCheckId());
+            }
         }
 
 

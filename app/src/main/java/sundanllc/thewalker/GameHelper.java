@@ -113,6 +113,15 @@ public class GameHelper extends SQLiteOpenHelper
         return true;
     }
 
+    public boolean setType(int type, int checkid)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(CP_TYPE, type);
+        int ret = db.update(TABLE2_NAME, cv, "cp_id=" + checkid, null);
+        return ret > 0;
+    }
+
     public WalkerGame getGame(int id)
     {
         WalkerGame wg = new WalkerGame();
