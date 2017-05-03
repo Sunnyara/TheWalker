@@ -68,11 +68,11 @@ public class GameHelper extends SQLiteOpenHelper
         return db.delete("game_object", "id = ?", id) == 0;
     }
 
-    public boolean deleteCheckpoint(int checkID)
+    public boolean deleteCheckpoint(long checkID)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        String[] id = {Integer.toString(checkID)};
-        return db.delete("cp_object", "id = ?", id) != 0;
+        String[] id = {Long.toString(checkID)};
+        return db.delete("cp_object", "cp_id = ?", id) != 0;
     }
 
     public boolean insertCheckpoint(Checkpoint cp)

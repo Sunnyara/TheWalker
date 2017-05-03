@@ -14,8 +14,9 @@ public class Checkpoint implements Serializable {
     private float mY;
     private String hint1, hint2, hint3, hint4;
     private int type;
+    private boolean select;
 
-    public Checkpoint(long id, float x, float y, String address,
+    public Checkpoint(int id, float x, float y, String address,
                       String hint1, String hint2, String hint3, String hint4) {
         setId(id);
         setAddress(address);
@@ -25,8 +26,16 @@ public class Checkpoint implements Serializable {
         setHint2(hint2);
         setHint3(hint3);
         setHint4(hint4);
+        setSelect(false);
     }
 
+    public boolean isSelect() {
+        return select;
+    }
+
+    public void setSelect(boolean select) {
+        this.select = select;
+    }
 
     public int getType() {
         return type;

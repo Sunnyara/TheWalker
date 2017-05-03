@@ -2,6 +2,7 @@ package sundanllc.thewalker;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -29,12 +30,13 @@ import java.util.ArrayList;
 public class CreateAddOption extends AppCompatActivity{
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapater;
     private RecyclerView.LayoutManager mLayoutManager;
     private GameHelper gh;
+    private WalkerGame wg;
     private Checkpoint cp;
+    private boolean deleted;
 
-    private Button addCP, removeCP;
+    private Button addCP, removeCP, finished;
 
     private ArrayList<Checkpoint> cPArrayList;
     private CheckpointAdapter checkpointAdapter;
@@ -48,11 +50,17 @@ public class CreateAddOption extends AppCompatActivity{
         Bundle extras = getIntent().getExtras();
         final int id = extras.getInt("id");
 
+        //wg = gh.getGame(id);
 
         cPArrayList = new ArrayList<Checkpoint>();
         cp = new Checkpoint();
         gh = new GameHelper(this);
         cPArrayList = gh.getCheckpoints(id);
+
+        wg = gh.getGame(id);
+        if(cPArrayList.size() > 0) {
+            wg = gh.getGame((int) cPArrayList.get(0).getId());
+        }
 
 
         checkpointAdapter = new CheckpointAdapter(cPArrayList);
@@ -76,11 +84,40 @@ public class CreateAddOption extends AppCompatActivity{
             }
         });
 
+        deleted = false;
         removeCP = (Button) findViewById(R.id.create_remove_checkpoint);
         removeCP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!deleted) {
+                    deleted = true;
+                    checkpointAdapter.delete(true);
+                    checkpointAdapter.notifyDataSetChanged();
+                    Drawable d = v.getResources().getDrawable(R.drawable.ic_delete);
+                    removeCP.setCompoundDrawablesWithIntrinsicBounds(null,d,null,null);
+                }
+                else
+                {
+                    deleted = false;
+                    ArrayList<Long> ids = checkpointAdapter.getSelectedIds();
+                    for(Long a : ids) {
+                        gh.deleteCheckpoint(a);
+                    }
+                    checkpointAdapter.delete(false);
+                    Drawable d = v.getResources().getDrawable(R.drawable.ic_remove);
+                    removeCP.setCompoundDrawablesWithIntrinsicBounds(null,d,null,null);
+                    checkpointAdapter.updateDataset(gh.getCheckpoints(id));
+                    checkpointAdapter.notifyDataSetChanged();
+                }
+            }
+        });
 
+        finished = (Button) findViewById(R.id.create_finished);
+        finished.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wg.setCreator(false);
+                finish();
             }
         });
     }

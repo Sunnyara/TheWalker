@@ -162,7 +162,6 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         public void run() {
             milli = sc.uptimeMillis() - start;
             update = pause + milli;
-
             secs = (int) update / 1000;
             mins = secs / 60;
             hours = mins / 60;

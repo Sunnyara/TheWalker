@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,6 +19,9 @@ import java.util.ArrayList;
 
 public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.CheckpointHolder> implements Parcelable{
     private ArrayList<Checkpoint> checkPoints;
+    private Checkpoint cp;
+    private boolean deleting;
+    private View orig;
 
     public CheckpointAdapter(ArrayList<Checkpoint> checkPoints) {
         this.checkPoints = checkPoints;
@@ -38,6 +42,16 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
         }
     };
 
+    public ArrayList<Long> getSelectedIds() {
+        ArrayList<Long> ids = new ArrayList<Long>();
+        for (Checkpoint c : checkPoints)
+        {
+            if(c.isSelect()) {
+                ids.add(c.getCheckId());
+            }
+        }
+        return ids;
+    }
     @Override
     public CheckpointHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
@@ -46,8 +60,8 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
     }
 
     @Override
-    public void onBindViewHolder(CheckpointHolder holder, int position) {
-        Checkpoint cp = checkPoints.get(position);
+    public void onBindViewHolder(final CheckpointHolder holder, int position) {
+        cp = checkPoints.get(position);
         if(cp.getType() == 0) {
             holder.flag.setImageResource(R.drawable.green);
         } else if (cp.getType() == 1) {
@@ -55,9 +69,38 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
         } else if (cp.getType() == 2) {
             holder.flag.setImageResource(R.drawable.checker);
         }
+
+        /**
+        if(!deleting) {
+            holder.object.setClickable(false);
+            //holder.object.setBackgroundColor(orig.getResources().getColor(R.color.whitebg));
+        }
+        else
+        {
+            holder.object.setClickable(true);
+            //holder.object.setBackgroundColor(orig.getResources().getColor(R.color.whitebg));
+        }**/
+
         holder.addString.setText(cp.getAddress());
         holder.xString.setText(Float.toString(cp.getX()));
         holder.yString.setText(Float.toString(cp.getY()));
+        final CheckpointHolder h = holder;
+        holder.object.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(deleting) {
+                    if(!cp.isSelect()) {
+                        cp.setSelect(true);
+                        h.object.setBackgroundColor(orig.getResources().getColor(R.color.greybg));
+                    } else
+                    {
+                        cp.setSelect(false);
+                        h.object.setBackgroundColor(orig.getResources().getColor(R.color.whitebg));
+                    }
+
+                }
+            }
+        });
         holder.bindCheckpoint(cp);
     }
 
@@ -69,6 +112,10 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
     public void updateDataset(ArrayList<Checkpoint> cp) {
         this.checkPoints = cp;
         notifyDataSetChanged();
+    }
+
+    public void delete(boolean deleting) {
+        this.deleting = deleting;
     }
 
     @Override
@@ -83,16 +130,18 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
 
     public class CheckpointHolder extends RecyclerView.ViewHolder {
         public TextView addString, xString, yString;
+        public RelativeLayout object;
         public ImageView flag;
         private Checkpoint mCheckpoint;
         private int i = 1;
 
         public CheckpointHolder (View v) {
             super(v);
+            orig = v;
             addString = (TextView) v.findViewById(R.id.address_info);
             xString = (TextView) v.findViewById(R.id.c_x);
             yString = (TextView) v.findViewById(R.id.c_y);
-
+            object = (RelativeLayout) v.findViewById(R.id.checkpoint_object);
 
             flag = (ImageView) v.findViewById(R.id.flag);
             flag.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +166,8 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
             mCheckpoint = checkpoint;
 
         }
+
+
 
 
 
