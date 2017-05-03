@@ -69,7 +69,64 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     private LocationManager lm;
     private Criteria c;
     private Location location, startLoc;
+    private boolean origFilled,etaPost;
     private int checkpointPos = 1;
+
+    private int secs = 0, mins = 0, hours = 0;
+    private float original;
+    private long update;
+    private long eta;
+    private Runnable updateTime = new Runnable() {
+        @Override
+        public void run() {
+            milli = sc.uptimeMillis() - start;
+            update = pause + milli;
+            secs = (int) update / 1000;
+            mins = secs / 60;
+            hours = mins / 60;
+            mins = mins % 60;
+            secs = secs % 60;
+            String time = String.format("%02d:%02d:%02d", hours, mins, secs);
+            timer.setText(time);
+            if (hours == 24) {
+                Toast.makeText(CurrentGame.this, "Day 1 Over, game stopped", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            timehandle.postDelayed(this, 0);
+        }
+    };
+
+    public boolean h2 ,h3, h4;
+    public Runnable etaCheck = new Runnable() {
+        @Override
+        public void run() {
+            if (eta <= update) {
+                if(!h2) {
+                    pagerAdapter.hintNum(4);
+                    Toast t = Toast.makeText(CurrentGame.this, "Hint 4 Unlocked", Toast.LENGTH_SHORT);
+                    h4 = true;
+                    t.show();
+                }
+            } else if ((eta * (2 / 3)) <= update) {
+                if(!h2) {
+                    pagerAdapter.hintNum(3);
+                    Toast t = Toast.makeText(CurrentGame.this, "Hint 3 Unlocked", Toast.LENGTH_SHORT);
+                    h3 = true;
+                    t.show();
+                }
+            } else if ((eta * (1 / 3)) <= update) {
+                if(!h2) {
+                    pagerAdapter.hintNum(2);
+                    Toast t = Toast.makeText(CurrentGame.this, "Hint 2 Unlocked", Toast.LENGTH_SHORT);
+                    h2 = true;
+                    t.show();
+                }
+            } else {
+                pagerAdapter.hintNum(1);
+            }
+
+        }
+    };
 
     public CurrentGame() {
     }
@@ -81,7 +138,11 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         Bundle extras = getIntent().getExtras();
         id = extras.getInt("id");
         onCheck = 0;
-
+        origFilled = false;
+        etaPost = false;
+        h2 = false;
+        h3 = false;
+        h4 = false;
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapArea);
         mapFragment.getMapAsync(this);
@@ -151,7 +212,6 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     {
 
         pagerAdapter = new ClueSlideAdapter(getSupportFragmentManager(), cp.get(checkpointPos).getHints());
-        pagerAdapter.hintNum(3);
         pager.setAdapter(pagerAdapter);
 
         Location yourPosition = gm.getMyLocation();
@@ -165,7 +225,17 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
 
 
         final float distance = yourPosition.distanceTo(cpPosition);
-        if(cp.size()-1  == checkpointPos) {
+        if(!origFilled) {
+           //original = distance;
+            eta = (long) (distance / 2500) * 60 * 60 * 1000;
+            eta += update;
+            origFilled = true;
+            if(!etaPost) {
+                timehandle.postDelayed(etaCheck,0);
+                etaPost = true;
+            }
+        }
+        if((cp.size()-1)  == checkpointPos) {
             if(accuracy < 15) distanceGoal[0] = 15;
             else if (accuracy < 75) distanceGoal[0] = accuracy;
             else distanceGoal[0] = 75;
@@ -176,6 +246,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
                     public void onClick(View v) {
                         here.setText("Congratulations!");
                         timehandle.removeCallbacks(updateTime);
+                        timehandle.removeCallbacks(etaCheck);
                         here.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -186,6 +257,9 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
                     }
                 });
 
+            } else {
+                Toast t = Toast.makeText(CurrentGame.this,"You are not at the area",Toast.LENGTH_SHORT);
+                t.show();
             }
             }
             else
@@ -198,8 +272,12 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
                     else distanceGoal[0] = 75;
                     if(distanceGoal[0] >= distance) {
                         checkpointPos++;
-                        Toast t = Toast.makeText(CurrentGame.this,"Move on to next Checkpoint",Toast.LENGTH_SHORT);
+                        Toast t = Toast.makeText(CurrentGame.this,"Move on to next Checkpoint " + checkpointPos ,Toast.LENGTH_SHORT);
+                        origFilled = false;
                         t.show();
+                        h2 = false;
+                        h3 = false;
+                        h4 = false;
                         playGame();
                     } else {
                         Toast t = Toast.makeText(CurrentGame.this,"You are not at the area",Toast.LENGTH_SHORT);
@@ -224,28 +302,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     }
 
 
-    private int secs = 0, mins = 0, hours = 0;
-    private float dis;
-    private long update;
-    private Runnable updateTime = new Runnable() {
-        @Override
-        public void run() {
-            milli = sc.uptimeMillis() - start;
-            update = pause + milli;
-            secs = (int) update / 1000;
-            mins = secs / 60;
-            hours = mins / 60;
-            mins = mins % 60;
-            secs = secs % 60;
-            String time = String.format("%02d:%02d:%02d", hours, mins, secs);
-            timer.setText(time);
-            if (hours == 24) {
-                Toast.makeText(CurrentGame.this, "Day 1 Over, game stopped", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            timehandle.postDelayed(this, 0);
-        }
-    };
+
 
     public void startTimer() {
         long hour, minute, seconds;
