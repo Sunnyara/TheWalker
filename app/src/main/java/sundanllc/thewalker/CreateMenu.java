@@ -92,7 +92,14 @@ public class CreateMenu extends AppCompatActivity {
         rv.setAdapter(pa);
         rv.setLayoutManager(lm);
         rv.hasFixedSize();
+    }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        pa.updateDataset(gh.getGamesAsCreator());
+        pa.notifyDataSetChanged();
 
     }
 

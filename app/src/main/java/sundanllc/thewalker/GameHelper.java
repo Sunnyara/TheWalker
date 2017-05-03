@@ -102,6 +102,17 @@ public class GameHelper extends SQLiteOpenHelper
         return true;
     }
 
+    public boolean setCreator(boolean creator, int walkerid)
+    {
+        int create = 0;
+        if (creator) create = 1;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(CREATOR, create);
+        db.update(TABLE_NAME, cv, "id=" + walkerid, null);
+        return true;
+    }
+
     public WalkerGame getGame(int id)
     {
         WalkerGame wg = new WalkerGame();
