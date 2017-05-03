@@ -84,6 +84,7 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
         holder.addString.setText(cp.getAddress());
         holder.xString.setText(Float.toString(cp.getX()));
         holder.yString.setText(Float.toString(cp.getY()));
+        holder.object.setBackgroundColor(orig.getResources().getColor(R.color.whitebg));
         final CheckpointHolder h = holder;
         holder.object.setOnClickListener(new View.OnClickListener() {
             @Override

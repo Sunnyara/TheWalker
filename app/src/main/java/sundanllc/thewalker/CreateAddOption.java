@@ -35,6 +35,7 @@ public class CreateAddOption extends AppCompatActivity{
     private WalkerGame wg;
     private Checkpoint cp;
     private boolean deleted;
+    private int walkerid;
 
     private Button addCP, removeCP, finished;
 
@@ -49,6 +50,7 @@ public class CreateAddOption extends AppCompatActivity{
 
         Bundle extras = getIntent().getExtras();
         final int id = extras.getInt("id");
+        walkerid = id;
 
         //wg = gh.getGame(id);
 
@@ -116,11 +118,17 @@ public class CreateAddOption extends AppCompatActivity{
         finished.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                wg.setCreator(false);
+                gh.setCreator(false, id);
                 finish();
             }
         });
     }
 
-
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        checkpointAdapter.updateDataset(gh.getCheckpoints(walkerid));
+        checkpointAdapter.notifyDataSetChanged();
+    }
 }

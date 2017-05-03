@@ -96,4 +96,13 @@ public class CreateMenu extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        pa.updateDataset(gh.getGamesAsCreator());
+        pa.notifyDataSetChanged();
+
+    }
+
 }
