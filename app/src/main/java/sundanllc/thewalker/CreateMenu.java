@@ -92,8 +92,6 @@ public class CreateMenu extends AppCompatActivity {
         rv.setAdapter(pa);
         rv.setLayoutManager(lm);
         rv.hasFixedSize();
-
-
     }
 
     @Override
