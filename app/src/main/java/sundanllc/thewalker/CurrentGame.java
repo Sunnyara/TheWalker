@@ -100,21 +100,21 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     public Runnable etaCheck = new Runnable() {
         @Override
         public void run() {
-            if (eta <= update) {
+            if (eta <= milli) {
                 if(!h2) {
                     pagerAdapter.hintNum(4);
                     Toast t = Toast.makeText(CurrentGame.this, "Hint 4 Unlocked", Toast.LENGTH_SHORT);
                     h4 = true;
                     t.show();
                 }
-            } else if ((eta * (2 / 3)) <= update) {
+            } else if ((eta * (2 / 3)) <= milli) {
                 if(!h2) {
                     pagerAdapter.hintNum(3);
                     Toast t = Toast.makeText(CurrentGame.this, "Hint 3 Unlocked", Toast.LENGTH_SHORT);
                     h3 = true;
                     t.show();
                 }
-            } else if ((eta * (1 / 3)) <= update) {
+            } else if ((eta * (1 / 3)) <= milli) {
                 if(!h2) {
                     pagerAdapter.hintNum(2);
                     Toast t = Toast.makeText(CurrentGame.this, "Hint 2 Unlocked", Toast.LENGTH_SHORT);
@@ -194,10 +194,10 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
                     here.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            playGame();
+                            startGame();
                         }
                     });
-                    playGame();
+                    startGame();
                 } else {
                     pause += milli;
                     timehandle.removeCallbacks(updateTime);
@@ -208,39 +208,49 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
 
     }
 
-    public void playGame()
-    {
 
+    public void startGame()
+    {
+        /** Necessary Startup stuff~ **/
         pagerAdapter = new ClueSlideAdapter(getSupportFragmentManager(), cp.get(checkpointPos).getHints());
         pager.setAdapter(pagerAdapter);
-
         Location yourPosition = gm.getMyLocation();
         Location cpPosition = new Location("");
         double cpX = cp.get(checkpointPos).getX();
         double cpY = cp.get(checkpointPos).getY();
         final double accuracy = yourPosition.getAccuracy();
-        final double[] distanceGoal = {75};
+
         cpPosition.setLatitude(cpX);
         cpPosition.setLongitude(cpY);
 
-
         final float distance = yourPosition.distanceTo(cpPosition);
+        /** Creates ETA once per checkpoints**/
         if(!origFilled) {
-           //original = distance;
-            eta = (long) (distance / 2500) * 60 * 60 * 1000;
-            eta += update;
+            //original = distance;
+            eta = (long) ((distance / 2500) * 60 * 60 * 1000);
+            eta += milli;
             origFilled = true;
-            if(!etaPost) {
-                timehandle.postDelayed(etaCheck,0);
-                etaPost = true;
-            }
+            timehandle.postDelayed(etaCheck,0);
         }
-        if((cp.size()-1)  == checkpointPos) {
-            if(accuracy < 15) distanceGoal[0] = 15;
-            else if (accuracy < 75) distanceGoal[0] = accuracy;
-            else distanceGoal[0] = 75;
 
-            if(distanceGoal[0] >= distance) {
+        here.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkArea(accuracy, distance);
+            }
+        });
+    }
+
+    public void checkArea(double accuracy, double distance) {
+        double distanceGoal = 75;
+
+        /** If checkpont position goes to size **/
+        if((cp.size()-1)  == checkpointPos) {
+            if(accuracy < 15) distanceGoal = 15;
+            else if (accuracy < 75) distanceGoal = accuracy;
+            else distanceGoal = 75;
+
+            if(distanceGoal >= distance) {
                 here.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -256,38 +266,28 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
                         });
                     }
                 });
-
             } else {
                 Toast t = Toast.makeText(CurrentGame.this,"You are not at the area",Toast.LENGTH_SHORT);
                 t.show();
+                return;
             }
-            }
-            else
-                {
-            here.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(accuracy < 15) distanceGoal[0] = 15;
-                    else if (accuracy < 75) distanceGoal[0] = accuracy;
-                    else distanceGoal[0] = 75;
-                    if(distanceGoal[0] >= distance) {
-                        checkpointPos++;
-                        Toast t = Toast.makeText(CurrentGame.this,"Move on to next Checkpoint " + checkpointPos ,Toast.LENGTH_SHORT);
-                        origFilled = false;
-                        t.show();
-                        h2 = false;
-                        h3 = false;
-                        h4 = false;
-                        playGame();
-                    } else {
-                        Toast t = Toast.makeText(CurrentGame.this,"You are not at the area",Toast.LENGTH_SHORT);
-                        t.show();
-                    }
-                }
-            });
-
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public void callPermissions() {
