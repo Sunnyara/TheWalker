@@ -4,6 +4,7 @@ package sundanllc.thewalker;
 import android.*;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -68,6 +69,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     private LocationManager lm;
     private Criteria c;
     private Location location, startLoc;
+    private int checkpointPos = 1;
 
     public CurrentGame() {
     }
@@ -127,6 +129,14 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
                     startTimer();
                     onoff = true;
                     you.remove();
+                    //playGame();
+                    here.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            playGame();
+                        }
+                    });
+                    playGame();
                 } else {
                     pause += milli;
                     timehandle.removeCallbacks(updateTime);
@@ -140,7 +150,67 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     public void playGame()
     {
 
+        pagerAdapter = new ClueSlideAdapter(getSupportFragmentManager(), cp.get(checkpointPos).getHints());
+        pagerAdapter.hintNum(3);
+        pager.setAdapter(pagerAdapter);
+
+        Location yourPosition = gm.getMyLocation();
+        Location cpPosition = new Location("");
+        double cpX = cp.get(checkpointPos).getX();
+        double cpY = cp.get(checkpointPos).getY();
+        final double accuracy = yourPosition.getAccuracy();
+        final double[] distanceGoal = {75};
+        cpPosition.setLatitude(cpX);
+        cpPosition.setLongitude(cpY);
+
+
+        final float distance = yourPosition.distanceTo(cpPosition);
+        if(cp.size()-1  == checkpointPos) {
+            if(accuracy < 15) distanceGoal[0] = 15;
+            else if (accuracy < 75) distanceGoal[0] = accuracy;
+            else distanceGoal[0] = 75;
+
+            if(distanceGoal[0] >= distance) {
+                here.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        here.setText("Congratulations!");
+                        timehandle.removeCallbacks(updateTime);
+                        here.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent i = new Intent(CurrentGame.this,MainActivity.class);
+                                startActivity(i);
+                            }
+                        });
+                    }
+                });
+
+            }
+            }
+            else
+                {
+            here.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(accuracy < 15) distanceGoal[0] = 15;
+                    else if (accuracy < 75) distanceGoal[0] = accuracy;
+                    else distanceGoal[0] = 75;
+                    if(distanceGoal[0] >= distance) {
+                        checkpointPos++;
+                        Toast t = Toast.makeText(CurrentGame.this,"Move on to next Checkpoint",Toast.LENGTH_SHORT);
+                        t.show();
+                        playGame();
+                    } else {
+                        Toast t = Toast.makeText(CurrentGame.this,"You are not at the area",Toast.LENGTH_SHORT);
+                        t.show();
+                    }
+                }
+            });
+
+        }
     }
+
 
     public void callPermissions() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
