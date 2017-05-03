@@ -61,7 +61,7 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
 
     @Override
     public void onBindViewHolder(final CheckpointHolder holder, int position) {
-        cp = checkPoints.get(position);
+        final Checkpoint cp = checkPoints.get(position);
         if(cp.getType() == 0) {
             holder.flag.setImageResource(R.drawable.green);
         } else if (cp.getType() == 1) {
