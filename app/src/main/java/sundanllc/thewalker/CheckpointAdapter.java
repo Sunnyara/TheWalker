@@ -23,7 +23,7 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
     private Checkpoint cp;
     private boolean deleting;
     private View orig;
-    private boolean start, finish;
+    private static boolean start, finish;
     private Context con;
     private GameHelper checkHelper;
 
@@ -76,13 +76,14 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
     @Override
     public void onBindViewHolder(final CheckpointHolder holder, int position) {
         final Checkpoint cp = checkPoints.get(position);
-        if(cp.getType() == 0) {
+        holder.flag.setImageResource(R.drawable.white);
+        /*if(cp.getType() == 0) {
             holder.flag.setImageResource(R.drawable.green);
         } else if (cp.getType() == 1) {
             holder.flag.setImageResource(R.drawable.white);
         } else if (cp.getType() == 2) {
             holder.flag.setImageResource(R.drawable.checker);
-        }
+        }*/
 
         /**
         if(!deleting) {
@@ -126,6 +127,8 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
 
     public void updateDataset(ArrayList<Checkpoint> cp) {
         this.checkPoints = cp;
+        start = false;
+        finish = false;
         notifyDataSetChanged();
     }
 
@@ -170,7 +173,20 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
         public void bindCheckpoint(Checkpoint checkpoint) {
             mCheckpoint = checkpoint;
             i = mCheckpoint.getType();
-            setCheck();
+            if (i == 0)
+            {
+                start = true;
+                flag.setImageResource(R.drawable.green);
+            }
+            else if (i == 1)
+            {
+                flag.setImageResource(R.drawable.white);
+            }
+            else if (i == 2)
+            {
+                finish = true;
+                flag.setImageResource(R.drawable.checker);
+            }
         }
 
         public void setCheck()
@@ -181,6 +197,7 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
                 start = false;
                 flag.setImageResource(R.drawable.white);
                 checkHelper.setType(i, (int) mCheckpoint.getCheckId());
+                mCheckpoint.setType(1);
             }
             else if (i == 1 && !finish)
             {
@@ -188,6 +205,7 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
                 finish = true;
                 flag.setImageResource(R.drawable.checker);
                 checkHelper.setType(i, (int) mCheckpoint.getCheckId());
+                mCheckpoint.setType(2);
             }
             else if (i == 1 && finish && !start)
             {
@@ -195,10 +213,14 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
                 start = true;
                 flag.setImageResource(R.drawable.green);
                 checkHelper.setType(i, (int) mCheckpoint.getCheckId());
+                mCheckpoint.setType(0);
             }
             else if (i == 1 && finish && start)
             {
-
+                i = 1;
+                flag.setImageResource(R.drawable.white);
+                checkHelper.setType(i, (int) mCheckpoint.getCheckId());
+                mCheckpoint.setType(1);
             }
             else if (i == 2 && !start)
             {
@@ -207,6 +229,7 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
                 start = true;
                 flag.setImageResource(R.drawable.green);
                 checkHelper.setType(i, (int) mCheckpoint.getCheckId());
+                mCheckpoint.setType(0);
             }
             else if (i == 2 && start)
             {
@@ -214,6 +237,7 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
                 finish = false;
                 flag.setImageResource(R.drawable.white);
                 checkHelper.setType(i, (int) mCheckpoint.getCheckId());
+                mCheckpoint.setType(1);
             }
         }
 
