@@ -65,7 +65,7 @@ public class CreateAddOption extends AppCompatActivity{
         }
 
 
-        checkpointAdapter = new CheckpointAdapter(cPArrayList);
+        checkpointAdapter = new CheckpointAdapter(cPArrayList, this);
         mRecyclerView = (RecyclerView) findViewById(R.id.checkpoint_create);
         mRecyclerView.setHasFixedSize(true);
 
