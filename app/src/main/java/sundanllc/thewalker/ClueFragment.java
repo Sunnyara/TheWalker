@@ -67,7 +67,7 @@ public class ClueFragment extends android.support.v4.app.Fragment{
         clueNum.setText(Integer.toString(pos + 1));
         clueDesc = (TextView) view.findViewById(R.id.cluedesc);
         clueDesc.setText(hint);
-        if (pos<hintNum) {
+        if (pos>=hintNum) {
             view.setAlpha((float) .25);
             clueDesc.setVisibility(View.GONE);
             lockView = (ImageView) view.findViewById(R.id.lockView);
