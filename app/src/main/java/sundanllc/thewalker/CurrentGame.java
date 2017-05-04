@@ -1,7 +1,5 @@
 package sundanllc.thewalker;
 
-
-import android.*;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -16,29 +14,23 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.os.Handler;
 import android.widget.Toast;
-
 import java.util.ArrayList;
-
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolygonOptions;
 
 /**
  * Created by Sunnara on 2/27/2017.
@@ -53,8 +45,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     private ViewPager pager;
     private ClueSlideAdapter pagerAdapter;
     private Button here;
-    private boolean hereBool;
-    private TextView clueNum, clueDesc, timer;
+    private TextView timer;
     private Handler timehandle = new Handler();
     private boolean onoff = false;
     private SystemClock sc;
@@ -65,7 +56,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     private double x, y;
     private ArrayList<Checkpoint> cp;
     private GoogleMap gm;
-    private Marker you;
+    private Marker you ,st;
     private LocationManager lm;
     private Criteria c;
     private Location location, startLoc;
@@ -73,7 +64,6 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     private int checkpointPos = 1;
 
     private int secs = 0, mins = 0, hours = 0;
-    private float original;
     private long update;
     private long eta;
     private Runnable updateTime = new Runnable() {
@@ -96,35 +86,61 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         }
     };
 
-    public boolean h2 ,h3, h4;
+    public boolean h1, h2 ,h3, h4;
     public Runnable etaCheck = new Runnable() {
         @Override
         public void run() {
+            Toast t;
             if (eta <= milli) {
-                if(!h2) {
+                if(!h4) {
                     pagerAdapter.hintNum(4);
-                    Toast t = Toast.makeText(CurrentGame.this, "Hint 4 Unlocked", Toast.LENGTH_SHORT);
+                    t = Toast.makeText(CurrentGame.this, "Hint 4 Unlocked", Toast.LENGTH_SHORT);
+                    pager.setAdapter(pagerAdapter);
+                    pager.setCurrentItem(3);
+                    pagerAdapter.notifyDataSetChanged();
                     h4 = true;
                     t.show();
                 }
-            } else if ((eta * (2 / 3)) <= milli) {
-                if(!h2) {
+            } else if ((eta * (2.0 / 3.0)) <= milli) {
+                if(!h3) {
                     pagerAdapter.hintNum(3);
-                    Toast t = Toast.makeText(CurrentGame.this, "Hint 3 Unlocked", Toast.LENGTH_SHORT);
+                    t = Toast.makeText(CurrentGame.this, "Hint 3 Unlocked", Toast.LENGTH_SHORT);
+                    pager.setAdapter(pagerAdapter);
+                    pager.setCurrentItem(2);
+                    pagerAdapter.notifyDataSetChanged();
                     h3 = true;
                     t.show();
                 }
-            } else if ((eta * (1 / 3)) <= milli) {
+            } else if ((eta * (1.0 / 3.0)) <= milli) {
                 if(!h2) {
                     pagerAdapter.hintNum(2);
-                    Toast t = Toast.makeText(CurrentGame.this, "Hint 2 Unlocked", Toast.LENGTH_SHORT);
+                    t = Toast.makeText(CurrentGame.this, "Hint 2 Unlocked", Toast.LENGTH_SHORT);
+                    pager.setAdapter(pagerAdapter);
+                    pager.setCurrentItem(1);
+                    pagerAdapter.notifyDataSetChanged();
                     h2 = true;
                     t.show();
                 }
             } else {
-                pagerAdapter.hintNum(1);
+                if(!h1) {
+                    pagerAdapter.hintNum(1);
+                    pager.setAdapter(pagerAdapter);
+                    pager.setCurrentItem(0);
+                    pagerAdapter.notifyDataSetChanged();
+                    h1 = true;
+                }
             }
+            timehandle.postDelayed(this, 0);
+        }
+    };
 
+    private Runnable follow = new Runnable() {
+        @Override
+        public void run() {
+            LatLng ll = new LatLng(gm.getMyLocation().getLatitude(),gm.getMyLocation().getLongitude());
+            CameraUpdate cu = CameraUpdateFactory.newLatLng(ll);
+            gm.animateCamera(cu);
+            timehandle.postDelayed(this,3000);
         }
     };
 
@@ -135,11 +151,15 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.current_game_layout);
+
+        etaPost = false;
+
         Bundle extras = getIntent().getExtras();
         id = extras.getInt("id");
         onCheck = 0;
         origFilled = false;
         etaPost = false;
+        h1 = false;
         h2 = false;
         h3 = false;
         h4 = false;
@@ -160,6 +180,8 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         pagerAdapter = new ClueSlideAdapter(getSupportFragmentManager(), cp.get(0).getHints());
         pagerAdapter.hintNum(0);
         pager.setAdapter(pagerAdapter);
+        pagerAdapter.notifyDataSetChanged();
+
 
 
         timer = (TextView) findViewById(R.id.timer);
@@ -178,6 +200,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
                     }
 
                     Location yourLocation = gm.getMyLocation();
+
                     float distance = yourLocation.distanceTo(startLoc);
                     if(distance > 25) {
                         Toast t = Toast.makeText(CurrentGame.this,"Please go closer to the starting point (25m) .\n Current Distance is "
@@ -190,13 +213,9 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
                     startTimer();
                     onoff = true;
                     you.remove();
-                    //playGame();
-                    here.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startGame();
-                        }
-                    });
+                    st.remove();
+                    here.setKeepScreenOn(true);
+                    timehandle.postDelayed(follow,3000);
                     startGame();
                 } else {
                     pause += milli;
@@ -230,7 +249,10 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
             eta = (long) ((distance / 2500) * 60 * 60 * 1000);
             eta += milli;
             origFilled = true;
-            timehandle.postDelayed(etaCheck,0);
+            if(!etaPost) {
+                timehandle.postDelayed(etaCheck, 0);
+                etaPost = true;
+            }
         }
 
         here.setOnClickListener(new View.OnClickListener() {
@@ -242,52 +264,68 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     }
 
     public void checkArea(double accuracy, double distance) {
-        double distanceGoal = 75;
+        double distanceGoal;
 
         /** If checkpont position goes to size **/
         if((cp.size()-1)  == checkpointPos) {
-            if(accuracy < 15) distanceGoal = 15;
+            if (accuracy < 15) distanceGoal = 15;
             else if (accuracy < 75) distanceGoal = accuracy;
             else distanceGoal = 75;
 
-            if(distanceGoal >= distance) {
+            if (distanceGoal >= distance) {
                 here.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         here.setText("Congratulations!");
                         timehandle.removeCallbacks(updateTime);
                         timehandle.removeCallbacks(etaCheck);
+                        here.setKeepScreenOn(false);
                         here.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent i = new Intent(CurrentGame.this,MainActivity.class);
+                                Intent i = new Intent(CurrentGame.this, MainActivity.class);
                                 startActivity(i);
                             }
                         });
                     }
                 });
             } else {
-                Toast t = Toast.makeText(CurrentGame.this,"You are not at the area",Toast.LENGTH_SHORT);
+                Toast t = Toast.makeText(CurrentGame.this, "You are not at the area", Toast.LENGTH_SHORT);
                 t.show();
                 return;
             }
+
+            /** Checkpoint position less than size **/
         }
+        else if((cp.size()-1) >= checkpointPos)
+            {
+                if(accuracy < 15) distanceGoal = 15;
+                else if (accuracy < 75) distanceGoal = accuracy;
+                else distanceGoal = 75;
+                if(distanceGoal >= distance) {
+                    checkpointPos++;
+                    Toast t = Toast.makeText(CurrentGame.this,"Move on to next Checkpoint " + checkpointPos ,Toast.LENGTH_SHORT);
+                    origFilled = false;
+                    t.show();
+                    h1 = false;
+                    h2 = false;
+                    h3 = false;
+                    h4 = false;
+                    //timehandle.removeCallbacks(etaCheck);
+                    here.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startGame();
+                        }
+                    });
+                    startGame();
+                } else {
+                    Toast t = Toast.makeText(CurrentGame.this,"You are not at the area",Toast.LENGTH_SHORT);
+                    t.show();
+                    return;
+                }
+            }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public void callPermissions() {
@@ -301,8 +339,12 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         }
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+        timehandle.removeCallbacks(etaCheck);
+        timehandle.removeCallbacks(updateTime);
+        super.onBackPressed();
+    }
 
     public void startTimer() {
         long hour, minute, seconds;
@@ -311,10 +353,10 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        final Location[] yourPosition = new Location[1];
+    public void onMapReady(final GoogleMap googleMap) {
+        final Location[] yourPosition = new Location[0];
         LatLng ll = new LatLng(x, y);
-        LatLng yourll;
+        final LatLng[] yourll = new LatLng[1];
 
         Marker marker = googleMap.addMarker(new MarkerOptions()
                 .position(ll).title("Starting location")
@@ -323,12 +365,24 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
 
         c = new Criteria();
 
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+            return;
+
+        }
+
         final LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 yourPosition[0] = location;
+                yourll[0] = new LatLng(location.getLatitude(), location.getLongitude());
 
             }
+
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -347,24 +401,21 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         };
 
 
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this,
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_FINE_LOCATION);
-            return;
-
-        }
+        st = marker;
 
         lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         String provider = String.valueOf(lm.getBestProvider(c, true));
-        lm.requestLocationUpdates(provider, 1000, 0, locationListener);
+        lm.requestLocationUpdates(provider, 5000, 0, locationListener);
         location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        yourll = new LatLng(location.getLatitude(), location.getLongitude());
+        yourll[0] = new LatLng(location.getLatitude(), location.getLongitude());
         //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ll,15.0f));
+
+
+
+
         gm = googleMap;
         you = googleMap.addMarker(new MarkerOptions()
-                .position(yourll).title("You"));
+                .position(yourll[0]).title("You"));
         marker.showInfoWindow();
         gm.setMyLocationEnabled(true);
 
@@ -389,6 +440,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
             checkpoints = cps;
         }
 
+
         public void hintNum(int num)
         {
             hints = num;
@@ -396,6 +448,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
 
         @Override
         public android.support.v4.app.Fragment getItem(int position) {
+            ClueFragment cf = new ClueFragment(checkpoints[position], position, hints);
             return new ClueFragment(checkpoints[position], position, hints);
         }
 
