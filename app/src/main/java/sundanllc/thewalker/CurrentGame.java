@@ -236,8 +236,8 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         /** Necessary Startup stuff~ **/
         pagerAdapter = new ClueSlideAdapter(getSupportFragmentManager(), cp.get(checkpointPos).getHints());
         pager.setAdapter(pagerAdapter);
-        Location yourPosition = gm.getMyLocation();
-        Location cpPosition = new Location("");
+        final Location yourPosition = gm.getMyLocation();
+        final Location cpPosition = new Location("");
         double cpX = cp.get(checkpointPos).getX();
         double cpY = cp.get(checkpointPos).getY();
         final double accuracy = yourPosition.getAccuracy();
@@ -261,6 +261,9 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         here.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Location yourPosition = gm.getMyLocation();
+                float distance = yourPosition.distanceTo(cpPosition);
+                double accuracy = yourPosition.getAccuracy();
                 checkArea(accuracy, distance);
             }
         });
@@ -282,6 +285,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
                         here.setText("Congratulations!");
                         timehandle.removeCallbacks(updateTime);
                         timehandle.removeCallbacks(etaCheck);
+                        timehandle.removeCallbacks(follow);
                         here.setKeepScreenOn(false);
                         here.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -349,6 +353,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     public void onBackPressed() {
         timehandle.removeCallbacks(etaCheck);
         timehandle.removeCallbacks(updateTime);
+        timehandle.removeCallbacks(follow);
         super.onBackPressed();
     }
 
