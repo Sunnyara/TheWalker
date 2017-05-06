@@ -303,6 +303,8 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
                 else if (accuracy < 75) distanceGoal = accuracy;
                 else distanceGoal = 75;
                 if(distanceGoal >= distance) {
+                    LatLng temp = new LatLng(cp.get(checkpointPos).getX(),cp.get(checkpointPos).getY());
+                    gm.addMarker(new MarkerOptions().position(temp).title("Checkpoint " + checkpointPos));
                     checkpointPos++;
                     Toast t = Toast.makeText(CurrentGame.this,"Move on to next Checkpoint " + checkpointPos ,Toast.LENGTH_SHORT);
                     origFilled = false;
@@ -378,8 +380,8 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         final LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                yourPosition[0] = location;
-                yourll[0] = new LatLng(location.getLatitude(), location.getLongitude());
+                //yourPosition[0] = location;
+                //yourll[0] = new LatLng(location.getLatitude(), location.getLongitude());
 
             }
 
@@ -417,6 +419,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         you = googleMap.addMarker(new MarkerOptions()
                 .position(yourll[0]).title("You"));
         marker.showInfoWindow();
+        you.setVisible(false);
         gm.setMyLocationEnabled(true);
 
 
