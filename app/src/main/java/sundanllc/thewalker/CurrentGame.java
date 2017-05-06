@@ -184,6 +184,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
 
 
 
+
         timer = (TextView) findViewById(R.id.timer);
 
         here = (Button) findViewById(R.id.cg_button);
