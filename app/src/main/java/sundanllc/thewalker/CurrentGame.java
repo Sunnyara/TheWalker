@@ -260,25 +260,12 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         here.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkArea();
+                checkArea(accuracy, distance);
             }
         });
     }
 
-    public void checkArea() {
-        pagerAdapter = new ClueSlideAdapter(getSupportFragmentManager(), cp.get(checkpointPos).getHints());
-        pager.setAdapter(pagerAdapter);
-        Location yourPosition = gm.getMyLocation();
-        Location cpPosition = new Location("");
-        double cpX = cp.get(checkpointPos).getX();
-        double cpY = cp.get(checkpointPos).getY();
-
-        final double accuracy = yourPosition.getAccuracy();
-
-        cpPosition.setLatitude(cpX);
-        cpPosition.setLongitude(cpY);
-
-        final float distance = yourPosition.distanceTo(cpPosition);
+    public void checkArea(double accuracy, double distance) {
         double distanceGoal;
 
         /** If checkpont position goes to size **/
