@@ -216,6 +216,8 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
                     st.remove();
                     here.setKeepScreenOn(true);
                     timehandle.postDelayed(follow,3000);
+                    LatLng temp = new LatLng(cp.get(checkpointPos).getX(),cp.get(checkpointPos).getY());
+                    gm.addMarker(new MarkerOptions().position(temp).title("Checkpoint " + checkpointPos));
                     startGame();
                 } else {
                     pause += milli;
@@ -258,12 +260,25 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         here.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkArea(accuracy, distance);
+                checkArea();
             }
         });
     }
 
-    public void checkArea(double accuracy, double distance) {
+    public void checkArea() {
+        pagerAdapter = new ClueSlideAdapter(getSupportFragmentManager(), cp.get(checkpointPos).getHints());
+        pager.setAdapter(pagerAdapter);
+        Location yourPosition = gm.getMyLocation();
+        Location cpPosition = new Location("");
+        double cpX = cp.get(checkpointPos).getX();
+        double cpY = cp.get(checkpointPos).getY();
+
+        final double accuracy = yourPosition.getAccuracy();
+
+        cpPosition.setLatitude(cpX);
+        cpPosition.setLongitude(cpY);
+
+        final float distance = yourPosition.distanceTo(cpPosition);
         double distanceGoal;
 
         /** If checkpont position goes to size **/
@@ -304,7 +319,8 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
                 else distanceGoal = 75;
                 if(distanceGoal >= distance) {
                     LatLng temp = new LatLng(cp.get(checkpointPos).getX(),cp.get(checkpointPos).getY());
-                    gm.addMarker(new MarkerOptions().position(temp).title("Checkpoint " + checkpointPos));
+                    //gm.addMarker(new MarkerOptions().position(temp).title("Checkpoint " + checkpointPos));
+                    gm.addMarker(new MarkerOptions().position(temp).title("Checkpoint " + checkpointPos+1));
                     checkpointPos++;
                     Toast t = Toast.makeText(CurrentGame.this,"Move on to next Checkpoint " + checkpointPos ,Toast.LENGTH_SHORT);
                     origFilled = false;
@@ -322,7 +338,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
                     });
                     startGame();
                 } else {
-                    Toast t = Toast.makeText(CurrentGame.this,"You are not at the area",Toast.LENGTH_SHORT);
+                    Toast t = Toast.makeText(CurrentGame.this,"You are not at the area (Distance: " + distance + "m",Toast.LENGTH_SHORT);
                     t.show();
                     return;
                 }
