@@ -99,6 +99,7 @@ public class GameHelper extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
         String  query = "UPDATE game_object SET eta = " + eta + " WHERE id = " + walkerID;
         Cursor cursor = db.rawQuery(query, null);
+        cursor.close();
         return true;
     }
 
@@ -139,6 +140,7 @@ public class GameHelper extends SQLiteOpenHelper
             wg.setEta(cursor.getInt(5));
             wg.setTime_played(cursor.getInt(6));
         }
+        cursor.close();
         return wg;
     }
 

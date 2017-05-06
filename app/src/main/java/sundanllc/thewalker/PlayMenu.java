@@ -1,55 +1,39 @@
 package sundanllc.thewalker;
 
-import android.*;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.util.JsonWriter;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import android.os.Handler;
 
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
@@ -78,6 +62,44 @@ public class PlayMenu extends AppCompatActivity {
     private File root, currFolder, parentPath;
     private Context context;
     private Intent recIntent;
+    private Handler timeHandle = new Handler();
+    private long millis;
+    private SystemClock sc;
+    public Runnable nfcCheck = new Runnable() {
+        @Override
+        public void run() {
+            File downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            File[] nfcFiles = downloads.listFiles();
+            for (File a : nfcFiles)
+            {
+                if (a.getName().contains(".wg"))
+                {
+                    ObjectInputStream ois;
+                    try {
+                        ois = new ObjectInputStream(new FileInputStream(a));
+                        WalkerGame gameObject = (WalkerGame) ois.readObject();
+                        long wid = dbHelper.insertGame(gameObject);
+                        for (Checkpoint b : gameObject.getCheckpoints())
+                        {
+                            b.setId(wid);
+                            dbHelper.insertCheckpoint(b);
+                        }
+                        game = dbHelper.getGames();
+                        playAdapter.updateDataset(game);
+                        ois.close();
+                    }
+                    catch (Exception e)
+                    {
+                        String mess = e.getMessage();
+                        e.printStackTrace();
+                    }
+                    a.delete();
+                }
+            }
+            if (millis + 30000 < SystemClock.uptimeMillis()) timeHandle.removeCallbacks(nfcCheck);
+            else timeHandle.postDelayed(nfcCheck, 1);
+        }
+    };
 
 
     @Override
@@ -104,7 +126,7 @@ public class PlayMenu extends AppCompatActivity {
         playRecycler.setAdapter(playAdapter);
 
         root = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
-        currFolder = root;
+        currFolder = new File(root.getAbsolutePath()+"/thewalker");
 
         addButton = (ImageButton) findViewById(R.id.add_button);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -169,7 +191,7 @@ public class PlayMenu extends AppCompatActivity {
                                 }
                             }
                         });
-                        makeList(root);
+                        makeList(currFolder);
                         add.show();
                     }
                 });
@@ -177,34 +199,8 @@ public class PlayMenu extends AppCompatActivity {
                 nfcButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        File downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                        File[] nfcFiles = downloads.listFiles();
-                        for (File a : nfcFiles)
-                        {
-                            if (a.getName().contains(".wg"))
-                            {
-                                ObjectInputStream ois;
-                                try {
-                                    ois = new ObjectInputStream(new FileInputStream(a));
-                                    WalkerGame gameObject = (WalkerGame) ois.readObject();
-                                    long wid = dbHelper.insertGame(gameObject);
-                                    for (Checkpoint b : gameObject.getCheckpoints())
-                                    {
-                                        b.setId(wid);
-                                        dbHelper.insertCheckpoint(b);
-                                    }
-                                    game = dbHelper.getGames();
-                                    playAdapter.updateDataset(game);
-                                    ois.close();
-                                }
-                                catch (Exception e)
-                                {
-                                    String mess = e.getMessage();
-                                    e.printStackTrace();
-                                }
-                                a.delete();
-                            }
-                        }
+                        millis = SystemClock.uptimeMillis();
+                        timeHandle.postDelayed(nfcCheck, 20000);
                     }
                 });
                 share.show();
@@ -261,6 +257,10 @@ public class PlayMenu extends AppCompatActivity {
                 }
                 else
                 {
+                    deleting = false;
+                    playAdapter.delete(false);
+                    playAdapter.updateDataset(dbHelper.getGames());
+                    playAdapter.notifyDataSetChanged();
                     Dialog share = new Dialog((v.getContext()));
                     share.setContentView(R.layout.nfc_dialog);
                     share.setCancelable(true);
@@ -398,47 +398,18 @@ public class PlayMenu extends AppCompatActivity {
         dirView.setAdapter(dirList);
     }
 
-    private void onHandleViewIntent()
-    {
-        recIntent = getIntent();
-        String action = recIntent.getAction();
-        if (TextUtils.equals(action, Intent.ACTION_VIEW))
-        {
-            Uri beamUri = recIntent.getData();
-            if (TextUtils.equals(beamUri.getScheme(), "file"))
-            {
-                try {
-                    ObjectInputStream ois;
-                    String filename = beamUri.getPath();
-                    parentPath = new File(filename);
-                    ois = new ObjectInputStream(new FileInputStream(parentPath));
-                    WalkerGame gameObject = (WalkerGame) ois.readObject();
-                    long wid = dbHelper.insertGame(gameObject);
-                    for (Checkpoint a : gameObject.getCheckpoints()) {
-                        a.setId(wid);
-                        dbHelper.insertCheckpoint(a);
-                    }
-                    game = dbHelper.getGames();
-                    playAdapter.updateDataset(game);
-                    ois.close();
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            else if (TextUtils.equals(beamUri.getScheme(), "content"))
-            {
-            }
-
-        }
-    }
-
     @Override
     protected void onDestroy()
     {
         //dbHelper.deleteAll();
         dbHelper.close();
         super.onDestroy();
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        playAdapter.updateDataset(dbHelper.getGames());
     }
 }

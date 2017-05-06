@@ -268,7 +268,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     public void checkArea(double accuracy, double distance) {
         double distanceGoal;
 
-        /** If checkpont position goes to size **/
+        /** If checkpoint position goes to size **/
         if((cp.size()-1)  == checkpointPos) {
             if (accuracy < 15) distanceGoal = 15;
             else if (accuracy < 75) distanceGoal = accuracy;
