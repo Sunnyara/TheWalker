@@ -66,6 +66,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
     private int secs = 0, mins = 0, hours = 0;
     private long update;
     private long eta;
+    private long h2Dist, h3Dist, h4Dist;
     private Runnable updateTime = new Runnable() {
         @Override
         public void run() {
@@ -91,7 +92,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         @Override
         public void run() {
             Toast t;
-            if (eta <= milli) {
+            if (h4Dist <= milli) {
                 if(!h4) {
                     pagerAdapter.hintNum(4);
                     t = Toast.makeText(CurrentGame.this, "Hint 4 Unlocked", Toast.LENGTH_SHORT);
@@ -101,7 +102,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
                     h4 = true;
                     t.show();
                 }
-            } else if ((eta * (2.0 / 3.0)) <= milli) {
+            } else if (h3Dist <= milli) {
                 if(!h3) {
                     pagerAdapter.hintNum(3);
                     t = Toast.makeText(CurrentGame.this, "Hint 3 Unlocked", Toast.LENGTH_SHORT);
@@ -111,7 +112,7 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
                     h3 = true;
                     t.show();
                 }
-            } else if ((eta * (1.0 / 3.0)) <= milli) {
+            } else if (h2Dist <= milli) {
                 if(!h2) {
                     pagerAdapter.hintNum(2);
                     t = Toast.makeText(CurrentGame.this, "Hint 2 Unlocked", Toast.LENGTH_SHORT);
@@ -163,7 +164,9 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         h2 = false;
         h3 = false;
         h4 = false;
-
+        h2Dist = 0;
+        h3Dist = 0;
+        h4Dist = 0;
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapArea);
         mapFragment.getMapAsync(this);
 
@@ -250,6 +253,9 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         if(!origFilled) {
             //original = distance;
             eta = (long) ((distance / 2500) * 60 * 60 * 1000);
+            h2Dist = (long) ((eta/3.0) + milli);
+            h3Dist = (long) (eta*(2.0/3.0)) + milli;
+            h4Dist = eta+milli;
             eta += milli;
             origFilled = true;
             if(!etaPost) {
