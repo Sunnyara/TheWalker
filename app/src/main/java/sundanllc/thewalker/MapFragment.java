@@ -3,14 +3,8 @@ package sundanllc.thewalker;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;

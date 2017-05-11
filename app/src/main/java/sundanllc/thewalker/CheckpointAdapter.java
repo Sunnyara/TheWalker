@@ -1,7 +1,6 @@
 package sundanllc.thewalker;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
@@ -77,24 +76,6 @@ public class CheckpointAdapter extends RecyclerView.Adapter<CheckpointAdapter.Ch
     public void onBindViewHolder(final CheckpointHolder holder, int position) {
         final Checkpoint cp = checkPoints.get(position);
         holder.flag.setImageResource(R.drawable.white);
-        /*if(cp.getType() == 0) {
-            holder.flag.setImageResource(R.drawable.green);
-        } else if (cp.getType() == 1) {
-            holder.flag.setImageResource(R.drawable.white);
-        } else if (cp.getType() == 2) {
-            holder.flag.setImageResource(R.drawable.checker);
-        }*/
-
-        /**
-        if(!deleting) {
-            holder.object.setClickable(false);
-            //holder.object.setBackgroundColor(orig.getResources().getColor(R.color.whitebg));
-        }
-        else
-        {
-            holder.object.setClickable(true);
-            //holder.object.setBackgroundColor(orig.getResources().getColor(R.color.whitebg));
-        }**/
 
         holder.addString.setText(cp.getAddress());
         holder.xString.setText(Float.toString(cp.getX()));
