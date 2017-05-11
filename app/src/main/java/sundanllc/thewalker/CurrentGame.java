@@ -221,7 +221,6 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
                     here.setKeepScreenOn(true);
                     timehandle.postDelayed(follow,3000);
                     LatLng temp = new LatLng(cp.get(checkpointPos).getX(),cp.get(checkpointPos).getY());
-                    gm.addMarker(new MarkerOptions().position(temp).title("Checkpoint " + checkpointPos));
                     startGame();
                 } else {
                     pause += milli;
@@ -317,8 +316,6 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
                 else distanceGoal = 75;
                 if(distanceGoal >= distance) {
                     LatLng temp = new LatLng(cp.get(checkpointPos).getX(),cp.get(checkpointPos).getY());
-                    //gm.addMarker(new MarkerOptions().position(temp).title("Checkpoint " + checkpointPos));
-                    gm.addMarker(new MarkerOptions().position(temp).title("Checkpoint " + checkpointPos+1));
                     checkpointPos++;
                     Toast t = Toast.makeText(CurrentGame.this,"Move on to next Checkpoint " + checkpointPos ,Toast.LENGTH_SHORT);
                     origFilled = false;
@@ -327,7 +324,6 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
                     h2 = false;
                     h3 = false;
                     h4 = false;
-                    //timehandle.removeCallbacks(etaCheck);
                     here.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -395,9 +391,6 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         final LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                //yourPosition[0] = location;
-                //yourll[0] = new LatLng(location.getLatitude(), location.getLongitude());
-
             }
 
 
@@ -425,7 +418,6 @@ public class CurrentGame extends FragmentActivity implements OnMapReadyCallback 
         lm.requestLocationUpdates(provider, 5000, 0, locationListener);
         location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         yourll[0] = new LatLng(location.getLatitude(), location.getLongitude());
-        //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ll,15.0f));
 
 
 

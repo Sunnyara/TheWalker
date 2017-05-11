@@ -1,9 +1,7 @@
 package sundanllc.thewalker;
 
-import android.*;
 import android.Manifest;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,13 +10,11 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,15 +22,12 @@ import android.widget.Toast;
 import android.location.LocationListener;
 import android.location.Address;
 
-import com.google.android.gms.cast.Cast;
-import com.google.android.gms.location.LocationServices;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import static java.security.AccessController.getContext;
+
 
 /**
  * @author Sunnara
@@ -120,15 +113,6 @@ public class CheckpointDialog extends AppCompatActivity {
         String provider = String.valueOf(lm.getBestProvider(c,true));
         lm.requestLocationUpdates(provider,1000,0, ll);
         location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-        /**
-        Geocoder g = new Geocoder(this);
-        try {
-            addresses = g.getFromLocation(location.getLatitude(),location.getLongitude(),1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
 
 
 
