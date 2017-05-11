@@ -55,5 +55,6 @@
         android:src="@drawable/ic_sun"
         android:clickable="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"/>
 </RelativeLayout>

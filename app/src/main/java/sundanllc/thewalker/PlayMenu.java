@@ -258,9 +258,6 @@ public class PlayMenu extends AppCompatActivity {
                 else
                 {
                     deleting = false;
-                    playAdapter.delete(false);
-                    playAdapter.updateDataset(dbHelper.getGames());
-                    playAdapter.notifyDataSetChanged();
                     Dialog share = new Dialog((v.getContext()));
                     share.setContentView(R.layout.nfc_dialog);
                     share.setCancelable(true);
@@ -391,7 +388,10 @@ public class PlayMenu extends AppCompatActivity {
 
         for(File a : files)
         {
-            fileList.add(a.getName());
+            if (a.getName().contains(".wg") || a.isDirectory())
+            {
+                fileList.add(a.getName());
+            }
         }
 
         ArrayAdapter<String> dirList = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fileList);
